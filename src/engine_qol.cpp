@@ -190,19 +190,30 @@ bool ToggleBorderlessFullscreen(HWND hWnd) {
     return g_config.borderlessFullscreen;
 }
 
+// The "save" command must not run from inside EndScene (render callback, mid-frame, device state in flux):
+// saving walks and serializes the whole lot. We only raise a flag there and the simulator's OnIdle hook
+// (a top-level, single-threaded spot of the game loop) executes it.
+static volatile long g_saveRequested = 0;
+
 bool TriggerSmartSaveNow() {
-    g_lastAutosaveMs = GetTickCount();
-    uintptr_t sim = ts2::se::GetSimulatorPtr();
-    if (!sim) {
+    g_lastAutosaveMs = GetTickCount(); // also pushes the next autosave away so we don't queue duplicates
+    if (!ts2::se::GetSimulatorPtr()) {
         ts2::se::PushConsoleLog("[Autosave] Aviso: Nenhum lote carregado no momento. Save adiado.");
         return false;
     }
+    _InterlockedExchange(&g_saveRequested, 1);
+    return true;
+}
+
+void RunPendingSave() {
+    if (!_InterlockedCompareExchange(&g_saveRequested, 0, 1)) return;
+    if (!ts2::se::GetSimulatorPtr()) return;
     uintptr_t pPersist = reinterpret_cast<uintptr_t(*)()>(addr::Rebase(addr::kFunc_TSGetPersistSystem))();
     char out[128] = {};
     ts2::se::ExecuteCommand("save", out, sizeof(out));
+    g_lastAutosaveMs = GetTickCount();
     ts2::se::PushConsoleLog("[Autosave] Checkpoint de lote disparado (PersistSys=0x%08X, Tick=%u)!",
                             static_cast<unsigned>(pPersist), ts2::se::GetSimulatorTickCount());
-    return true;
 }
 
 uint32_t GetSecondsUntilNextAutosave() {

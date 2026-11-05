@@ -66,6 +66,7 @@ void InitializeAllSubsystems() {
                    reinterpret_cast<unsigned>(hExe));
     ts2::hook::Log("================================================================");
 
+    ts2::hook::InstallCrashLogger();
     EnsureOriginalIjlLoaded();
 
     // 1. Apply Multi-Instance & Background Simulation patches

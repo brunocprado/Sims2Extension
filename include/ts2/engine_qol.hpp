@@ -60,7 +60,8 @@ void ApplyLotAndBuildQoL(bool testingCheats, bool rotate45, bool moveObjects, ui
 bool ToggleBorderlessFullscreen(HWND hWnd);
 
 // Triggers a safe Lot Save when in Live mode
-bool TriggerSmartSaveNow();
+bool TriggerSmartSaveNow();   // only requests the save (safe from any thread / EndScene)
+void RunPendingSave();        // executes a requested save; call from the simulator's OnIdle hook
 uint32_t GetSecondsUntilNextAutosave();
 
 // Fast Buy/Build Catalog Filter query

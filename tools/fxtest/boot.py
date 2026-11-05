@@ -16,6 +16,14 @@ import ts2boot  # noqa: E402
 class FxBoot(ts2boot.Boot):
     entered = None
 
+    @staticmethod
+    def chooser(im):
+        # ts2boot's threshold (0.22) is slightly too strict for the blurred backdrop at 1280x1024
+        sub = im[270:700, 250:1030]
+        r, g, b = sub[..., 0], sub[..., 1], sub[..., 2]
+        frac = ((b > 190) & (r > 110) & (r < 200) & (g > 110) & (g < 200)).mean()
+        return frac > float(os.environ.get("CHOOSER_FRAC", "0.12"))
+
     def say(self, msg):
         super().say(msg)
         if msg == "entering lot":

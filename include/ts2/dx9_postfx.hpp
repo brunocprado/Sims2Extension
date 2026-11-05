@@ -83,6 +83,8 @@ struct Status {
     bool     pipelineOk;     // shaders + render targets ready
     bool     sceneDetected;  // a 3D scene with a perspective projection was seen this frame
     uint32_t framesProcessed;
+    uint32_t lateZ;          // Z-tested draws issued after the post-fx ran (last processed frame)
+    uint32_t lateZWrite;     // ...of which wrote depth
     char     message[160];
 };
 const Status& GetStatus();

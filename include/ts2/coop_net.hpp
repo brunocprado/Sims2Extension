@@ -64,6 +64,7 @@ struct CoopStats {
     // Object (furniture) placement & Buy/Build creation/deletion sync
     bool      objSyncEnabled      = true;
     bool      simSyncEnabled      = true;  // Sim pose, motives & interaction sync
+    bool      blockPeerAutonomy   = true;  // do not let the local AI pick actions for Sims the partner drives
     uint32_t  simsSent            = 0;
     uint32_t  simsApplied         = 0;
     uint32_t  motivesSynced       = 0;
@@ -105,6 +106,7 @@ struct SimInteractionEvent {
     int16_t  actionTreeId     = 0;
     int16_t  params[4]        = {};
     uint32_t flags            = 0;
+    int16_t  targetNeighborId = 0;   // >0: the target is a Sim (targetSlot is then 0xFFFF)
 };
 
 struct ObjectBackend {
@@ -114,16 +116,20 @@ struct ObjectBackend {
     uint32_t (*lotToken)()                                                        = nullptr; // changes whenever a different lot gets loaded
     bool     (*isSim)(uint32_t id)                                                = nullptr; // optional: slot holds a Sim (not furniture)
     int32_t  (*selectedSim)()                                                     = nullptr; // optional: slot of the Sim this player controls, or -1
-    bool     (*create)(uint32_t id, const ObjPose& pose)                          = nullptr; // optional: spawn new catalog object with pose.guid
+    bool     (*create)(uint32_t* ioId, const ObjPose& pose)                       = nullptr; // optional: spawn new catalog object with pose.guid; *ioId = hint in, real slot out
     bool     (*destroy)(uint32_t id, const ObjPose& oldPose)                      = nullptr; // optional: delete object at id / oldPose
     bool     (*readSimState)(uint32_t id, int16_t* outNeighborId, int8_t outMotives[16])       = nullptr;
     bool     (*applySimState)(uint32_t id, int16_t neighborId, const int8_t motives[16])       = nullptr;
     bool     (*applyInteraction)(const SimInteractionEvent& ev)                   = nullptr; // optional: enqueue interaction on Sim
+    int32_t  (*resolveSim)(uint32_t slot, int16_t neighborId)                     = nullptr; // optional: local slot of the Sim with this NeighborID (-1 = none); slot is a hint
+    int16_t  (*simNeighborId)(uint32_t slot)                                      = nullptr; // optional: NeighborID of the Sim at slot (0 = unknown)
 };
 
 // Sim sync (both directions): every player streams the pose, motives and interactions of the Sim they control;
 // the other side moves/drives its copy of that Sim to match. A side never overwrites the Sim it is controlling.
 void SetSimSyncEnabled(bool enabled);
+// While on, the local AI never picks actions for Sims the partner drives; they only follow the replicated actions.
+void SetBlockPeerAutonomy(bool enabled);
 void SetObjectBackendForTest(const ObjectBackend* backend);
 void SendSimInteraction(const SimInteractionEvent& ev);
 

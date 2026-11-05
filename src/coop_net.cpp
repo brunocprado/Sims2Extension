@@ -1,13 +1,14 @@
 #include "ts2/coop_net.hpp"
 #include "ts2/addresses.hpp"
 #include "ts2/hook_engine.hpp"
+#include "ts2/engine_qol.hpp"
 #include "ts2/ts2se_engine.hpp"
 
 namespace ts2::coop {
 
 namespace {
 
-constexpr uint32_t kProtoVersion = 2;
+constexpr uint32_t kProtoVersion = 4;
 constexpr uint32_t kMaxFrame     = 65536;
 constexpr uint32_t kTxCap        = 1u << 20;
 constexpr uint32_t kRxCap        = 1u << 18;
@@ -381,10 +382,12 @@ uint32_t ComputeLotCrc32(uintptr_t simPtr) {
     return ~crc;
 }
 
+bool LocalLotReady(); // a lot is loaded and has been running for a moment (defined with the object backend)
+
 void SendStateNow() {
     uintptr_t sim = ts2::se::GetSimulatorPtr();
     StatePayload s = {};
-    if (sim > 0x10000u) {
+    if (sim > 0x10000u && LocalLotReady()) {
         s.tick     = ts2::se::GetSimulatorTickCount();
         s.seed     = ts2::se::GetSimulatorRandomSeed();
         s.simState = ts2::se::GetSimulatorState();
@@ -408,8 +411,11 @@ void ApplyHostState(const StatePayload& s) {
     g_stats.lastPeerCrc  = s.crc;
     g_stats.hostFunds    = s.funds;
     ++g_stats.ticksSynced;
-    if (s.simState < 0) return;
+    if (s.simState < 1) return; // the Host is not inside a lot
 
+    // The simulator object exists in the neighborhood view and while a lot is still loading, but poking its clock,
+    // pause count, PRNG seed and funds then corrupts the load. Only touch it once our own lot is up and running.
+    if (!LocalLotReady()) return;
     uintptr_t sim = ts2::se::GetSimulatorPtr();
     if (sim <= 0x10000u) return;
 
@@ -789,6 +795,9 @@ bool RealRead(uint32_t id, ObjPose* out) {
     out->level = *reinterpret_cast<const int16_t*>(obj + addr::obj_off::kLevel);
     out->rot   = *reinterpret_cast<const uint16_t*>(obj + addr::obj_off::kRotation) & 7u;
     out->guid  = ReadObjGuid(obj);
+    // The temporary "Walk Here" target (and anything without a catalog GUID) is created and destroyed by the game's own
+    // interactions; mirroring it creates duplicates the engine does not expect (crashed the peer).
+    if (!isPerson && (out->guid == addr::kGUID_GoHereObject || out->guid == 0)) return false;
     if (out->tx < 0 || out->ty < 0) return false; // -65536 (0xFFFF0000) = out of world
     if (out->level < 1 || out->level > 16) return false;
     return true;
@@ -803,29 +812,14 @@ bool RealApply(uint32_t id, const ObjPose& want) {
     uintptr_t obj = ObjAt(id);
     if (!obj) return false;
     bool isPerson = (*reinterpret_cast<const uintptr_t*>(obj) == addr::Rebase(addr::kVTable_cTSPerson));
+    // Exact slot only: the sync layer maps peer slots to local ones, so a different catalog object here means the
+    // tables diverged and touching it would move the wrong thing.
     if (!isPerson && want.guid != 0) {
         uint32_t localGuid = ReadObjGuid(obj);
-        if (localGuid != 0 && localGuid != want.guid) {
-            // Slot diverged; search for the closest uncontained object with the same catalog GUID
-            uint32_t n = RealCount();
-            uintptr_t bestObj = 0;
-            int64_t bestDist = 0x7FFFFFFFFFFFFFFFll;
-            for (uint32_t k = 0; k < n; ++k) {
-                uintptr_t cand = ObjAt(k);
-                if (!cand || ReadObjGuid(cand) != want.guid) continue;
-                if (*reinterpret_cast<const int16_t*>(cand + addr::obj_off::kContainerID) != 0) continue;
-                int32_t cx = *reinterpret_cast<const int32_t*>(cand + addr::obj_off::kTileX);
-                int32_t cy = *reinterpret_cast<const int32_t*>(cand + addr::obj_off::kTileY);
-                if (cx < 0 || cy < 0) continue;
-                int64_t dx = static_cast<int64_t>(cx) - want.tx;
-                int64_t dy = static_cast<int64_t>(cy) - want.ty;
-                int64_t d2 = dx * dx + dy * dy;
-                if (d2 < bestDist) { bestDist = d2; bestObj = cand; }
-            }
-            if (!bestObj) return false;
-            obj = bestObj;
-        }
+        if (localGuid != 0 && localGuid != want.guid) return false;
     }
+    ts2::hook::Trace("apply slot=%u %s guid=%08X -> (%d,%d,L%d,r%u)", id, isPerson ? "SIM" : "obj", want.guid,
+                     want.tx, want.ty, (int)want.level, (unsigned)want.rot);
     void** vt = *reinterpret_cast<void***>(obj);
 
     using FnVoid     = void (__thiscall*)(void*);
@@ -846,7 +840,7 @@ bool RealApply(uint32_t id, const ObjPose& want) {
     return true;
 }
 
-bool RealCreate(uint32_t /*hintSlot*/, const ObjPose& want) {
+bool RealCreate(uint32_t* ioSlot, const ObjPose& want) {
     if (want.guid == 0 || want.tx < 0 || want.ty < 0) return false;
     uintptr_t mod = ObjTablePtr();
     uintptr_t folder = ObjFolderPtr();
@@ -860,9 +854,12 @@ bool RealCreate(uint32_t /*hintSlot*/, const ObjPose& want) {
 
     void** modVt = *reinterpret_cast<void***>(mod);
     using FnCreateObj = int16_t (__thiscall*)(void*, void*, int, int, int);
+    ts2::hook::Trace("create guid=%08X at (%d,%d)", want.guid, want.tx, want.ty);
     int16_t newId = reinterpret_cast<FnCreateObj>(modVt[addr::kObjTable_CreateObjectSlot])(
         reinterpret_cast<void*>(mod), sel, 0, 0, 0);
+    ts2::hook::Trace("create -> id %d", (int)newId);
     if (newId <= 0) return false;
+    if (ioSlot) *ioSlot = static_cast<uint32_t>(newId - 1);   // the game picks the slot, which may differ from the peer's
     return RealApply(static_cast<uint32_t>(newId - 1), want);
 }
 
@@ -870,24 +867,13 @@ bool RealDestroy(uint32_t id, const ObjPose& oldPose) {
     uintptr_t mod = ObjTablePtr();
     if (!mod) return false;
     uintptr_t obj = ObjAt(id);
-    int16_t targetObjId = static_cast<int16_t>(id + 1);
-    if (!obj || (oldPose.guid != 0 && ReadObjGuid(obj) != oldPose.guid)) {
-        if (oldPose.guid == 0) return false;
-        uint32_t n = RealCount();
-        uintptr_t found = 0;
-        for (uint32_t k = 0; k < n; ++k) {
-            uintptr_t cand = ObjAt(k);
-            if (!cand || ReadObjGuid(cand) != oldPose.guid) continue;
-            int32_t cx = *reinterpret_cast<const int32_t*>(cand + addr::obj_off::kTileX);
-            int32_t cy = *reinterpret_cast<const int32_t*>(cand + addr::obj_off::kTileY);
-            if (cx == oldPose.tx && cy == oldPose.ty) { found = cand; targetObjId = static_cast<int16_t>(k + 1); break; }
-        }
-        if (!found) return false;
-    }
+    if (!obj) return false;
+    if (oldPose.guid != 0 && ReadObjGuid(obj) != oldPose.guid) return false; // tables diverged: never delete a different object
+    ts2::hook::Trace("destroy slot=%u guid=%08X", id, oldPose.guid);
     void** modVt = *reinterpret_cast<void***>(mod);
     using FnDeleteObj = void (__thiscall*)(void*, int);
     reinterpret_cast<FnDeleteObj>(modVt[addr::kObjTable_DeleteObjectSlot])(
-        reinterpret_cast<void*>(mod), static_cast<int>(targetObjId));
+        reinterpret_cast<void*>(mod), static_cast<int>(id) + 1);
     return true;
 }
 
@@ -985,7 +971,10 @@ bool RealApplySimState(uint32_t id, int16_t neighborId, const int8_t motives[16]
     return true;
 }
 
+int32_t RealResolveSim(uint32_t slot, int16_t neighborId);
+
 bool RealApplyInteraction(const SimInteractionEvent& ev) {
+    if (ev.actorNeighborId <= 0) return false; // only Sims we can identify for sure
     uint32_t resolvedActorSlot = ev.actorSlot;
     uintptr_t actorObj = FindSimBySlotOrNeighborId(ev.actorSlot, ev.actorNeighborId, &resolvedActorSlot);
     if (!actorObj) return false;
@@ -1015,6 +1004,9 @@ bool RealApplyInteraction(const SimInteractionEvent& ev) {
                 }
             }
         }
+    } else if (ev.targetNeighborId > 0) {
+        int32_t ts = RealResolveSim(0, ev.targetNeighborId);
+        if (ts >= 0) targetObj = ObjAt(static_cast<uint32_t>(ts));
     } else {
         targetObj = ObjAt(ev.targetSlot);
         if (!targetObj || (ev.targetGuid != 0 && ReadObjGuid(targetObj) != ev.targetGuid)) {
@@ -1056,7 +1048,9 @@ bool RealApplyInteraction(const SimInteractionEvent& ev) {
 
     reinterpret_cast<FnInitInter>(interVt[0x20 / 4])(
         pInteraction, pITSPerson, reinterpret_cast<void*>(targetObj),
-        ev.interactionIndex, ev.priority, static_cast<int>(ev.flags & 0xFFu));
+        ev.interactionIndex, ev.priority, 0 /* 5th arg is an object pointer (cause), not flags: the game derefs it */);
+    // Init() zeroes the flags word at +0x68; restore the original autonomous/continuation bits afterwards.
+    *reinterpret_cast<uint32_t*>(reinterpret_cast<uintptr_t>(pInteraction) + 0x68) = ev.flags;
     reinterpret_cast<FnSetParams>(interVt[0x6C / 4])(pInteraction, ev.params);
 
     g_applyingRemoteInteraction = true;
@@ -1068,11 +1062,41 @@ bool RealApplyInteraction(const SimInteractionEvent& ev) {
     return ok;
 }
 
+int32_t RealResolveSim(uint32_t slot, int16_t neighborId) {
+    uint32_t out = 0;
+    if (neighborId <= 0) return RealIsSim(slot) ? static_cast<int32_t>(slot) : -1;
+    // Only an exact NeighborID match: the peer's Sim must never be confused with another one of ours.
+    uint32_t n = RealCount();
+    for (uint32_t i = 0; i < n; ++i) {
+        if (!RealIsSim(i)) continue;
+        uintptr_t obj = ObjAt(i);
+        if (*reinterpret_cast<const int16_t*>(obj + kPersonSubobjectOffset + addr::person_off::kNeighborID) == neighborId) { out = i; return static_cast<int32_t>(out); }
+    }
+    return -1;
+}
+
+int16_t RealSimNeighborId(uint32_t slot) {
+    if (!RealIsSim(slot)) return 0;
+    return *reinterpret_cast<const int16_t*>(ObjAt(slot) + kPersonSubobjectOffset + addr::person_off::kNeighborID);
+}
+
 const ObjectBackend kRealBackend = {
     &RealCount, &RealRead, &RealApply, &RealLotToken, &RealIsSim, &RealSelectedSim,
-    &RealCreate, &RealDestroy, &RealReadSimState, &RealApplySimState, &RealApplyInteraction
+    &RealCreate, &RealDestroy, &RealReadSimState, &RealApplySimState, &RealApplyInteraction,
+    &RealResolveSim, &RealSimNeighborId
 };
 const ObjectBackend* g_objBackend = &kRealBackend;
+
+// A lot is loaded and has been running for a few seconds (object table populated, simulator in Live/Buy/Build).
+bool LocalLotReady() {
+    static DWORD since = 0;
+    DWORD now = GetTickCount();
+    int16_t st = ts2::se::GetSimulatorState();
+    bool up = g_objBackend && g_objBackend->count && g_objBackend->count() > 0 && st >= 1 && st <= 3;
+    if (!up) { since = 0; return false; }
+    if (!since) since = now;
+    return now - since > 4000;
+}
 
 // ---- Shared logic ----
 ObjPose g_objShadow[kMaxObj]; // last pose both sides agreed on
@@ -1095,7 +1119,7 @@ DWORD    g_simSentTick  = 0;
 DWORD    g_nextSimScan  = 0;
 DWORD    g_lastMotivesTx = 0;
 
-constexpr uint32_t kMaxInterQueue = 32;
+constexpr uint32_t kMaxInterQueue = 128;
 SimInteractionEvent g_interInbox[kMaxInterQueue];
 uint32_t g_interInHead  = 0;
 uint32_t g_interInCount = 0;
@@ -1104,7 +1128,75 @@ constexpr uint32_t kMaxSimStateQueue = 16;
 SimStatePayload g_simStateInbox[kMaxSimStateQueue];
 uint32_t g_simStateInCount = 0;
 
+// Objects appearing/disappearing are replicated as purchases/sales only while the game is in Buy (2) or Build (3)
+// mode; in Live mode the game spawns/removes objects by itself (newspaper, trash, visitors' items) and those must
+// not be mirrored. TS2COOP_FORCEBUY=1 lets the automated two-instance test exercise the path without the UI.
+bool PurchaseModeActive() {
+    static int forced = -1;
+    if (forced < 0) { char b[4] = {}; GetEnvironmentVariableA("TS2COOP_FORCEBUY", b, sizeof(b)); forced = b[0] == '1'; }
+    if (forced) return true;
+    int16_t m = ts2::se::GetSimulatorState();
+    return m == 2 || m == 3;
+}
+
 bool IsSimId(uint32_t id) { return g_objBackend && g_objBackend->isSim && g_objBackend->isSim(id); }
+
+// ---- Slot mapping ---------------------------------------------------------------------------------------------
+// The wire protocol speaks HOST slots. The Host uses its own slots as they are; the Guest keeps a two way map between
+// host slots and its own, built when it reconciles its lot against the Host's snapshot (the two tables rarely line
+// up: different saves, objects the game spawned by itself, purchases that landed in other free slots, ...).
+constexpr uint16_t kNoSlot = 0xFFFF;
+uint16_t g_r2l[kMaxObj];   // host slot -> my slot
+uint16_t g_l2r[kMaxObj];   // my slot   -> host slot
+bool     g_mapActive = false;
+
+bool IsClient() { return g_stats.role == Role::Client; }
+
+void MapReset() {
+    for (uint32_t i = 0; i < kMaxObj; ++i) { g_r2l[i] = kNoSlot; g_l2r[i] = kNoSlot; }
+}
+void MapSet(uint32_t wire, uint32_t local) {
+    if (wire >= kMaxObj || local >= kMaxObj) return;
+    if (g_r2l[wire] != kNoSlot) g_l2r[g_r2l[wire]] = kNoSlot;
+    if (g_l2r[local] != kNoSlot) g_r2l[g_l2r[local]] = kNoSlot;
+    g_r2l[wire]  = static_cast<uint16_t>(local);
+    g_l2r[local] = static_cast<uint16_t>(wire);
+}
+void MapDropLocal(uint32_t local) {
+    if (local >= kMaxObj) return;
+    if (g_l2r[local] != kNoSlot) g_r2l[g_l2r[local]] = kNoSlot;
+    g_l2r[local] = kNoSlot;
+}
+uint32_t WireToLocal(uint32_t wire) {
+    if (!IsClient() || !g_mapActive) return wire;
+    return wire < kMaxObj ? g_r2l[wire] : kNoSlot;
+}
+uint32_t LocalToWire(uint32_t local) {
+    if (!IsClient() || !g_mapActive) return local;
+    return local < kMaxObj ? g_l2r[local] : kNoSlot;
+}
+
+// ---- Inbound queues (filled by the network pump, drained on the game thread) ---------------------------------
+struct ObjEvent { uint8_t mode; ObjRec r; };
+constexpr uint32_t kMaxEvents = 512;
+ObjEvent g_events[kMaxEvents];
+uint32_t g_evHead = 0, g_evCount = 0;
+
+ObjRec   g_snapRecs[kMaxObj];  // objects of the Host's snapshot being received
+uint32_t g_snapCount = 0;
+ObjRec   g_snapSims[64];       // ... and its Sims (NeighborID travels in oldPose.guid)
+uint32_t g_snapSimCount = 0;
+bool     g_snapRecv  = false;  // between "begin" and "end"
+bool     g_snapReady = false;  // complete snapshot waiting to be applied
+
+// ---- Guest: lot reconciliation against the Host's snapshot ------------------------------------------------------
+ObjPose  g_locPose[kMaxObj];
+uint8_t  g_locOk[kMaxObj];
+uint8_t  g_locClaim[kMaxObj];
+uint8_t  g_snapMatched[kMaxObj];
+uint16_t g_reconDel[kMaxObj];  // local slots to delete
+uint16_t g_reconCre[kMaxObj];  // indexes into g_snapRecs to create
+struct Recon { bool active; uint32_t nDel, nCre, iDel, iCre, posed, mapped; } g_recon = {};
 
 void ObjResetLot() {
     g_objBaseline  = false;
@@ -1119,6 +1211,12 @@ void ObjResetLot() {
     }
     g_simSentIdx = -1;
     g_stats.objTracked = 0;
+    MapReset();
+    g_mapActive = false;
+    g_evHead = g_evCount = 0;
+    g_snapCount = g_snapSimCount = 0;
+    g_snapRecv = g_snapReady = false;
+    g_recon = {};
 }
 
 void ObjQueueInbox(const uint8_t* p, uint32_t len) {
@@ -1129,41 +1227,225 @@ void ObjQueueInbox(const uint8_t* p, uint32_t len) {
         g_stats.simSyncEnabled = true; // the peer syncs its Sim: follow it
         ts2::se::PushConsoleLog("[Co-op] Parceiro esta sincronizando o Sim dele: sincronia de Sims ligada neste lado.");
     }
+    if (h.snapshot == 9) { g_snapCount = g_snapSimCount = 0; g_snapRecv = true; g_snapReady = false; return; }
+    if (h.snapshot == 6) { if (g_snapRecv) { g_snapRecv = false; g_snapReady = true; } return; }
     uint32_t n = h.count;
     if (sizeof(h) + static_cast<size_t>(n) * sizeof(ObjRec) > len) n = (len - sizeof(h)) / sizeof(ObjRec);
     for (uint32_t i = 0; i < n; ++i) {
         ObjRec r;
         memcpy(&r, p + sizeof(h) + i * sizeof(ObjRec), sizeof(r));
-        if (r.id >= kMaxObj) continue;
-        if (h.snapshot == 2) {
-            ++g_stats.peerSimsSeen;
-            g_stats.peerSimIdx = r.id;
+        switch (h.snapshot) {
+            case 1:
+                if (g_snapRecv && r.id < kMaxObj && g_snapCount < kMaxObj) g_snapRecs[g_snapCount++] = r;
+                break;
+            case 7:
+                if (g_snapRecv && g_snapSimCount < 64) g_snapSims[g_snapSimCount++] = r;
+                break;
+            case 3: case 4: case 5:
+                if (g_evCount < kMaxEvents) {
+                    uint32_t at = (g_evHead + g_evCount) % kMaxEvents;
+                    g_events[at].mode = h.snapshot;
+                    g_events[at].r = r;
+                    ++g_evCount;
+                }
+                break;
+            default: // 0: move, 2: peer Sim pose (keyed by the sender's slot, the latest one wins)
+                if (r.id >= kMaxObj) break;
+                if (h.snapshot == 2) { ++g_stats.peerSimsSeen; g_stats.peerSimIdx = r.id; }
+                if (!g_objInHas[r.id]) { g_objInHas[r.id] = 1; ++g_objInCount; }
+                g_objInbox[r.id]  = r;
+                g_objInSnap[r.id] = h.snapshot;
+                break;
         }
-        if (!g_objInHas[r.id]) { g_objInHas[r.id] = 1; ++g_objInCount; }
-        g_objInbox[r.id]  = r;
-        g_objInSnap[r.id] = h.snapshot;
     }
+}
+
+void NoteAgreed(uint32_t slot, const ObjPose& fallback) {
+    if (slot >= kMaxObj) return;
+    ObjPose after = fallback;
+    g_objBackend->read(slot, &after);
+    g_objShadow[slot] = g_objLast[slot] = after; // what we have now is the agreed pose: never echoed back
+    g_objKnown[slot] = 1;
+    g_objMissing[slot] = 0;
+}
+
+void ObjHandleEvent(const ObjEvent& e) {
+    const ObjRec& r = e.r;
+    if (e.mode == 3) { // Buy/Build: the peer put a new object into the lot
+        if (!g_objBackend->create) return;
+        if (r.newPose.guid == 0 || r.newPose.guid == addr::kGUID_GoHereObject) return; // temporary game objects are never mirrored
+        ObjPose cur;
+        if (IsClient()) {
+            uint32_t L = WireToLocal(r.id);
+            if (L != kNoSlot && L < g_objBackend->count() && g_objBackend->read(L, &cur) && cur.guid == r.newPose.guid && PoseEq(cur, r.newPose)) {
+                NoteAgreed(L, r.newPose); // duplicate delivery
+                return;
+            }
+        }
+        uint32_t slot = r.id;
+        if (!g_objBackend->create(&slot, r.newPose)) return;
+        ++g_stats.objCreated; ++g_stats.objApplied;
+        NoteAgreed(slot, r.newPose);
+        if (IsClient()) {
+            MapSet(r.id, slot);
+        } else {
+            // Tell the Guest which Host slot its purchase landed in (r.id was the Guest's own slot)
+            uint8_t buf[sizeof(ObjBatchHdr) + sizeof(ObjRec)];
+            ObjBatchHdr h = {1, 5};
+            ObjRec a = r;
+            a.id = static_cast<uint16_t>(slot);
+            a.oldPose.tx = static_cast<int32_t>(r.id);
+            a.newPose = g_objShadow[slot];
+            memcpy(buf, &h, sizeof(h));
+            memcpy(buf + sizeof(h), &a, sizeof(a));
+            QueueFrame(Msg::ObjUpdate, buf, sizeof(buf));
+        }
+        ts2::se::PushConsoleLog("[Co-op] Objeto comprado/criado sincronizado (slot do parceiro #%u -> local #%u, GUID=%08X).", r.id, slot, r.newPose.guid);
+        return;
+    }
+    if (e.mode == 4) { // Buy/Build: the peer sold/deleted an object
+        uint32_t L = WireToLocal(r.id);
+        if (L == kNoSlot || !g_objBackend->destroy) return;
+        if (g_objBackend->destroy(L, r.oldPose)) {
+            g_objKnown[L] = 0;
+            g_objMissing[L] = 0;
+            if (IsClient()) MapDropLocal(L);
+            ++g_stats.objDeleted; ++g_stats.objApplied;
+            ts2::se::PushConsoleLog("[Co-op] Objeto vendido/removido sincronizado (slot #%u, GUID=%08X).", L, r.oldPose.guid);
+        }
+        return;
+    }
+    if (e.mode == 5 && IsClient()) { // Host tells us where our purchase went
+        uint32_t guestSlot = static_cast<uint32_t>(r.oldPose.tx);
+        ObjPose cur;
+        if (guestSlot < kMaxObj && g_objBackend->read(guestSlot, &cur) && cur.guid == r.newPose.guid) MapSet(r.id, guestSlot);
+    }
+}
+
+// Guest: compare the whole lot with the Host's snapshot, build the slot map and queue the creates/deletes that
+// make both lots identical. Poses of matched objects are fixed right away.
+void ReconBegin() {
+    uint32_t n = g_objBackend->count();
+    if (n > kMaxObj) n = kMaxObj;
+    MapReset();
+    g_mapActive = true;
+    for (uint32_t id = 0; id < n; ++id) {
+        g_locClaim[id] = 0;
+        g_locOk[id] = (!IsSimId(id) && g_objBackend->read(id, &g_locPose[id])) ? 1 : 0;
+    }
+    for (uint32_t i = 0; i < g_snapCount; ++i) g_snapMatched[i] = 0;
+    uint32_t exact = 0, moved = 0;
+    // pass 1: same slot, same catalog object
+    for (uint32_t i = 0; i < g_snapCount; ++i) {
+        uint32_t s = g_snapRecs[i].id;
+        if (s < n && g_locOk[s] && !g_locClaim[s] && g_locPose[s].guid == g_snapRecs[i].newPose.guid) {
+            g_locClaim[s] = 1; g_snapMatched[i] = 1; MapSet(s, s); ++exact;
+        }
+    }
+    // pass 2: same catalog object in another slot (closest one wins)
+    for (uint32_t i = 0; i < g_snapCount; ++i) {
+        if (g_snapMatched[i]) continue;
+        const ObjPose& w = g_snapRecs[i].newPose;
+        int64_t best = 0x7FFFFFFFFFFFFFFFll;
+        int32_t bestId = -1;
+        for (uint32_t id = 0; id < n; ++id) {
+            if (!g_locOk[id] || g_locClaim[id] || g_locPose[id].guid != w.guid) continue;
+            int64_t dx = static_cast<int64_t>(g_locPose[id].tx) - w.tx, dy = static_cast<int64_t>(g_locPose[id].ty) - w.ty;
+            int64_t d2 = dx * dx + dy * dy;
+            if (d2 < best) { best = d2; bestId = static_cast<int32_t>(id); }
+        }
+        if (bestId >= 0) { g_locClaim[bestId] = 1; g_snapMatched[i] = 1; MapSet(g_snapRecs[i].id, static_cast<uint32_t>(bestId)); ++moved; }
+    }
+    g_recon = {};
+    g_recon.active = true;
+    for (uint32_t i = 0; i < g_snapCount; ++i) {
+        if (!g_snapMatched[i]) { g_reconCre[g_recon.nCre++] = static_cast<uint16_t>(i); continue; }
+        uint32_t L = g_r2l[g_snapRecs[i].id];
+        ++g_recon.mapped;
+        if (!PoseEq(g_locPose[L], g_snapRecs[i].newPose) && g_objBackend->apply(L, g_snapRecs[i].newPose)) {
+            ++g_recon.posed; ++g_stats.objApplied;
+        }
+        NoteAgreed(L, g_snapRecs[i].newPose);
+    }
+    for (uint32_t id = 0; id < n; ++id)
+        if (g_locOk[id] && !g_locClaim[id] && g_locPose[id].guid != 0 && g_objBackend->destroy) g_reconDel[g_recon.nDel++] = static_cast<uint16_t>(id);
+    ts2::se::PushConsoleLog("[Co-op] Sincronizando o lote com o Host: %u moveis no snapshot, %u iguais, %u em outro slot, %u reposicionados, %u a criar, %u a remover.",
+                            g_snapCount, exact, moved, g_recon.posed, g_recon.nCre, g_recon.nDel);
+}
+
+void ReconFinish() {
+    // The Host's Sims: put them where the Host has them (one time, at join / resync)
+    uint32_t placed = 0;
+    for (uint32_t i = 0; i < g_snapSimCount; ++i) {
+        const ObjRec& r = g_snapSims[i];
+        int16_t nid = static_cast<int16_t>(r.oldPose.guid);
+        int32_t slot = g_objBackend->resolveSim ? g_objBackend->resolveSim(r.id, nid) : static_cast<int32_t>(r.id);
+        if (slot < 0) continue;
+        ObjPose cur;
+        if (!g_objBackend->read(static_cast<uint32_t>(slot), &cur)) continue;
+        ObjPose want = r.newPose;
+        if (!PoseEq(cur, want) && g_objBackend->apply(static_cast<uint32_t>(slot), want)) ++placed;
+    }
+    g_recon.active = false;
+    g_objBaseline = false; // re-baseline from the now identical lot
+    ts2::se::PushConsoleLog("[Co-op] Lote sincronizado com o Host: %u criados, %u removidos, %u Sims posicionados.",
+                            g_recon.iCre, g_recon.iDel, placed);
+}
+
+void ReconStep() {
+    uint32_t budget = 24;
+    while (budget && g_recon.iDel < g_recon.nDel) {
+        --budget;
+        uint32_t L = g_reconDel[g_recon.iDel++];
+        ObjPose cur;
+        if (!g_objBackend->read(L, &cur) || cur.guid != g_locPose[L].guid) continue;
+        if (g_objBackend->destroy(L, cur)) {
+            g_objKnown[L] = 0; g_objMissing[L] = 0; MapDropLocal(L);
+            ++g_stats.objDeleted;
+        }
+    }
+    while (budget && g_recon.iCre < g_recon.nCre) {
+        --budget;
+        const ObjRec& r = g_snapRecs[g_reconCre[g_recon.iCre++]];
+        uint32_t slot = r.id;
+        if (g_objBackend->create && g_objBackend->create(&slot, r.newPose)) {
+            MapSet(r.id, slot);
+            NoteAgreed(slot, r.newPose);
+            ++g_stats.objCreated;
+        } else {
+            static uint32_t warn = 6;
+            if (warn) { --warn; ts2::se::PushConsoleLog("[Co-op] Nao consegui criar o objeto #%u (GUID=%08X) do Host.", r.id, r.newPose.guid); }
+        }
+    }
+    if (g_recon.iDel >= g_recon.nDel && g_recon.iCre >= g_recon.nCre) ReconFinish();
 }
 
 void ObjApplyInbox() {
     if (!g_objBackend) return;
 
-    // 1. Apply queued Sim motives/state updates
+    // 1. Queued Sim motives/state updates (matched by NeighborID)
     for (uint32_t i = 0; i < g_simStateInCount; ++i) {
         const SimStatePayload& sp = g_simStateInbox[i];
+        // sp.slot is the peer's slot; our copy of that Sim is found by NeighborID
+        int32_t L = g_objBackend->resolveSim ? g_objBackend->resolveSim(sp.slot, sp.neighborId) : static_cast<int32_t>(sp.slot);
+        if (L < 0) continue;
         int32_t mine = g_objBackend->selectedSim ? g_objBackend->selectedSim() : -1;
-        if (mine >= 0 && static_cast<uint32_t>(mine) == sp.slot) continue;
-        if (g_objBackend->applySimState && g_objBackend->applySimState(sp.slot, sp.neighborId, sp.motives)) {
+        if (mine >= 0 && mine == L) continue; // never overwrite the Sim this player controls
+        if (g_objBackend->applySimState && g_objBackend->applySimState(static_cast<uint32_t>(L), sp.neighborId, sp.motives)) {
             ++g_stats.motivesSynced;
         }
     }
     g_simStateInCount = 0;
 
-    // 2. Apply queued SimAntics interactions (Pie Menu / Walk Here / Object interactions)
+    // 2. Queued SimAntics interactions (Pie Menu / Walk Here / Object interactions)
     while (g_interInCount > 0) {
         SimInteractionEvent ev = g_interInbox[g_interInHead];
         g_interInHead = (g_interInHead + 1) % kMaxInterQueue;
         --g_interInCount;
+        if (ev.targetSlot != 0xFFFF) {
+            uint32_t L = WireToLocal(ev.targetSlot);
+            if (L != kNoSlot) ev.targetSlot = static_cast<uint16_t>(L);
+        }
         if (g_objBackend->applyInteraction && g_objBackend->applyInteraction(ev)) {
             ++g_stats.interactionsSynced;
             g_stats.lastSyncedInteractionIdx = ev.interactionIndex;
@@ -1173,7 +1455,24 @@ void ObjApplyInbox() {
         }
     }
 
+    // 3. Buy/Build creates, deletes and acks, in order
+    for (uint32_t budget = 32; budget && g_evCount > 0; --budget) {
+        ObjEvent e = g_events[g_evHead];
+        g_evHead = (g_evHead + 1) % kMaxEvents;
+        --g_evCount;
+        ObjHandleEvent(e);
+    }
+
+    // 4. Lot reconciliation (Guest)
+    if (g_snapReady && !g_recon.active) {
+        g_snapReady = false;
+        if (IsClient()) ReconBegin();
+    }
+    if (g_recon.active) ReconStep();
+
     if (g_objInCount == 0) return;
+
+    // 5. Poses (moves of furniture, the peer's Sim)
     uint32_t budget = kObjApplyPerTick;
     uint32_t n = g_objBackend->count();
     for (uint32_t id = 0; id < kMaxObj && g_objInCount > 0 && budget > 0; ++id) {
@@ -1184,123 +1483,79 @@ void ObjApplyInbox() {
         g_objInHas[id] = 0;
         --g_objInCount;
 
-        // Mode 3: Buy/Build object creation (or Snapshot object missing locally)
-        if (mode == 3) {
-            ObjPose cur;
-            if (id < n && g_objBackend->read(id, &cur) && (r.newPose.guid == 0 || cur.guid == r.newPose.guid)) {
-                g_objBackend->apply(id, r.newPose);
-                g_objShadow[id] = g_objLast[id] = r.newPose;
-                g_objKnown[id] = 1;
-                g_objMissing[id] = 0;
-            } else if (g_objBackend->create && g_objBackend->create(id, r.newPose)) {
-                ++g_stats.objCreated;
-                ++g_stats.objApplied;
-                n = g_objBackend->count();
-                if (id < kMaxObj) {
-                    g_objShadow[id] = g_objLast[id] = r.newPose;
-                    g_objKnown[id] = 1;
-                    g_objMissing[id] = 0;
-                }
-                ts2::se::PushConsoleLog("[Co-op] Objeto comprado/criado sincronizado (slot #%u, GUID=%08X).", id, r.newPose.guid);
-            }
-            continue;
-        }
-
-        // Mode 4: Buy/Build object deletion/sale
-        if (mode == 4) {
-            if (g_objBackend->destroy && g_objBackend->destroy(id, r.oldPose)) {
-                g_objKnown[id] = 0;
-                g_objMissing[id] = 0;
-                ++g_stats.objDeleted;
-                ++g_stats.objApplied;
-                ts2::se::PushConsoleLog("[Co-op] Objeto vendido/removido sincronizado (slot #%u, GUID=%08X).", id, r.oldPose.guid);
-            }
-            continue;
-        }
-
         ObjPose cur;
-        if (mode == 2) {
-            // Never overwrite the Sim this player is controlling
+        if (mode == 2) { // the peer's Sim: matched by NeighborID, never echoed back
             if (!g_stats.simSyncEnabled) continue;
+            int16_t nid = static_cast<int16_t>(r.oldPose.guid);
+            int32_t L = g_objBackend->resolveSim ? g_objBackend->resolveSim(id, nid) : static_cast<int32_t>(id);
+            if (L < 0 || static_cast<uint32_t>(L) >= n || !g_objBackend->read(static_cast<uint32_t>(L), &cur)) {
+                static uint32_t budgetWarn = 6;
+                if (budgetWarn) { --budgetWarn; ts2::se::PushConsoleLog("[Co-op] AVISO: Sim do parceiro (NeighborID %d) nao existe aqui.", (int)nid); }
+                continue;
+            }
             int32_t mine = g_objBackend->selectedSim ? g_objBackend->selectedSim() : -1;
-            if (mine >= 0 && static_cast<uint32_t>(mine) == id) {
+            if (mine >= 0 && mine == L) {
                 static DWORD lastWarn = 0;
                 DWORD t = GetTickCount();
                 if (t - lastWarn > 5000) {
                     lastWarn = t;
-                    ts2::se::PushConsoleLog("[Co-op] AVISO: o parceiro controla o MESMO Sim (#%u) que voce. Selecione Sims diferentes.", id);
+                    ts2::se::PushConsoleLog("[Co-op] AVISO: o parceiro controla o MESMO Sim que voce. Selecione Sims diferentes.");
                 }
                 continue;
             }
-        }
-        if (id >= n || !g_objBackend->read(id, &cur)) {
-            if (mode == 1 && r.newPose.guid != 0 && g_objBackend->create) {
-                if (g_objBackend->create(id, r.newPose)) {
-                    ++g_stats.objCreated;
-                    ++g_stats.objApplied;
-                    g_objShadow[id] = g_objLast[id] = r.newPose;
-                    g_objKnown[id] = 1;
-                    g_objMissing[id] = 0;
-                }
-            } else if (mode == 2) {
-                static uint32_t budgetWarn = 6;
-                if (budgetWarn) { --budgetWarn; ts2::se::PushConsoleLog("[Co-op] AVISO: Sim #%u do parceiro nao existe/legivel aqui (n=%u).", id, n); }
-            }
-            continue;
-        }
-        if (mode == 2) { // the peer's Sim: unconditional, never echoed back
-            if (!PoseEq(cur, r.newPose)) {
-                bool ok = g_objBackend->apply(id, r.newPose);
-                if (ok) ++g_stats.simsApplied;
+            // Walking Sims are driven by the replicated interactions; only snap them back when they drifted.
+            int64_t dx = static_cast<int64_t>(cur.tx) - r.newPose.tx, dy = static_cast<int64_t>(cur.ty) - r.newPose.ty;
+            const int64_t kDrift = 2 * 65536;
+            if (cur.level == r.newPose.level && dx * dx + dy * dy <= kDrift * kDrift) continue;
+            if (g_objBackend->apply(static_cast<uint32_t>(L), r.newPose)) {
+                ++g_stats.simsApplied;
                 static uint32_t budgetLog = 10;
                 if (budgetLog) {
                     --budgetLog;
-                    ObjPose after = cur;
-                    g_objBackend->read(id, &after);
-                    ts2::se::PushConsoleLog("[Co-op] Sim #%u do parceiro: aplicado=%d de (%d,%d) para (%d,%d), ficou em (%d,%d)",
-                                            id, ok ? 1 : 0, cur.tx, cur.ty, r.newPose.tx, r.newPose.ty, after.tx, after.ty);
+                    ts2::se::PushConsoleLog("[Co-op] Sim #%d do parceiro reposicionado de (%d,%d) para (%d,%d)", L, cur.tx, cur.ty, r.newPose.tx, r.newPose.ty);
                 }
             }
             continue;
         }
-        if (PoseEq(cur, r.newPose)) { g_objShadow[id] = g_objLast[id] = cur; g_objKnown[id] = 1; g_objMissing[id] = 0; continue; }
 
-        bool allowed = (mode == 1) || PoseEq(cur, r.oldPose) || (r.newPose.guid != 0 && cur.guid == r.newPose.guid);
+        uint32_t L = WireToLocal(id);
+        if (L == kNoSlot || L >= n || !g_objBackend->read(L, &cur)) continue;
+        if (PoseEq(cur, r.newPose)) { NoteAgreed(L, cur); continue; }
+        bool allowed = PoseEq(cur, r.oldPose) || (r.newPose.guid != 0 && cur.guid == r.newPose.guid);
         if (!allowed) {
             ++g_stats.objConflicts;
             if (g_objLogBudget) {
                 --g_objLogBudget;
                 ts2::se::PushConsoleLog("[Co-op] Movel #%u ignorado: posicao local (%d,%d) difere da esperada (%d,%d)",
-                                        id, cur.tx, cur.ty, r.oldPose.tx, r.oldPose.ty);
+                                        L, cur.tx, cur.ty, r.oldPose.tx, r.oldPose.ty);
             }
             continue;
         }
-        if (g_objBackend->apply(id, r.newPose)) {
-            ObjPose after = r.newPose;
-            g_objBackend->read(id, &after);
-            g_objShadow[id] = g_objLast[id] = after; // what we now have is the agreed pose -> no echo
-            g_objKnown[id] = 1;
-            g_objMissing[id] = 0;
+        if (g_objBackend->apply(L, r.newPose)) {
+            NoteAgreed(L, r.newPose);
             ++g_stats.objApplied;
         }
     }
 }
 
+// Host: stream the whole lot (every object and every Sim) so the Guest can mirror it exactly.
 void ObjSendSnapshot() {
-    if (!g_objBackend || !g_objBaseline || !g_stats.peerConnected) return;
+    if (!g_objBackend || !g_stats.peerConnected) return;
+    if (!g_objBaseline || kTxCap - g_txUsed < 700 * 1024) { g_objSnapPending = true; return; } // try again next scan
     static uint8_t buf[sizeof(ObjBatchHdr) + kObjBatch * sizeof(ObjRec)];
     uint32_t n = g_objBackend->count();
     if (n > kMaxObj) n = kMaxObj;
     uint32_t cnt = 0, sent = 0;
-    auto flush = [&]() {
+    auto control = [&](uint8_t mode) { ObjBatchHdr h = {0, mode}; QueueFrame(Msg::ObjUpdate, &h, sizeof(h)); };
+    auto flush = [&](uint8_t mode) {
         if (cnt == 0) return;
-        ObjBatchHdr h = {static_cast<uint16_t>(cnt), 1};
+        ObjBatchHdr h = {static_cast<uint16_t>(cnt), mode};
         memcpy(buf, &h, sizeof(h));
-        if (kTxCap - g_txUsed < sizeof(FrameHdr) + sizeof(h) + cnt * sizeof(ObjRec) + 4096) { cnt = 0; return; }
         QueueFrame(Msg::ObjUpdate, buf, sizeof(h) + cnt * sizeof(ObjRec));
         sent += cnt;
         cnt = 0;
     };
+    control(9);
     for (uint32_t id = 0; id < n; ++id) {
         ObjPose cur;
         if (IsSimId(id)) continue;
@@ -1310,10 +1565,24 @@ void ObjSendSnapshot() {
         r.oldPose = cur;
         r.newPose = cur;
         memcpy(buf + sizeof(ObjBatchHdr) + cnt * sizeof(ObjRec), &r, sizeof(r));
-        if (++cnt == kObjBatch) flush();
+        if (++cnt == kObjBatch) flush(1);
     }
-    flush();
-    ts2::se::PushConsoleLog("[Co-op] Snapshot de moveis enviado (%u objetos).", sent);
+    flush(1);
+    uint32_t sims = 0;
+    for (uint32_t id = 0; id < n && sims < 64; ++id) {
+        ObjPose cur;
+        if (!IsSimId(id) || !g_objBackend->read(id, &cur)) continue;
+        ObjRec r;
+        r.id = static_cast<uint16_t>(id);
+        r.newPose = cur;
+        r.oldPose = cur;
+        r.oldPose.guid = static_cast<uint32_t>(static_cast<uint16_t>(g_objBackend->simNeighborId ? g_objBackend->simNeighborId(id) : 0));
+        memcpy(buf + sizeof(ObjBatchHdr) + cnt * sizeof(ObjRec), &r, sizeof(r));
+        ++cnt; ++sims;
+    }
+    flush(7);
+    control(6);
+    ts2::se::PushConsoleLog("[Co-op] Snapshot do lote enviado: %u moveis, %u Sims.", sent - sims, sims);
 }
 
 void ObjScan() {
@@ -1348,10 +1617,13 @@ void ObjScan() {
     if (g_stats.role == Role::Client && !g_objSnapAsked && g_stats.peerConnected) {
         QueueFrame(Msg::ObjSnapReq, nullptr, 0);
         g_objSnapAsked = true;
-        ts2::se::PushConsoleLog("[Co-op] Pedindo snapshot de moveis ao Host.");
+        ts2::se::PushConsoleLog("[Co-op] Pedindo o lote completo ao Host.");
     }
 
-    if (!g_stats.peerConnected || !g_stats.objSyncEnabled) {
+    // A Guest that has not mirrored the Host's lot yet (or is doing it right now) must not send anything: its slots
+    // are not the Host's slots until the map exists.
+    const bool holdBack = IsClient() && (!g_mapActive || g_recon.active);
+    if (!g_stats.peerConnected || !g_stats.objSyncEnabled || holdBack) {
         // Keep the shadow current so reconnecting does not flood the peer with stale changes.
         uint32_t tracked = 0;
         for (uint32_t id = 0; id < n; ++id) {
@@ -1388,15 +1660,18 @@ void ObjScan() {
         if (IsSimId(id)) { g_objKnown[id] = 0; continue; }
         if (!g_objBackend->read(id, &cur)) {
             if (g_objKnown[id]) {
-                // Only treat as Buy/Build deletion if the game is in Buy (2) or Build (3) mode, or in test harness (0)
-                int16_t simMode = ts2::se::GetSimulatorState();
-                if ((simMode == 0 || simMode == 2 || simMode == 3) && g_objShadow[id].guid != 0) {
+                // Only treat as Buy/Build deletion if the game is in Buy (2) or Build (3) mode
+                if (PurchaseModeActive() && g_objShadow[id].guid != 0) {
                     if (++g_objMissing[id] >= 2) {
-                        flush(0);
-                        ObjRec delRec = {static_cast<uint16_t>(id), g_objShadow[id], g_objShadow[id]};
-                        memcpy(buf + sizeof(ObjBatchHdr), &delRec, sizeof(delRec));
-                        cnt = 1;
-                        flush(4);
+                        uint32_t w = LocalToWire(id);
+                        if (w != kNoSlot) {
+                            flush(0);
+                            ObjRec delRec = {static_cast<uint16_t>(w), g_objShadow[id], g_objShadow[id]};
+                            memcpy(buf + sizeof(ObjBatchHdr), &delRec, sizeof(delRec));
+                            cnt = 1;
+                            flush(4);
+                        }
+                        if (IsClient()) MapDropLocal(id);
                         g_objKnown[id] = 0;
                         g_objMissing[id] = 0;
                     }
@@ -1412,10 +1687,9 @@ void ObjScan() {
         if (!g_objKnown[id]) {
             g_objShadow[id] = g_objLast[id] = cur;
             g_objKnown[id] = 1;
-            int16_t simMode = ts2::se::GetSimulatorState();
-            if ((simMode == 0 || simMode == 2 || simMode == 3) && cur.guid != 0) {
+            if (PurchaseModeActive() && cur.guid != 0) {
                 flush(0);
-                ObjRec createRec = {static_cast<uint16_t>(id), cur, cur};
+                ObjRec createRec = {static_cast<uint16_t>(id), cur, cur}; // Guest: id is its own slot, the Host acks the real one
                 memcpy(buf + sizeof(ObjBatchHdr), &createRec, sizeof(createRec));
                 cnt = 1;
                 flush(3);
@@ -1424,8 +1698,10 @@ void ObjScan() {
         }
         if (PoseEq(cur, g_objShadow[id])) { g_objLast[id] = cur; continue; }
         if (!PoseEq(cur, g_objLast[id])) { g_objLast[id] = cur; continue; } // still moving
+        uint32_t w = LocalToWire(id);
+        if (w == kNoSlot) { g_objShadow[id] = g_objLast[id] = cur; continue; } // not known to the Host (yet)
         ObjRec r;
-        r.id = static_cast<uint16_t>(id);
+        r.id = static_cast<uint16_t>(w);
         r.oldPose = g_objShadow[id];
         r.newPose = cur;
         memcpy(buf + sizeof(ObjBatchHdr) + cnt * sizeof(ObjRec), &r, sizeof(r));
@@ -1441,6 +1717,7 @@ void ObjScan() {
 void ObjScanSims() {
     if (!g_objBackend || !g_objBackend->selectedSim) return;
     if (!g_stats.peerConnected || !g_stats.simSyncEnabled || !g_objBaseline) return;
+    if (IsClient() && (!g_mapActive || g_recon.active)) return; // still mirroring the Host's lot
     if (kTxCap - g_txUsed < 128 * 1024) return;
     int32_t idx = g_objBackend->selectedSim();
     g_stats.mySimIdx = idx;
@@ -1475,6 +1752,7 @@ void ObjScanSims() {
     ObjRec r;
     r.id = static_cast<uint16_t>(idx);
     r.oldPose = cur;
+    r.oldPose.guid = static_cast<uint32_t>(static_cast<uint16_t>(g_objBackend->simNeighborId ? g_objBackend->simNeighborId(static_cast<uint32_t>(idx)) : 0));
     r.newPose = cur;
     memcpy(buf, &h, sizeof(h));
     memcpy(buf + sizeof(h), &r, sizeof(r));
@@ -1800,48 +2078,170 @@ uint8_t __fastcall Hooked_cTSSimulator_SimulateTick(void* pSimulatorRaw, void* /
 // A top-level, single-threaded place where it is safe to move objects.
 void __fastcall Hooked_cTSSimulator_OnIdle(void* pSimulatorRaw, void* /*edx*/) {
     g_detourOnIdle.Original<Fn_OnIdle>()(pSimulatorRaw);
+    ts2::qol::RunPendingSave();
     ObjectSyncTick();
 }
 
 // Hook: cITSPerson::EnqueueInteraction @ 0xA0512360 (vtable[122] +0x1E8, 5-byte prologue: 55 8B EC 6A FF)
 // Intercepts user-directed Pie Menu / Walk Here interactions on the locally controlled Sim and replicates them to the peer!
 uint8_t __fastcall Hooked_cTSPerson_EnqueueInteraction(void* pITSPerson, void* /*edx*/, void* pITSInteraction) {
+    // Ownership: every Sim is driven by exactly one side. The Guest drives only the Sim it controls; the Host drives all
+    // the others, except the one the Guest controls. The owner's decisions (user clicks AND autonomy) are replicated;
+    // the other side must not let its own AI pick actions for that Sim, or the two simulations drift apart.
+    bool coop = !g_applyingRemoteInteraction && g_stats.peerConnected && g_stats.simSyncEnabled && pITSPerson && pITSInteraction &&
+                LocalLotReady() && !(IsClient() && (!g_mapActive || g_recon.active));
+    bool mine = false;
+    int16_t nid = 0;
+    uint32_t flags = 0;
+    int32_t prio = 0;
+    if (coop) {
+        uintptr_t ib = reinterpret_cast<uintptr_t>(pITSInteraction);
+        flags = *reinterpret_cast<const uint32_t*>(ib + addr::inter_off::kFlags);
+        prio  = *reinterpret_cast<const int32_t*>(ib + addr::inter_off::kPriority);
+        nid   = *reinterpret_cast<const int16_t*>(reinterpret_cast<uintptr_t>(pITSPerson) + addr::person_off::kNeighborID);
+        const bool selected = ts2::se::GetSelectedSimPtr() == reinterpret_cast<uintptr_t>(pITSPerson);
+        if (IsClient()) mine = selected;
+        else mine = selected || !(g_stats.peerSimNeighborId > 0 && nid == g_stats.peerSimNeighborId);
+        const bool autonomous = (flags & 1u) != 0 && (flags & 2u) == 0;
+        if (!mine && autonomous && g_stats.blockPeerAutonomy) {
+            static uint32_t blocked = 0;
+            if (++blocked <= 3) ts2::se::PushConsoleLog("[Co-op] IA local bloqueada num Sim controlado pelo parceiro (NID %d); ele segue as acoes replicadas.", (int)nid);
+            return 0;
+        }
+    }
     uint8_t ok = g_detourEnqueueInteraction.Original<Fn_EnqueueInteraction>()(pITSPerson, pITSInteraction);
-    if (ok && !g_applyingRemoteInteraction && g_stats.peerConnected && g_stats.simSyncEnabled && pITSPerson && pITSInteraction) {
-        uintptr_t sel = ts2::se::GetSelectedSimPtr();
-        if (sel == reinterpret_cast<uintptr_t>(pITSPerson)) {
-            uintptr_t ib = reinterpret_cast<uintptr_t>(pITSInteraction);
-            uint32_t flags = *reinterpret_cast<const uint32_t*>(ib + addr::inter_off::kFlags);
-            // Replicate user-initiated interactions (non-autonomous or high priority >= 40)
-            int32_t prio = *reinterpret_cast<const int32_t*>(ib + addr::inter_off::kPriority);
-            if ((flags & 1u) == 0 || prio >= 40) {
-                int16_t actorObjId  = *reinterpret_cast<const int16_t*>(ib + addr::inter_off::kActorObjectID);
-                int16_t targetObjId = *reinterpret_cast<const int16_t*>(ib + addr::inter_off::kTargetObjectID);
-                if (actorObjId > 0 && targetObjId > 0) {
-                    SimInteractionEvent ev = {};
-                    ev.actorSlot        = static_cast<uint16_t>(actorObjId - 1);
-                    ev.actorNeighborId  = *reinterpret_cast<const int16_t*>(
-                        reinterpret_cast<uintptr_t>(pITSPerson) + addr::person_off::kNeighborID);
-                    ev.targetSlot       = static_cast<uint16_t>(targetObjId - 1);
-                    ev.interactionIndex = *reinterpret_cast<const int32_t*>(ib + addr::inter_off::kInteractionIndex);
-                    ev.priority         = prio;
-                    ev.actionTreeId     = *reinterpret_cast<const int16_t*>(ib + addr::inter_off::kActionTreeID);
-                    ev.flags            = flags;
-                    for (int k = 0; k < 4; ++k) {
-                        ev.params[k] = *reinterpret_cast<const int16_t*>(ib + addr::inter_off::kParams + k * 2);
-                    }
-                    if (uintptr_t tObj = ObjAt(ev.targetSlot)) {
-                        ev.targetGuid  = ReadObjGuid(tObj);
-                        ev.targetTx    = *reinterpret_cast<const int32_t*>(tObj + addr::obj_off::kTileX);
-                        ev.targetTy    = *reinterpret_cast<const int32_t*>(tObj + addr::obj_off::kTileY);
-                        ev.targetLevel = *reinterpret_cast<const int16_t*>(tObj + addr::obj_off::kLevel);
-                    }
-                    SendSimInteraction(ev);
+    if (ok && coop && mine && nid > 0 && (flags & 2u) == 0) {
+        uintptr_t ib = reinterpret_cast<uintptr_t>(pITSInteraction);
+        int16_t actorObjId  = *reinterpret_cast<const int16_t*>(ib + addr::inter_off::kActorObjectID);
+        int16_t targetObjId = *reinterpret_cast<const int16_t*>(ib + addr::inter_off::kTargetObjectID);
+        if (actorObjId > 0 && targetObjId > 0) {
+            SimInteractionEvent ev = {};
+            ev.actorSlot        = static_cast<uint16_t>(actorObjId - 1);
+            ev.actorNeighborId  = nid;
+            ev.targetSlot       = static_cast<uint16_t>(targetObjId - 1);
+            ev.interactionIndex = *reinterpret_cast<const int32_t*>(ib + addr::inter_off::kInteractionIndex);
+            ev.priority         = prio;
+            ev.actionTreeId     = *reinterpret_cast<const int16_t*>(ib + addr::inter_off::kActionTreeID);
+            ev.flags            = flags;
+            for (int k = 0; k < 4; ++k) {
+                ev.params[k] = *reinterpret_cast<const int16_t*>(ib + addr::inter_off::kParams + k * 2);
+            }
+            if (uintptr_t tObj = ObjAt(ev.targetSlot)) {
+                ev.targetGuid  = ReadObjGuid(tObj);
+                ev.targetTx    = *reinterpret_cast<const int32_t*>(tObj + addr::obj_off::kTileX);
+                ev.targetTy    = *reinterpret_cast<const int32_t*>(tObj + addr::obj_off::kTileY);
+                ev.targetLevel = *reinterpret_cast<const int16_t*>(tObj + addr::obj_off::kLevel);
+                if (RealIsSim(ev.targetSlot)) { // the target is another Sim: it is identified by NeighborID, not slot
+                    ev.targetNeighborId = *reinterpret_cast<const int16_t*>(tObj + kPersonSubobjectOffset + addr::person_off::kNeighborID);
+                    ev.targetSlot = 0xFFFF;
                 }
             }
+            if (IsClient() && ev.targetSlot != 0xFFFF) { // the wire speaks Host slots
+                uint32_t w = LocalToWire(ev.targetSlot);
+                if (w != kNoSlot) ev.targetSlot = static_cast<uint16_t>(w);
+            }
+            SendSimInteraction(ev);
         }
     }
     return ok;
+}
+
+// ----------------------------------------------------------------------------
+// Two-instance test driver. Active only when the environment variable TS2COOP_AUTO is "host" or "join":
+// once a lot is running it hosts/joins on its own and exercises object/Sim sync, logging "[TEST]" lines
+// that the test script compares between the two game instances.
+// ----------------------------------------------------------------------------
+void TestAutoTick() {
+    static int mode = -1; // 0 = off, 1 = host, 2 = join
+    if (mode < 0) {
+        char b[16] = {};
+        GetEnvironmentVariableA("TS2COOP_AUTO", b, sizeof(b));
+        mode = (strcmp(b, "host") == 0) ? 1 : (strcmp(b, "join") == 0) ? 2 : 0;
+        if (mode) ts2::se::PushConsoleLog("[TEST] modo automatico: %s", mode == 1 ? "host" : "guest");
+    }
+    if (!mode || !g_objBackend) return;
+    const uint32_t n = g_objBackend->count();
+    const DWORD now = GetTickCount();
+    static DWORD tLot = 0, tConn = 0, tLog = 0;
+    static bool started = false;
+    static uint32_t step = 0;
+    static int32_t objA = -1, objB = -1;
+    static ObjPose poseA = {};
+    if (n == 0) { tLot = 0; return; }
+    if (!tLot) tLot = now;
+    if (!started) {
+        const DWORD wait = (mode == 1) ? 10000 : 20000;
+        if (now - tLot < wait) return;
+        started = true;
+        if (mode == 1) StartHost(27025); else JoinHost("127.0.0.1", 27025);
+        return;
+    }
+    if (!g_stats.peerConnected) { tConn = 0; return; }
+    if (!tConn) { tConn = now; ts2::se::PushConsoleLog("[TEST] conectado"); }
+    const DWORD dt = now - tConn;
+
+    if (now - tLog >= 4000) {
+        tLog = now;
+        uint32_t crc = 0, tracked = 0, sims = 0;
+        for (uint32_t id = 0; id < n && id < kMaxObj; ++id) {
+            ObjPose p;
+            if (IsSimId(id)) {
+                ++sims;
+                if (g_objBackend->read(id, &p))
+                    ts2::se::PushConsoleLog("[TEST] sim slot=%u pos=(%d,%d,%d) rot=%u", id, p.tx, p.ty, (int)p.level, (unsigned)p.rot);
+                continue;
+            }
+            if (!g_objBackend->read(id, &p)) continue;
+            ++tracked;
+            uint32_t v[5] = {(uint32_t)p.tx, (uint32_t)p.ty, (uint32_t)p.level, p.rot, p.guid}; // slot independent
+            uint32_t hh = 2166136261u;
+            for (int k = 0; k < 5; ++k) { hh ^= v[k]; hh *= 16777619u; }
+            crc += hh;
+        }
+        ts2::se::PushConsoleLog("[TEST] estado n=%u moveis=%u sims=%u hash=%08X mySim=%d peerSim=%d aplic=%u criados=%u removidos=%u conflitos=%u",
+                                n, tracked, sims, crc, g_stats.mySimIdx, g_stats.peerSimIdx, g_stats.objApplied, g_stats.objCreated,
+                                g_stats.objDeleted, g_stats.objConflicts);
+    }
+
+    // choose two movable props once
+    if (objA < 0) {
+        int32_t found = 0;
+        for (uint32_t id = 0; id < n && id < kMaxObj && found < 2; ++id) {
+            ObjPose p;
+            if (IsSimId(id) || !g_objBackend->read(id, &p) || p.guid == 0) continue;
+            if (found == 0) { objA = static_cast<int32_t>(id); poseA = p; } else objB = static_cast<int32_t>(id);
+            ++found;
+        }
+        return;
+    }
+    ObjPose p;
+    auto sync = [&](uint32_t s, DWORD at) { if (step == s && dt > at) { step = s + 1; return true; } return false; };
+    if (mode == 1 && sync(0, 12000) && g_objBackend->read(objA, &p)) {
+        ObjPose q = p; q.tx += 1;
+        bool ok = g_objBackend->apply(objA, q);
+        ts2::se::PushConsoleLog("[TEST] host moveu obj %d (%d,%d)->(%d,%d) ok=%d", objA, p.tx, p.ty, q.tx, q.ty, ok ? 1 : 0);
+    }
+    if (mode == 2 && sync(1, 18000) && objB >= 0 && g_objBackend->read(objB, &p)) {
+        ObjPose q = p; q.ty += 1;
+        bool ok = g_objBackend->apply(objB, q);
+        ts2::se::PushConsoleLog("[TEST] guest moveu obj %d (%d,%d)->(%d,%d) ok=%d", objB, p.tx, p.ty, q.tx, q.ty, ok ? 1 : 0);
+    }
+    if (sync(2, 25000)) {
+        int32_t my = g_objBackend->selectedSim ? g_objBackend->selectedSim() : -1;
+        if (my >= 0 && g_objBackend->read(my, &p)) {
+            ObjPose q = p; q.tx += 3;
+            bool ok = g_objBackend->apply(my, q);
+            ts2::se::PushConsoleLog("[TEST] %s teleportou o proprio Sim %d (%d,%d)->(%d,%d) ok=%d", mode == 1 ? "host" : "guest", my, p.tx, p.ty, q.tx, q.ty, ok ? 1 : 0);
+        } else {
+            ts2::se::PushConsoleLog("[TEST] %s sem Sim selecionado (idx=%d)", mode == 1 ? "host" : "guest", my);
+        }
+    }
+    if (mode == 1 && sync(3, 35000) && g_objBackend->create) {
+        ObjPose q = poseA; q.tx += 2;
+        uint32_t slot = 0;
+        bool ok = g_objBackend->create(&slot, q);
+        ts2::se::PushConsoleLog("[TEST] host criou objeto guid=%08X em (%d,%d) ok=%d", q.guid, q.tx, q.ty, ok ? 1 : 0);
+    }
 }
 
 } // namespace
@@ -1856,7 +2256,10 @@ void SendSimInteraction(const SimInteractionEvent& ev) {
 }
 
 void ObjectSyncTick() {
+    if (g_objBackend) TestAutoTick();
     if (!g_objBackend || g_stats.role == Role::Disconnected) return;
+    // Never touch the object table while a lot is loading / unloading or in the neighborhood view
+    if (!LocalLotReady()) return;
     if (g_stats.peerConnected) ObjApplyInbox();
     DWORD now = GetTickCount();
     if (now >= g_nextSimScan) { g_nextSimScan = now + 100; ObjScanSims(); DumpLotPersons(); }
@@ -1876,6 +2279,11 @@ void SetObjectSyncEnabled(bool enabled) {
     g_stats.objSyncEnabled = enabled;
     ts2::se::PushConsoleLog("[Co-op] Sincronia de moveis %s.", enabled ? "ligada" : "desligada");
     if (enabled) ObjResetLot(); // re-baseline so we do not send stale differences
+}
+
+void SetBlockPeerAutonomy(bool enabled) {
+    g_stats.blockPeerAutonomy = enabled;
+    ts2::se::PushConsoleLog("[Co-op] IA do parceiro: %s.", enabled ? "bloqueada (segue as acoes replicadas)" : "livre");
 }
 
 void SetSimSyncEnabled(bool enabled) {
@@ -2065,9 +2473,11 @@ void ForceResyncNow() {
     if (!g_stats.peerConnected) return;
     if (g_stats.role == Role::Host) {
         SendStateNow();
+        g_objSnapPending = true; // and re-mirror the whole lot onto the Guest
         ts2::se::PushConsoleLog("[Co-op] Estado enviado ao convidado.");
     } else {
         QueueFrame(Msg::ResyncReq, nullptr, 0);
+        QueueFrame(Msg::ObjSnapReq, nullptr, 0); // and mirror the Host's lot again
         ts2::se::PushConsoleLog("[Co-op] Resync solicitado ao Host.");
     }
 }

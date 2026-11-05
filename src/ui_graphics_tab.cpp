@@ -1,5 +1,6 @@
 #include "ts2/ui_tabs.hpp"
 #include "ts2/dx9_postfx.hpp"
+#include "ts2/d3d9_ext.hpp"
 
 namespace ts2::ui {
 
@@ -37,6 +38,12 @@ void RenderGraphicsTab(float x, float y, float w) {
 
     g_lay.y += 2.0f;
     LayText("Dica: se o sol ou os raios parecerem vir do lado errado, use  fx.set sunyaw 90  (ou 180, 270) no console.", kDim, F_SMALL);
+    if (st.lateZ > 0) {
+        char dbg[120];
+        _snprintf(dbg, sizeof(dbg), "Diag: %u draws 3D depois do pos-processo (%u escrevem profundidade)",
+                  static_cast<unsigned>(st.lateZ), static_cast<unsigned>(st.lateZWrite));
+        LayText(dbg, kWarn, F_SMALL);
+    }
 
     if (changed) {
         activePreset = -1;

@@ -26,7 +26,7 @@ __declspec(dllimport) void  WINAPI ExitProcess(UINT);
 // ---- stubs for the post-fx API used by the Graphics tab -------------------------------------------------
 namespace ts2::fx {
 static Settings g_s;
-static Status   g_st = {true, true, true, true, 120, "ativo (1280x800)"};
+static Status   g_st = {true, true, true, true, 120, 14, 6, "ativo (1280x800)"};
 Settings& GetSettings() { return g_s; }
 const Status& GetStatus() { return g_st; }
 void ApplyPreset(int id) { g_s = Settings(); if (id == 0) g_s.enabled = false; if (id == 1) g_s.aoIntensity = 0.5f; if (id == 3) g_s.aoIntensity = 1.15f; }

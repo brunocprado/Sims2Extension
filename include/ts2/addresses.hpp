@@ -171,7 +171,9 @@ constexpr uintptr_t kObjTable_VecEnd            = 0x1A28;
 constexpr uintptr_t kObjTable_PersonBegin       = 0x1A70;
 constexpr uintptr_t kObjTable_PersonEnd         = 0x1A74;
 constexpr uintptr_t kObjTable_CreateObjectSlot  = 16; // +0x40
-constexpr uintptr_t kObjTable_DeleteObjectSlot  = 18; // +0x48
+// vtable[18] (0xA0423410) is the raw delete and takes TWO stack args (id, flag); calling it with one corrupts the stack.
+// vtable[19] (0xA0423790, ret 4) is the checked wrapper the game itself uses: Delete(id).
+constexpr uintptr_t kObjTable_DeleteObjectSlot  = 19; // +0x4C
 constexpr uintptr_t kObjTable_GetObjectSlot     = 30; // +0x78
 constexpr uintptr_t kObjTable_GetSelectedSlot   = 39; // +0x9C
 constexpr uintptr_t kObjTable_SelectPersonSlot  = 40; // +0xA0

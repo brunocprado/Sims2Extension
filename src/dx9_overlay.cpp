@@ -391,42 +391,19 @@ static void RenderTabCoop(d3d9::IDirect3DDevice9* dev, float x, float y, float w
     LayNext();
     if (st.connectMessage[0]) LayText(dev, st.connectMessage, kColDim, 1.25f);
 
-    LaySection(dev, "VIZINHANCA (O SAVE DO CONVIDADO NAO IMPORTA)");
-    const bool canSend = (st.role == Role::Host && st.peerConnected && !st.peerLoopback &&
-                          st.xferState != XferState::Sending && st.xferState != XferState::WaitSave);
-    if (LayBtn(dev, 0, 2, "Reenviar vizinhanca ao convidado")) {
-        if (canSend) { ts2::qol::TriggerSmartSaveNow(); SendNeighborhoodToGuest(6000); }
-        else ts2::se::PushConsoleLog("[Co-op] Envio indisponivel: precisa ser Host com um convidado (em outro PC) conectado.");
-    }
-    {
-        const float bx = g_lay.x + (g_lay.w + kGap) / 2.0f, bw = (g_lay.w - kGap) / 2.0f;
-        kit::RoundRect(bx, g_lay.y, bw, kRowH, 8.0f, kit::Col(14, 18, 30, 230), kit::Col(28, 36, 56, 230));
-        float frac = (st.xferBytesTotal > 0) ? static_cast<float>(st.xferBytesDone) / static_cast<float>(st.xferBytesTotal) : 0.0f;
-        if (st.xferState == XferState::Done) frac = 1.0f;
-        if (frac > 1.0f) frac = 1.0f;
-        if (frac > 0.0f) {
-            const bool err = st.xferState == XferState::Error;
-            kit::RoundRect(bx, g_lay.y, bw * frac < 12.0f ? 12.0f : bw * frac, kRowH, 8.0f,
-                           err ? kit::Col(236, 100, 90) : kit::Col(80, 214, 140), err ? kit::Col(190, 60, 55) : kit::Col(42, 160, 104));
-        }
-        kit::RoundOutline(bx, g_lay.y, bw, kRowH, 8.0f, 1.0f, kit::Col(255, 255, 255, 40));
-        _snprintf(line, sizeof(line), "%u/%u arquivos  %d%%", st.xferFilesDone, st.xferFilesTotal, static_cast<int>(frac * 100.0f));
-        kit::TextFit(kit::F_BODY, bx + 10.0f, g_lay.y + (kRowH - kit::FontHeight(kit::F_BODY)) * 0.5f, bw - 20.0f, line, kit::Col(255, 255, 255));
-    }
-    LayNext();
-    if (st.xferMessage[0]) {
-        LayText(dev, st.xferMessage, st.xferState == XferState::Error ? kColBad : (st.xferState == XferState::Done ? kColGood : kColAccent), 1.25f);
-    }
+    LayText(dev, "Ao entrar, o convidado espelha o lote do Host (moveis e Sims). O save do convidado nao importa.", kColDim, 1.25f);
 
     LaySection(dev, "SINCRONIA");
     if (LayBtn(dev, 0, 4, "Sincronizar (F9)")) ForceResyncNow();
     if (LayBtn(dev, 1, 4, st.objSyncEnabled ? "Moveis: ON" : "Moveis: OFF", st.objSyncEnabled)) SetObjectSyncEnabled(!st.objSyncEnabled);
-    if (LayBtn(dev, 2, 4, "Reenviar moveis")) RequestObjectSnapshot();
+    if (LayBtn(dev, 2, 4, "Espelhar lote")) RequestObjectSnapshot();
     if (LayBtn(dev, 3, 4, "Trocar meu Sim"))  ts2::se::CycleSelectedLotSim();
     LayNext();
     if (LayBtn(dev, 0, 3, "Pausar (ambos)"))  SendSpeedPauseCommand(ts2::se::GetSimulatorSpeed(), true);
     if (LayBtn(dev, 1, 3, "Retomar (ambos)")) SendSpeedPauseCommand(ts2::se::GetSimulatorSpeed(), false);
     if (LayBtn(dev, 2, 3, st.simSyncEnabled ? "Sims & Acoes: ON" : "Sims & Acoes: OFF", st.simSyncEnabled)) SetSimSyncEnabled(!st.simSyncEnabled);
+    LayNext();
+    if (LayBtn(dev, 0, 3, st.blockPeerAutonomy ? "IA do parceiro: bloqueada" : "IA do parceiro: livre", st.blockPeerAutonomy)) SetBlockPeerAutonomy(!st.blockPeerAutonomy);
     LayNext();
     _snprintf(line, sizeof(line), "Moveis: %u monit. | movidos %u/%u | criados %u | vendidos %u | conflitos %u%s",
               st.objTracked, st.objSent, st.objApplied, st.objCreated, st.objDeleted, st.objConflicts,
@@ -576,20 +553,6 @@ static void RenderOverlay(d3d9::IDirect3DDevice9* dev) {
     // Poll network & QoL timers every frame even when overlay is minimized
     ts2::coop::PollNetwork();
 
-    // Host: as soon as a guest on another PC connects, save and stream the neighborhood automatically
-    {
-        static bool s_autoSent = false;
-        const auto& cs = ts2::coop::GetStats();
-        if (!cs.peerConnected) {
-            s_autoSent = false;
-        } else if (!s_autoSent && cs.role == ts2::coop::Role::Host && !cs.peerLoopback &&
-                   cs.xferState != ts2::coop::XferState::Sending && cs.xferState != ts2::coop::XferState::WaitSave) {
-            s_autoSent = true;
-            ts2::se::PushConsoleLog("[Co-op] Convidado conectou: salvando e enviando a vizinhanca automaticamente...");
-            ts2::qol::TriggerSmartSaveNow();
-            ts2::coop::SendNeighborhoodToGuest(6000);
-        }
-    }
     ts2::qol::TickFrame();
 
     // Capture full D3D9 state block so we never corrupt The Sims 2 or DXVK materials/shaders

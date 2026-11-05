@@ -529,6 +529,7 @@ static V3 SunWorld(float& strength) {
 // ============================================================================
 static bool     g_ranThisFrame = false;
 static uint32_t g_sceneDraws   = 0;
+static uint32_t g_lateZ = 0, g_lateZW = 0;      // Z-tested draws after the post-fx ran (this frame)
 static constexpr uint32_t kMinSceneDraws = 60;
 static bool     g_inFx         = false;
 
@@ -829,6 +830,10 @@ static inline void PreDraw() {
     if (g_inFx || !g_set.enabled || !g_mainRT || g_ts.rt0 != g_mainRT) return;
     if (g_ts.rs[d3d9::D3DRS_ZENABLE]) {
         ++g_sceneDraws;
+        if (g_ranThisFrame) {                   // diagnostics: scene geometry drawn after the post-fx already ran
+            ++g_lateZ;
+            if (g_ts.rs[d3d9::D3DRS_ZWRITEENABLE]) ++g_lateZW;
+        }
     } else if (!g_ranThisFrame && g_sceneDraws >= kMinSceneDraws) {
         g_ranThisFrame = true;                  // exactly once per frame, at the 3D -> HUD transition
         RunPostFx();
@@ -999,8 +1004,10 @@ HK(HRESULT, Present, const RECT* a, const RECT* b, HWND w, const void* r) {
         g_set.probe = false;
     }
     ++g_frame;
+    if (g_ranThisFrame) { g_status.lateZ = g_lateZ; g_status.lateZWrite = g_lateZW; }
     g_ranThisFrame = false;
     g_sceneDraws = 0;
+    g_lateZ = g_lateZW = 0;
     if (g_set.probe && !g_probeOn) {
         if (!g_probeBuf) g_probeBuf = static_cast<char*>(VirtualAlloc(nullptr, kProbeCap, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE));
         g_probeLen = 0; g_probeDraws = 0; g_probeVscDumps = 0; g_probeVscDumpsBig = 0;

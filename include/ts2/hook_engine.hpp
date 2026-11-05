@@ -41,4 +41,9 @@ bool RemoveDetour(Detour& detour);
 // Writes a formatted message to ts2se.log and OutputDebugStringA
 void Log(const char* fmt, ...);
 
+// Logs fatal exceptions (access violations etc.) with registers + stack to the plugin log; never swallows them.
+void InstallCrashLogger();
+// Records a short line in a ring buffer that is dumped when the game crashes.
+void Trace(const char* fmt, ...);
+
 } // namespace ts2::hook

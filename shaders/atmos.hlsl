@@ -89,8 +89,14 @@ float4 PSMain(float2 uv : TEXCOORD0) : COLOR0 {
                     float sz = SampleZ(suv);
                     float diff = S.z - sz;      // > 0: the ray went behind the visible surface
                     if (diff > 0.03 + S.z * 0.003 && diff < c_ssr.w + t * rayLen * 0.25) {
-                        hit = true; hitUV = suv; hitT = t;
-                        break;
+                        // A ray that travels away from a floor can never strike an upward facing surface from
+                        // above. Such "hits" are the ground/floor beyond a lowered wall seen through the depth
+                        // buffer, which is what made reflections look like they went through cutaway walls.
+                        float3 Nh = ViewNormal(suv, ViewPos(suv, sz));
+                        if (dot(Nh, c_up.xyz) <= 0.85) {
+                            hit = true; hitUV = suv; hitT = t;
+                            break;
+                        }
                     }
                 }
                 float3 sky = c_fog.rgb * 0.55;
@@ -98,10 +104,11 @@ float4 PSMain(float2 uv : TEXCOORD0) : COLOR0 {
                 float wHit = 0.0;
                 if (hit) {
                     float2 e = abs(hitUV * 2.0 - 1.0);
-                    wHit = saturate((1.0 - max(e.x, e.y)) * 6.0) * (1.0 - hitT * 0.5);
+                    wHit = saturate((1.0 - max(e.x, e.y)) * 6.0) * (1.0 - smoothstep(0.35, 1.0, hitT) * 0.9);
                     refl = lerp(sky, tex2Dlod(sColor, float4(hitUV, 0, 0)).rgb, wHit);
                 }
-                rgb = lerp(rgb, refl, saturate(amount * lerp(0.3, 1.0, wHit)));
+                // A ray that escapes (e.g. over the top of a lowered wall) reflects only a faint sky tint.
+                rgb = lerp(rgb, refl, saturate(amount * lerp(0.10, 1.0, wHit)));
             }
         }
     }
