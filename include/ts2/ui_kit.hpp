@@ -55,6 +55,7 @@ void Diamond(float cx, float cy, float r, DWORD base);   // the Sims plumbob
 
 // Text. (x, y) is the top-left of the line box.
 float FontHeight(Font f);
+void  SetTranslate(bool on);   // off = draw strings as given (user-typed text)
 float TextWidth(Font f, const char* s);
 void  Text(Font f, float x, float y, const char* s, DWORD c);
 void  TextRight(Font f, float rightX, float y, const char* s, DWORD c);

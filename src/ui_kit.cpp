@@ -511,10 +511,13 @@ float FontHeight(Font f) {
     return a ? a->height : 14.0f;
 }
 
+static bool g_translate = true;
+void SetTranslate(bool on) { g_translate = on; }
+
 float TextWidth(Font f, const char* s) {
     Atlas* a = EnsureAtlas(f);
     if (!a || !s) return 0.0f;
-    s = i18n::Tr(s);
+    if (g_translate) s = i18n::Tr(s);
     float w = 0.0f;
     for (const char* p = s; *p;) {
         const uint32_t cp = NextCp(p);
@@ -526,7 +529,7 @@ float TextWidth(Font f, const char* s) {
 
 void Text(Font f, float x, float y, const char* s, DWORD c) {
     if (!s || !*s) return;
-    s = i18n::Tr(s);
+    if (g_translate) s = i18n::Tr(s);
     UseFont(f);
     Atlas* a = EnsureAtlas(f);
     if (!a) return;
@@ -554,7 +557,7 @@ void TextCenter(Font f, float cx, float y, const char* s, DWORD c) { Text(f, cx 
 
 void TextFit(Font f, float x, float y, float maxW, const char* s, DWORD c) {
     if (!s) return;
-    s = i18n::Tr(s);
+    if (g_translate) s = i18n::Tr(s);
     Atlas* a = EnsureAtlas(f);
     if (!a) return;
     if (TextWidth(f, s) <= maxW) { Text(f, x, y, s, c); return; }

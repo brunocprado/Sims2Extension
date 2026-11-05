@@ -9,7 +9,7 @@ namespace ts2::coop {
 
 namespace {
 
-constexpr uint32_t kProtoVersion = 5;
+constexpr uint32_t kProtoVersion = 6;
 constexpr uint32_t kMaxFrame     = 65536;
 constexpr uint32_t kTxCap        = 1u << 20;
 constexpr uint32_t kRxCap        = 1u << 18;
@@ -33,7 +33,8 @@ enum class Msg : uint8_t {
     ObjUpdate      = 20, // either direction: batch of object pose changes (or a full snapshot)
     ObjSnapReq     = 21, // Guest -> Host: please send a full snapshot of object poses
     SimState       = 22, // either direction: Sim NeighborID + 16 motives sync
-    SimInteraction = 23  // either direction: live SimAntics interaction queue replication
+    SimInteraction = 23, // either direction: live SimAntics interaction queue replication
+    Chat           = 24  // either direction: text chat line
 };
 
 #pragma pack(push, 1)
@@ -88,6 +89,10 @@ struct ObjRec {
     uint16_t id;       // index in the lot object folder
     ObjPose  oldPose;  // pose the sender last agreed on (compare-and-swap guard)
     ObjPose  newPose;
+};
+struct ChatPayload {
+    char name[24];
+    char text[200];
 };
 struct SimStatePayload {
     uint16_t slot;
@@ -1794,6 +1799,46 @@ void DumpLotPersons() {
 }
 
 // ----------------------------------------------------------------------------
+// Text chat
+// ----------------------------------------------------------------------------
+constexpr uint32_t kChatRing = 64;
+ChatLine g_chat[kChatRing] = {};
+uint32_t g_chatTotal = 0;
+char     g_chatNick[24] = "";
+
+void ChatPush(ChatKind kind, const char* name, const char* text) {
+    ChatLine& l = g_chat[g_chatTotal % kChatRing];
+    l.kind = kind;
+    l.tick = GetTickCount();
+    size_t i = 0;
+    for (; name && name[i] && i + 1 < sizeof(l.name); ++i) l.name[i] = name[i];
+    l.name[i] = 0;
+    for (i = 0; text && text[i] && i + 1 < sizeof(l.text); ++i) l.text[i] = text[i];
+    l.text[i] = 0;
+    ++g_chatTotal;
+    if (kind == ChatKind::Peer) ts2::hook::Log("[Chat] %s: %s", l.name, l.text);
+}
+
+// Keeps printable ASCII and well-formed UTF-8 (the font atlas decodes UTF-8); everything else becomes '?'.
+void ChatSanitize(char* s) {
+    char* o = s;
+    for (const unsigned char* p = reinterpret_cast<const unsigned char*>(s); *p;) {
+        const unsigned char c = *p;
+        int n = 0;
+        if (c >= 32 && c < 127) n = 1;
+        else if (c >= 0xC2 && c <= 0xDF) n = 2;
+        else if (c >= 0xE0 && c <= 0xEF) n = 3;
+        if (n == 0) { *o++ = (c < 32 ? ' ' : '?'); ++p; continue; }
+        bool ok = true;
+        for (int k = 1; k < n; ++k) if ((p[k] & 0xC0) != 0x80) { ok = false; break; }
+        if (!ok) { *o++ = '?'; ++p; continue; }
+        for (int k = 0; k < n; ++k) *o++ = static_cast<char>(p[k]);
+        p += n;
+    }
+    *o = 0;
+}
+
+// ----------------------------------------------------------------------------
 // Incoming frames
 // ----------------------------------------------------------------------------
 // (object sync frames are queued here and applied later from the game thread: ObjectSyncTick)
@@ -1861,6 +1906,18 @@ void HandleFrame(Msg type, const uint8_t* p, uint32_t len) {
                 if (g_simStateInCount < kMaxSimStateQueue) {
                     g_simStateInbox[g_simStateInCount++] = sp;
                 }
+            }
+            break;
+        }
+        case Msg::Chat: {
+            if (len >= sizeof(ChatPayload)) {
+                ChatPayload cp;
+                memcpy(&cp, p, sizeof(cp));
+                cp.name[sizeof(cp.name) - 1] = 0;
+                cp.text[sizeof(cp.text) - 1] = 0;
+                ChatSanitize(cp.name);
+                ChatSanitize(cp.text);
+                if (cp.text[0]) ChatPush(ChatKind::Peer, cp.name[0] ? cp.name : "?", cp.text);
             }
             break;
         }
@@ -2469,6 +2526,73 @@ void SendBhavEvent(uint16_t eventId, uint16_t stackObjId, int16_t arg0, int16_t 
     BhavPayload p = {eventId, stackObjId, arg0, arg1};
     QueueFrame(Msg::Bhav, &p, sizeof(p));
     ++g_stats.bhavEventsSynced;
+}
+
+const char* ChatNick() {
+    if (g_chatNick[0]) return g_chatNick;
+    return g_stats.role == Role::Host ? "Host" : ts2::i18n::Tr("Convidado");
+}
+
+void SetChatNick(const char* nick) {
+    size_t i = 0;
+    for (; nick && nick[i] && i + 1 < sizeof(g_chatNick); ++i) g_chatNick[i] = nick[i];
+    g_chatNick[i] = 0;
+    ChatSanitize(g_chatNick);
+}
+
+uint32_t GetChatTotal() { return g_chatTotal; }
+
+const ChatLine* GetChatLine(uint32_t absoluteIndex) {
+    if (absoluteIndex >= g_chatTotal || g_chatTotal - absoluteIndex > kChatRing) return nullptr;
+    return &g_chat[absoluteIndex % kChatRing];
+}
+
+void ChatSystemMessage(const char* text) { ChatPush(ChatKind::System, "", text); }
+
+void ChatClear() { g_chatTotal = 0; }
+
+bool SendChat(const char* textIn) {
+    char text[sizeof(ChatPayload::text)] = {};
+    size_t n = 0;
+    while (textIn && textIn[n] && n + 1 < sizeof(text)) { text[n] = textIn[n]; ++n; }
+    // do not cut a UTF-8 sequence in half
+    if (textIn && textIn[n]) {
+        while (n > 0 && (static_cast<unsigned char>(text[n - 1]) & 0xC0) == 0x80) --n;
+        if (n > 0 && static_cast<unsigned char>(text[n - 1]) >= 0xC0) --n;
+    }
+    text[n] = 0;
+    ChatSanitize(text);
+    // trim
+    size_t a = 0;
+    while (text[a] == ' ') ++a;
+    size_t e = strlen(text);
+    while (e > a && text[e - 1] == ' ') --e;
+    text[e] = 0;
+    if (e == a) return false;
+    const char* body = text + a;
+
+    if (body[0] == '/') {
+        if (strncmp(body, "/nick ", 6) == 0) {
+            SetChatNick(body + 6);
+            char msg[64];
+            _snprintf(msg, sizeof(msg), ts2::i18n::Tr("Apelido definido: %s"), ChatNick());
+            ChatSystemMessage(msg);
+            return true;
+        }
+        if (strcmp(body, "/clear") == 0) { ChatClear(); return true; }
+        ChatSystemMessage("Comandos: /nick NOME   /clear");
+        return true;
+    }
+    if (!g_stats.peerConnected) {
+        ChatSystemMessage("Sem parceiro conectado: mensagem nao enviada.");
+        return false;
+    }
+    ChatPayload cp = {};
+    _snprintf(cp.name, sizeof(cp.name) - 1, "%s", ChatNick());
+    _snprintf(cp.text, sizeof(cp.text) - 1, "%s", body);
+    QueueFrame(Msg::Chat, &cp, sizeof(cp));
+    ChatPush(ChatKind::Mine, cp.name, cp.text);
+    return true;
 }
 
 void SendSpeedPauseCommand(int16_t speedMult, bool paused) {

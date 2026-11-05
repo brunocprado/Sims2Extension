@@ -164,6 +164,24 @@ void SendBhavEvent(uint16_t eventId, uint16_t stackObjId, int16_t arg0, int16_t 
 // Applies speed/pause locally and replicates it to the peer.
 void SendSpeedPauseCommand(int16_t speedMult, bool paused);
 
+// ---- text chat -------------------------------------------------------------------------------
+enum class ChatKind : uint8_t { Peer = 0, Mine = 1, System = 2 };
+struct ChatLine {
+    ChatKind kind;
+    uint32_t tick;      // GetTickCount() when it was added
+    char     name[24];
+    char     text[200]; // UTF-8
+};
+// Sends a chat line (or runs a /command: /nick NAME, /clear). Returns false when nothing was sent.
+bool SendChat(const char* utf8);
+const char* ChatNick();
+void SetChatNick(const char* nick);
+void ChatSystemMessage(const char* text);
+void ChatClear();
+// Lines have increasing absolute indices; only the last 64 are kept (GetChatLine returns nullptr for older ones).
+uint32_t GetChatTotal();
+const ChatLine* GetChatLine(uint32_t absoluteIndex);
+
 // Host: pushes the full state right now. Guest: asks the Host to push it.
 void ForceResyncNow();
 

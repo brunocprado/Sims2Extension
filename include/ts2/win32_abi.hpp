@@ -98,6 +98,7 @@ constexpr int VK_CONTROL= 0x11;
 constexpr int VK_ESCAPE = 0x1B;
 constexpr int VK_INSERT = 0x2D;
 constexpr int VK_F5     = 0x74;
+constexpr int VK_F8     = 0x77;
 constexpr int VK_F9     = 0x78;
 constexpr int VK_F10    = 0x79;
 constexpr int VK_F11    = 0x7A;

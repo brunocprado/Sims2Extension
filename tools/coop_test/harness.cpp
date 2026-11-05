@@ -157,7 +157,7 @@ static void Run(bool host, const char* profile) {
     SetObjectBackendForTest(&kFake);
     g_mySim = host ? 0 : 0; // host controls NeighborID 101 (slot 0), guest controls NeighborID 202 (slot 0 on its side)
     SetSimSyncEnabled(true);
-    bool movedA = false, movedB = false, bought = false, sold = false, gBought = false, gMoved = false, sentInter = false;
+    bool movedA = false, movedB = false, bought = false, sold = false, gBought = false, gMoved = false, sentInter = false, sentChat = false;
 
     uint32_t t0 = GetTickCount();
     if (host) {
@@ -200,6 +200,8 @@ static void Run(bool host, const char* profile) {
             if (guestBoughtSlot >= 0) { g_objPresent[guestBoughtSlot] = true; g_objs[guestBoughtSlot] = ObjPose{12 * T, 13 * T, 1, 1, 0xBEEF0001u}; }
         }
         if (!host && !gMoved && el > 10000 && guestBoughtSlot >= 0) { gMoved = true; g_objs[guestBoughtSlot].tx = 14 * T; g_objs[guestBoughtSlot].ty = 15 * T; }
+        if (host && !sentChat && el > 6000) { sentChat = true; SendChat("ol\xC3\xA1 do host, tudo bem?"); }
+        if (!host && !sentChat && el > 6500) { sentChat = true; SendChat("pong do convidado"); SendChat("/nick Zeca"); SendChat("com apelido"); }
         if (!host && !sentInter && el > 7500) {
             sentInter = true;
             SimInteractionEvent ev = {};
@@ -229,6 +231,10 @@ static void Run(bool host, const char* profile) {
     fprintf(g_log, "OBJSTATS sent=%u applied=%u created=%u deleted=%u conflicts=%u tracked=%u simsSent=%u simsApplied=%u motives=%u inter=%u lastInter=%d:%u\n",
             st.objSent, st.objApplied, st.objCreated, st.objDeleted, st.objConflicts, st.objTracked,
             st.simsSent, st.simsApplied, st.motivesSynced, st.interactionsSynced, g_lastAppliedInterIdx, (unsigned)g_lastAppliedInterTarget);
+    for (uint32_t i = 0; i < GetChatTotal(); ++i) {
+        const ChatLine* c = GetChatLine(i);
+        if (c) fprintf(g_log, "CHAT %d|%s|%s\n", (int)c->kind, c->name, c->text);
+    }
     // slot independent dump: furniture by GUID, Sims by NeighborID
     for (int i = 0; i < 2; ++i)
         fprintf(g_log, "SIM %d: %d,%d,%d,%u motive=%d\n", (int)g_simNid[i], g_objs[i].tx / T, g_objs[i].ty / T, (int)g_objs[i].level, (unsigned)g_objs[i].rot, (int)g_simMotives[i][3]);

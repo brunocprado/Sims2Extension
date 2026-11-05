@@ -69,4 +69,7 @@ g guest '^SIM 101: 22,23,1,6' && ok "host Sim position/walk reached guest" || ba
 g guest '^SIM 101: .* motive=85$' && g guest '^SIM 202: .* motive=20$' && ok "Host motives of every Sim reached the Guest (matched by NeighborID)" || bad "motives"
 g host 'lastInter=7:' && ok "guest Pie Menu interaction reached host" || bad "interaction sync"
 g guest 'desync=0' && ok "deterministic lot CRC (desync=0)" || bad "desync > 0"
+g guest '^CHAT 0|Host|olá do host, tudo bem?$' && ok "chat: host message (with accents) reached guest" || bad "chat host->guest"
+g host  '^CHAT 0|Convidado|pong do convidado$' && ok "chat: guest message reached host" || bad "chat guest->host"
+g host  '^CHAT 0|Zeca|com apelido$' && g guest '^CHAT 1|Zeca|com apelido$' && ok "chat: /nick applied and echoed locally" || bad "chat nick"
 exit $fail

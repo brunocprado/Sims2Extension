@@ -15,8 +15,8 @@ const Entry kTable[] = {
     {"Jogo", "Game"},
     {"Gráficos", "Graphics"},
     {"Avançado", "Advanced"},
-    {"F10 ocultar    •    F11 tela cheia    •    F5 salvar    •    F9 sincronizar co-op",
-     "F10 hide    •    F11 fullscreen    •    F5 save    •    F9 sync co-op"},
+    {"F10 ocultar  •  F11 tela cheia  •  F5 salvar  •  F9 sincronizar  •  F8 chat",
+     "F10 hide  •  F11 fullscreen  •  F5 save  •  F9 sync  •  F8 chat"},
 
     // ---- tab: Sim ----------------------------------------------------------------------------
     {"TEMPO", "TIME"},
@@ -194,6 +194,15 @@ const Entry kTable[] = {
     {"GPU/driver sem INTZ ou RT float", "GPU/driver lacks INTZ or float RT"},
     {"falha ao criar recursos do post-fx", "failed to create post-fx resources"},
     {"ativo (%ux%u)", "active (%ux%u)"},
+
+    // ---- chat ---------------------------------------------------------------------------------
+    {"Convidado", "Guest"},
+    {"Apelido definido: %s", "Nickname set: %s"},
+    {"Comandos: /nick NOME   /clear", "Commands: /nick NAME   /clear"},
+    {"Sem parceiro conectado: mensagem nao enviada.", "No partner connected: message not sent."},
+    {"Abrir chat (F8)", "Open chat (F8)"},
+    {"Chat: F8 abre a caixa de texto, Enter envia, Esc cancela.", "Chat: F8 opens the text box, Enter sends, Esc cancels."},
+    {"Mensagem (Enter envia, Esc cancela)", "Message (Enter sends, Esc cancels)"},
 
     // ---- co-op connection messages (shown in the panel) --------------------------------------
     {"Conectado%s.", "Connected%s."},

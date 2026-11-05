@@ -77,6 +77,172 @@ static void AppendCharToInput(char* buf, size_t maxLen, char ch) {
     }
 }
 
+
+// ============================================================================
+// Co-op text chat (F8 opens the box; Enter sends; Esc cancels). Text is UTF-8.
+// ============================================================================
+static bool     g_chatOpen   = false;
+static char     g_chatInput[200] = "";
+static float    g_scrW = 1280.0f, g_scrH = 720.0f;
+static DWORD    g_lastF8Tick = 0;
+static bool     g_f8Prev     = false;
+
+static void ChatToggle() {
+    g_chatOpen = !g_chatOpen;
+    if (g_chatOpen) g_focusedInputId = 0;
+}
+
+static void ChatSubmit() {
+    if (g_chatInput[0]) ts2::coop::SendChat(g_chatInput);
+    g_chatInput[0] = '\0';
+    g_chatOpen = false;
+}
+
+static void ChatAppendChar(unsigned ch) {
+    size_t len = strlen(g_chatInput);
+    if (ch == '\b') {
+        while (len > 0 && (static_cast<unsigned char>(g_chatInput[len - 1]) & 0xC0) == 0x80) g_chatInput[--len] = '\0';
+        if (len > 0) g_chatInput[--len] = '\0';
+        return;
+    }
+    if (ch >= 32 && ch < 127) {
+        if (len + 1 < sizeof(g_chatInput)) { g_chatInput[len] = static_cast<char>(ch); g_chatInput[len + 1] = '\0'; }
+    } else if (ch >= 0xA0 && ch <= 0xFF) {   // Latin-1 / cp1252 letters (ç, ã, é ...) -> UTF-8
+        if (len + 2 < sizeof(g_chatInput)) {
+            g_chatInput[len]     = static_cast<char>(0xC0 | (ch >> 6));
+            g_chatInput[len + 1] = static_cast<char>(0x80 | (ch & 0x3F));
+            g_chatInput[len + 2] = '\0';
+        }
+    }
+}
+
+static int Utf8Len(unsigned char c) { return c < 0x80 ? 1 : (c >= 0xF0 ? 4 : (c >= 0xE0 ? 3 : (c >= 0xC0 ? 2 : 1))); }
+
+// Splits s into at most maxSeg visual lines no wider than maxFirst (first) / maxRest (others), breaking at spaces when possible.
+static int WrapUtf8(kit::Font f, const char* s, float maxFirst, float maxRest, int* st, int* ln, int maxSeg) {
+    int pos = 0, seg = 0;
+    while (s[pos] && seg < maxSeg) {
+        const float lim = seg == 0 ? maxFirst : maxRest;
+        int p = pos, lastSpace = -1;
+        float w = 0.0f;
+        while (s[p]) {
+            int cl = Utf8Len(static_cast<unsigned char>(s[p]));
+            char tmp[5] = {};
+            for (int k = 0; k < cl && s[p + k]; ++k) tmp[k] = s[p + k];
+            const float cw = kit::TextWidth(f, tmp);
+            if (w + cw > lim && p > pos) break;
+            if (s[p] == ' ') lastSpace = p;
+            w += cw;
+            p += cl;
+        }
+        int end = p;
+        if (s[p] && lastSpace > pos) end = lastSpace;
+        st[seg] = pos; ln[seg] = end - pos; ++seg;
+        pos = end;
+        while (s[pos] == ' ') ++pos;
+    }
+    return seg;
+}
+
+static void DrawChat() {
+    using namespace ts2::coop;
+    const DWORD now = GetTickCount();
+    const uint32_t total = GetChatTotal();
+    const kit::Font F = kit::F_BODY;
+    const float lh = kit::FontHeight(F) + 3.0f;
+    const float panelW = 470.0f, pad = 10.0f, innerW = panelW - pad * 2.0f;
+    const uint32_t kShowMs = 9000, kFadeMs = 3000;
+
+    // newest messages that are still visible (all of them while the box is open)
+    const ChatLine* msgs[12];
+    int nm = 0;
+    const int maxMsgs = g_chatOpen ? 12 : 6;
+    for (uint32_t i = total; i > 0 && nm < maxMsgs; --i) {
+        const ChatLine* l = GetChatLine(i - 1);
+        if (!l) break;
+        if (!g_chatOpen && now - l->tick > kShowMs + kFadeMs) break;
+        msgs[nm++] = l;
+    }
+    if (nm == 0 && !g_chatOpen) return;
+    struct NoTr { NoTr() { kit::SetTranslate(false); } ~NoTr() { kit::SetTranslate(true); } } noTr;   // user text is never translated
+
+    struct VL { const ChatLine* l; int st, ln; bool first; };
+    VL vl[48];
+    int nvl = 0;
+    for (int m = nm - 1; m >= 0; --m) {   // chronological order
+        const ChatLine* l = msgs[m];
+        int st[4], ln[4];
+        const float nameW = l->kind == ChatKind::System ? 0.0f : kit::TextWidth(F, l->name) + kit::TextWidth(F, ": ");
+        const int ns = WrapUtf8(F, l->kind == ChatKind::System ? ts2::i18n::Tr(l->text) : l->text, innerW - nameW, innerW - 14.0f, st, ln, 4);
+        for (int k = 0; k < ns && nvl < 48; ++k) vl[nvl++] = {l, st[k], ln[k], k == 0};
+    }
+    const int maxLines = g_chatOpen ? 14 : 8;
+    const int skip = nvl > maxLines ? nvl - maxLines : 0;
+    const int shown = nvl - skip;
+
+    const float inputH = g_chatOpen ? 32.0f : 0.0f;
+    const float h = shown * lh + pad * 2.0f - 3.0f + inputH + (shown == 0 ? 2.0f : 0.0f);
+    const float px = 16.0f, py = g_scrH - 16.0f - h;
+    float panelA = 1.0f;
+    if (!g_chatOpen && nm > 0) {
+        const uint32_t age = now - msgs[0]->tick;
+        if (age > kShowMs) panelA = 1.0f - static_cast<float>(age - kShowMs) / static_cast<float>(kFadeMs);
+        if (panelA < 0.0f) panelA = 0.0f;
+    }
+    kit::Shadow(px, py + 3.0f, panelW, h, 12.0f, 14.0f, kit::Col(0, 0, 0, static_cast<uint8_t>(80 * panelA)));
+    const uint8_t ba = static_cast<uint8_t>((g_chatOpen ? 232 : 200) * panelA);
+    kit::RoundRect(px, py, panelW, h, 12.0f, kit::Col(26, 33, 54, ba), kit::Col(12, 16, 28, ba));
+    kit::RoundOutline(px, py, panelW, h, 12.0f, 1.0f, kit::Col(255, 255, 255, static_cast<uint8_t>(34 * panelA)));
+
+    float y = py + pad - 1.0f;
+    for (int i = skip; i < nvl; ++i) {
+        const VL& v = vl[i];
+        float a = 1.0f;
+        if (!g_chatOpen) {
+            const uint32_t age = now - v.l->tick;
+            if (age > kShowMs) a = 1.0f - static_cast<float>(age - kShowMs) / static_cast<float>(kFadeMs);
+            if (a < 0.0f) a = 0.0f;
+        }
+        char buf[220];
+        int n = v.ln < static_cast<int>(sizeof(buf)) - 1 ? v.ln : static_cast<int>(sizeof(buf)) - 1;
+        const char* body = v.l->kind == ChatKind::System ? ts2::i18n::Tr(v.l->text) : v.l->text;
+        for (int k = 0; k < n; ++k) buf[k] = body[v.st + k];
+        buf[n] = '\0';
+        float tx = px + pad;
+        if (v.l->kind == ChatKind::System) {
+            kit::Text(F, tx, y, buf, kit::WithAlpha(kit::kDim, a));
+        } else if (v.first) {
+            const DWORD nc = v.l->kind == ChatKind::Mine ? kit::kGood : kit::kAccent;
+            char nm2[40];
+            _snprintf(nm2, sizeof(nm2), "%s: ", v.l->name);
+            kit::Text(F, tx, y, nm2, kit::WithAlpha(nc, a));
+            kit::Text(F, tx + kit::TextWidth(F, nm2), y, buf, kit::WithAlpha(kit::kText, a));
+        } else {
+            kit::Text(F, tx + 14.0f, y, buf, kit::WithAlpha(kit::kText, a));
+        }
+        y += lh;
+    }
+
+    if (g_chatOpen) {
+        const float iy = py + h - inputH + 2.0f;
+        kit::Rect(px + pad, iy - 3.0f, panelW - pad * 2.0f, 1.0f, kit::Col(255, 255, 255, 30));
+        kit::RoundRect(px + 6.0f, iy + 2.0f, panelW - 12.0f, 24.0f, 8.0f, kit::Col(8, 11, 20, 220), kit::Col(14, 18, 30, 220));
+        kit::RoundOutline(px + 6.0f, iy + 2.0f, panelW - 12.0f, 24.0f, 8.0f, 1.0f, kit::Col(98, 190, 255, 140));
+        const float fh = kit::FontHeight(F);
+        const float room = panelW - 12.0f - 24.0f;
+        if (g_chatInput[0] == '\0') {
+            kit::Text(F, px + 16.0f, iy + 2.0f + (24.0f - fh) * 0.5f, ts2::i18n::Tr("Mensagem (Enter envia, Esc cancela)"), kit::kDim);
+        } else {
+            // show the tail of the text so the caret stays visible
+            const char* s = g_chatInput;
+            while (*s && kit::TextWidth(F, s) > room - 8.0f) s += Utf8Len(static_cast<unsigned char>(*s));
+            char shownBuf[210];
+            _snprintf(shownBuf, sizeof(shownBuf), "%s%s", s, ((now / 500) & 1) ? "" : "_");
+            kit::Text(F, px + 16.0f, iy + 2.0f + (24.0f - fh) * 0.5f, shownBuf, kit::kText);
+        }
+    }
+}
+
 static LRESULT CALLBACK HookedWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     if (msg == WM_KEYDOWN || msg == WM_SYSKEYDOWN) {
         DWORD now = GetTickCount();
@@ -100,10 +266,24 @@ static LRESULT CALLBACK HookedWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
             ts2::qol::ToggleBorderlessFullscreen(hWnd);
             return 0;
         }
+        if (wParam == VK_F8) {
+            if (!(lParam & 0x40000000) && now - g_lastF8Tick > 350) { g_lastF8Tick = now; ChatToggle(); }
+            return 0;
+        }
+        if (g_chatOpen) {
+            if (wParam == VK_RETURN) { ChatSubmit(); return 0; }
+            if (wParam == VK_ESCAPE) { g_chatOpen = false; return 0; }
+            return 0;   // typing arrives through WM_CHAR; keep the game from also reacting to the keys
+        }
         if (g_visible && wParam == VK_RETURN && g_focusedInputId == 2) {
             ts2::se::ExecuteCommand(g_cmdInput, g_lastCmdOut, sizeof(g_lastCmdOut));
             return 0;
         }
+    }
+
+    if (g_chatOpen && msg == WM_CHAR) {
+        ChatAppendChar(static_cast<unsigned>(wParam));
+        return 0;
     }
 
     if (g_visible) {
@@ -406,6 +586,7 @@ static void RenderTabCoop(d3d9::IDirect3DDevice9* dev, float x, float y, float w
     if (LayBtn(dev, 2, 3, st.simSyncEnabled ? "Sims & Acoes: ON" : "Sims & Acoes: OFF", st.simSyncEnabled)) SetSimSyncEnabled(!st.simSyncEnabled);
     LayNext();
     if (LayBtn(dev, 0, 3, st.blockPeerAutonomy ? "IA do convidado: silenciada" : "IA do convidado: livre", st.blockPeerAutonomy)) SetBlockPeerAutonomy(!st.blockPeerAutonomy);
+    if (LayBtn(dev, 1, 3, "Abrir chat (F8)", g_chatOpen)) { ChatToggle(); g_mouseClicked = false; }
     LayNext();
     _snprintf(line, sizeof(line), Tr("Moveis: %u monit. | movidos %u/%u | criados %u | vendidos %u | conflitos %u%s"),
               st.objTracked, st.objSent, st.objApplied, st.objCreated, st.objDeleted, st.objConflicts,
@@ -518,6 +699,9 @@ static void PollOverlayInput(d3d9::IDirect3DDevice9* dev) {
             g_lastF5Tick = now;
             ts2::qol::TriggerSmartSaveNow();
         }
+        bool f8Down = (GetAsyncKeyState(VK_F8) & 0x8000) != 0;
+        if (f8Down && !g_f8Prev && (now - g_lastF8Tick > 350)) { g_lastF8Tick = now; ChatToggle(); }
+        g_f8Prev = f8Down;
         bool f9Down = (GetAsyncKeyState(VK_F9) & 0x8000) != 0;
         if (f9Down && (now - g_lastF9Tick > 350)) {
             g_lastF9Tick = now;
@@ -567,6 +751,8 @@ static void RenderOverlay(d3d9::IDirect3DDevice9* dev) {
     if (g_gameHwnd) {
         RECT rc = {};
         if (GetClientRect(g_gameHwnd, &rc) && rc.right > rc.left && rc.bottom > rc.top) {
+            g_scrW = static_cast<float>(rc.right - rc.left);
+            g_scrH = static_cast<float>(rc.bottom - rc.top);
             d3d9::D3DVIEWPORT9 vp = {
                 0, 0,
                 static_cast<DWORD>(rc.right - rc.left),
@@ -586,6 +772,7 @@ static void RenderOverlay(d3d9::IDirect3DDevice9* dev) {
     const auto& coop = ts2::coop::GetStats();
 
     auto finish = [&]() {
+        DrawChat();
         kit::EndFrame();
         if (stateBlock) {
             stateBlock->Apply();
@@ -658,7 +845,7 @@ static void RenderOverlay(d3d9::IDirect3DDevice9* dev) {
     // footer
     kit::Rect(wx + 20.0f, wy + wh - 32.0f, ww - 40.0f, 1.0f, kit::Col(255, 255, 255, 22));
     kit::Text(kit::F_SMALL, wx + 22.0f, wy + wh - 26.0f,
-              "F10 ocultar    •    F11 tela cheia    •    F5 salvar    •    F9 sincronizar co-op", kit::kDim);
+              "F10 ocultar  •  F11 tela cheia  •  F5 salvar  •  F9 sincronizar  •  F8 chat", kit::kDim);
 
     finish();
 }
