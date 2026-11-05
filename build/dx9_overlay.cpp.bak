@@ -1,0 +1,1136 @@
+#include "ts2/dx9_overlay.hpp"
+#include "ts2/addresses.hpp"
+#include "ts2/hook_engine.hpp"
+#include "ts2/ts2se_engine.hpp"
+#include "ts2/coop_net.hpp"
+#include "ts2/engine_qol.hpp"
+#include "ts2/dx9_postfx.hpp"
+
+namespace ts2::ui {
+
+namespace {
+
+// ============================================================================
+// Embedded 5x7 Pixel Bitmap Font (ASCII 32..126) for zero-dependency DX9 text
+// ============================================================================
+static const uint8_t kFont5x7[95][5] = {
+    {0x00,0x00,0x00,0x00,0x00}, // ' '
+    {0x00,0x00,0x5F,0x00,0x00}, // '!'
+    {0x00,0x07,0x00,0x07,0x00}, // '"'
+    {0x14,0x7F,0x14,0x7F,0x14}, // '#'
+    {0x24,0x2A,0x7F,0x2A,0x12}, // '$'
+    {0x23,0x13,0x08,0x64,0x62}, // '%'
+    {0x36,0x49,0x55,0x22,0x50}, // '&'
+    {0x00,0x05,0x03,0x00,0x00}, // '\''
+    {0x00,0x1C,0x22,0x41,0x00}, // '('
+    {0x00,0x41,0x22,0x1C,0x00}, // ')'
+    {0x14,0x08,0x3E,0x08,0x14}, // '*'
+    {0x08,0x08,0x3E,0x08,0x08}, // '+'
+    {0x00,0x50,0x30,0x00,0x00}, // ','
+    {0x08,0x08,0x08,0x08,0x08}, // '-'
+    {0x00,0x60,0x60,0x00,0x00}, // '.'
+    {0x20,0x10,0x08,0x04,0x02}, // '/'
+    {0x3E,0x51,0x49,0x45,0x3E}, // '0'
+    {0x00,0x42,0x7F,0x40,0x00}, // '1'
+    {0x42,0x61,0x51,0x49,0x46}, // '2'
+    {0x21,0x41,0x45,0x4B,0x31}, // '3'
+    {0x18,0x14,0x12,0x7F,0x10}, // '4'
+    {0x27,0x45,0x45,0x45,0x39}, // '5'
+    {0x3C,0x4A,0x49,0x49,0x30}, // '6'
+    {0x01,0x71,0x09,0x05,0x03}, // '7'
+    {0x36,0x49,0x49,0x49,0x36}, // '8'
+    {0x06,0x49,0x49,0x29,0x1E}, // '9'
+    {0x00,0x36,0x36,0x00,0x00}, // ':'
+    {0x00,0x56,0x36,0x00,0x00}, // ';'
+    {0x08,0x14,0x22,0x41,0x00}, // '<'
+    {0x14,0x14,0x14,0x14,0x14}, // '='
+    {0x00,0x41,0x22,0x14,0x08}, // '>'
+    {0x02,0x01,0x51,0x09,0x06}, // '?'
+    {0x32,0x49,0x79,0x41,0x3E}, // '@'
+    {0x7E,0x11,0x11,0x11,0x7E}, // 'A'
+    {0x7F,0x49,0x49,0x49,0x36}, // 'B'
+    {0x3E,0x41,0x41,0x41,0x22}, // 'C'
+    {0x7F,0x41,0x41,0x22,0x1C}, // 'D'
+    {0x7F,0x49,0x49,0x49,0x41}, // 'E'
+    {0x7F,0x09,0x09,0x09,0x01}, // 'F'
+    {0x3E,0x41,0x49,0x49,0x7A}, // 'G'
+    {0x7F,0x08,0x08,0x08,0x7F}, // 'H'
+    {0x00,0x41,0x7F,0x41,0x00}, // 'I'
+    {0x20,0x40,0x41,0x3F,0x01}, // 'J'
+    {0x7F,0x08,0x14,0x22,0x41}, // 'K'
+    {0x7F,0x40,0x40,0x40,0x40}, // 'L'
+    {0x7F,0x02,0x0C,0x02,0x7F}, // 'M'
+    {0x7F,0x04,0x08,0x10,0x7F}, // 'N'
+    {0x3E,0x41,0x41,0x41,0x3E}, // 'O'
+    {0x7F,0x09,0x09,0x09,0x06}, // 'P'
+    {0x3E,0x41,0x51,0x21,0x5E}, // 'Q'
+    {0x7F,0x09,0x19,0x29,0x46}, // 'R'
+    {0x46,0x49,0x49,0x49,0x31}, // 'S'
+    {0x01,0x01,0x7F,0x01,0x01}, // 'T'
+    {0x3F,0x40,0x40,0x40,0x3F}, // 'U'
+    {0x1F,0x20,0x40,0x20,0x1F}, // 'V'
+    {0x3F,0x40,0x38,0x40,0x3F}, // 'W'
+    {0x63,0x14,0x08,0x14,0x63}, // 'X'
+    {0x07,0x08,0x70,0x08,0x07}, // 'Y'
+    {0x61,0x51,0x49,0x45,0x43}, // 'Z'
+    {0x00,0x7F,0x41,0x41,0x00}, // '['
+    {0x02,0x04,0x08,0x10,0x20}, // '\\'
+    {0x00,0x41,0x41,0x7F,0x00}, // ']'
+    {0x04,0x02,0x01,0x02,0x04}, // '^'
+    {0x40,0x40,0x40,0x40,0x40}, // '_'
+    {0x00,0x01,0x02,0x04,0x00}, // '`'
+    {0x20,0x54,0x54,0x54,0x78}, // 'a'
+    {0x7F,0x48,0x44,0x44,0x38}, // 'b'
+    {0x38,0x44,0x44,0x44,0x20}, // 'c'
+    {0x38,0x44,0x44,0x48,0x7F}, // 'd'
+    {0x38,0x54,0x54,0x54,0x18}, // 'e'
+    {0x08,0x7E,0x09,0x01,0x02}, // 'f'
+    {0x0C,0x52,0x52,0x52,0x3E}, // 'g'
+    {0x7F,0x08,0x04,0x04,0x78}, // 'h'
+    {0x00,0x44,0x7D,0x40,0x00}, // 'i'
+    {0x20,0x40,0x44,0x3D,0x00}, // 'j'
+    {0x7F,0x10,0x28,0x44,0x00}, // 'k'
+    {0x00,0x41,0x7F,0x40,0x00}, // 'l'
+    {0x7C,0x04,0x18,0x04,0x78}, // 'm'
+    {0x7C,0x08,0x04,0x04,0x78}, // 'n'
+    {0x38,0x44,0x44,0x44,0x38}, // 'o'
+    {0x7C,0x14,0x14,0x14,0x08}, // 'p'
+    {0x08,0x14,0x14,0x18,0x7C}, // 'q'
+    {0x7C,0x08,0x04,0x04,0x08}, // 'r'
+    {0x48,0x54,0x54,0x54,0x20}, // 's'
+    {0x04,0x3F,0x44,0x40,0x20}, // 't'
+    {0x3C,0x40,0x40,0x20,0x7C}, // 'u'
+    {0x1C,0x20,0x40,0x20,0x1C}, // 'v'
+    {0x3C,0x40,0x30,0x40,0x3C}, // 'w'
+    {0x44,0x28,0x10,0x28,0x44}, // 'x'
+    {0x0C,0x50,0x50,0x50,0x3C}, // 'y'
+    {0x44,0x64,0x54,0x4C,0x44}, // 'z'
+    {0x00,0x08,0x36,0x41,0x00}, // '{'
+    {0x00,0x00,0x7F,0x00,0x00}, // '|'
+    {0x00,0x41,0x36,0x08,0x00}, // '}'
+    {0x08,0x04,0x08,0x10,0x08}  // '~'
+};
+
+// Batched vertex buffer for fast single-call DrawPrimitiveUP
+constexpr size_t kMaxBatchVerts = 24576;
+static d3d9::UIVertex g_vertBatch[kMaxBatchVerts];
+static size_t         g_vertCount = 0;
+
+static void FlushBatch(d3d9::IDirect3DDevice9* dev) {
+    if (g_vertCount >= 3 && dev) {
+        dev->DrawPrimitiveUP(d3d9::D3DPT_TRIANGLELIST, static_cast<UINT>(g_vertCount / 3),
+                             g_vertBatch, sizeof(d3d9::UIVertex));
+    }
+    g_vertCount = 0;
+}
+
+static void PushQuad(d3d9::IDirect3DDevice9* dev, float x, float y, float w, float h, DWORD color) {
+    if (g_vertCount + 6 > kMaxBatchVerts) {
+        FlushBatch(dev);
+    }
+    const float x2 = x + w;
+    const float y2 = y + h;
+    g_vertBatch[g_vertCount + 0] = {x,  y,  0.0f, 1.0f, color};
+    g_vertBatch[g_vertCount + 1] = {x2, y,  0.0f, 1.0f, color};
+    g_vertBatch[g_vertCount + 2] = {x,  y2, 0.0f, 1.0f, color};
+    g_vertBatch[g_vertCount + 3] = {x2, y,  0.0f, 1.0f, color};
+    g_vertBatch[g_vertCount + 4] = {x2, y2, 0.0f, 1.0f, color};
+    g_vertBatch[g_vertCount + 5] = {x,  y2, 0.0f, 1.0f, color};
+    g_vertCount += 6;
+}
+
+static void DrawRectBorder(d3d9::IDirect3DDevice9* dev, float x, float y, float w, float h, float thick, DWORD color) {
+    PushQuad(dev, x, y, w, thick, color);
+    PushQuad(dev, x, y + h - thick, w, thick, color);
+    PushQuad(dev, x, y, thick, h, color);
+    PushQuad(dev, x + w - thick, y, thick, h, color);
+}
+
+static void DrawText5x7(d3d9::IDirect3DDevice9* dev, float x, float y, const char* text, DWORD color, float scale = 1.5f) {
+    if (!text) return;
+    float curX = x;
+    for (const char* p = text; *p; ++p) {
+        unsigned char c = static_cast<unsigned char>(*p);
+        if (c == '\n') {
+            curX = x;
+            y += 9.0f * scale;
+            continue;
+        }
+        if (c < 32 || c > 126) c = '?';
+        const uint8_t* glyph = kFont5x7[c - 32];
+        for (int col = 0; col < 5; ++col) {
+            uint8_t bits = glyph[col];
+            if (!bits) continue;
+            for (int row = 0; row < 7; ++row) {
+                if (bits & (1u << row)) {
+                    PushQuad(dev, curX + col * scale, y + row * scale, scale, scale, color);
+                }
+            }
+        }
+        curX += 6.0f * scale;
+    }
+}
+
+// ============================================================================
+// UI State & Input Handling
+// ============================================================================
+static bool    g_visible         = true;
+static int     g_activeTab       = 0; // 0=Sim, 1=Construir, 2=Jogo, 3=Graficos, 4=Co-op, 5=Avancado
+static float   g_mouseX          = 0.0f;
+static float   g_mouseY          = 0.0f;
+static bool    g_mouseDown       = false;
+static bool    g_mouseClicked    = false;
+static int     g_focusedInputId  = 0; // 0=none, 1=CoopIP, 2=CheatCmd, 3=CatalogFilter
+static char    g_coopIpInput[32] = "127.0.0.1";
+static char    g_cmdInput[128]   = "ts2se.help";
+static char    g_lastCmdOut[256] = "Digite um comando ou cheat e clique em [Executar].";
+static HWND    g_gameHwnd        = nullptr;
+static WNDPROC g_origWndProc     = nullptr;
+static DWORD   g_lastToggleTick  = 0;
+static DWORD   g_lastF5Tick      = 0;
+static DWORD   g_lastF9Tick      = 0;
+static DWORD   g_lastF11Tick     = 0;
+static DWORD   g_lastClickTick   = 0;
+static bool    g_prevLButtonDown = false;
+static uint32_t g_lastRenderedFrame = 0;
+static uint32_t g_frameCounter      = 0;
+
+// Overlay window geometry (also used to swallow mouse clicks so they never reach the game)
+static constexpr float kWinX = 16.0f, kWinY = 16.0f, kWinW = 640.0f, kWinH = 540.0f;
+
+static bool Button(d3d9::IDirect3DDevice9* dev, float x, float y, float w, float h, const char* label, bool activeHighlight = false) {
+    bool hovered = (g_mouseX >= x && g_mouseX <= x + w && g_mouseY >= y && g_mouseY <= y + h);
+    DWORD bg = activeHighlight
+        ? (hovered ? d3d9::ColorARGB(245, 32, 145, 110) : d3d9::ColorARGB(235, 24, 118, 88))
+        : (hovered ? d3d9::ColorARGB(240, 58, 82, 128)  : d3d9::ColorARGB(225, 28, 38, 60));
+    DWORD border = activeHighlight
+        ? d3d9::ColorARGB(255, 95, 245, 175)
+        : (hovered ? d3d9::ColorARGB(255, 125, 195, 255) : d3d9::ColorARGB(215, 68, 92, 138));
+    PushQuad(dev, x, y, w, h, bg);
+    DrawRectBorder(dev, x, y, w, h, 1.0f, border);
+    if (activeHighlight) {
+        PushQuad(dev, x, y, 3.0f, h, d3d9::ColorARGB(255, 110, 255, 185));
+    }
+    // Shrink the text if the label would overflow the button
+    float scale = 1.4f;
+    const float need = static_cast<float>(strlen(label)) * 6.0f * scale;
+    const float room = w - 16.0f;
+    if (need > room && need > 0.0f) scale = scale * room / need;
+    DrawText5x7(dev, x + (activeHighlight ? 10.0f : 8.0f), y + (h - 7.0f * scale) * 0.5f, label,
+                d3d9::ColorARGB(255, 242, 248, 255), scale);
+    return hovered && g_mouseClicked;
+}
+
+static void AppendCharToInput(char* buf, size_t maxLen, char ch) {
+    size_t len = strlen(buf);
+    if (ch == '\b') {
+        if (len > 0) buf[len - 1] = '\0';
+    } else if (ch >= 32 && ch <= 126 && len + 1 < maxLen) {
+        buf[len]     = ch;
+        buf[len + 1] = '\0';
+    }
+}
+
+static LRESULT CALLBACK HookedWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+    if (msg == WM_KEYDOWN || msg == WM_SYSKEYDOWN) {
+        DWORD now = GetTickCount();
+        if ((wParam == VK_F10 || wParam == VK_INSERT) && (now - g_lastToggleTick > 220)) {
+            g_lastToggleTick = now;
+            g_visible = !g_visible;
+            return 0;
+        }
+        if (wParam == VK_F5 && (now - g_lastF5Tick > 350)) {
+            g_lastF5Tick = now;
+            ts2::qol::TriggerSmartSaveNow();
+            return 0;
+        }
+        if (wParam == VK_F9 && (now - g_lastF9Tick > 350)) {
+            g_lastF9Tick = now;
+            ts2::coop::ForceResyncNow();
+            return 0;
+        }
+        if (wParam == VK_F11 && (now - g_lastF11Tick > 350)) {
+            g_lastF11Tick = now;
+            ts2::qol::ToggleBorderlessFullscreen(hWnd);
+            return 0;
+        }
+        if (g_visible && wParam == VK_RETURN && g_focusedInputId == 2) {
+            ts2::se::ExecuteCommand(g_cmdInput, g_lastCmdOut, sizeof(g_lastCmdOut));
+            return 0;
+        }
+    }
+
+    if (g_visible) {
+        if (msg == WM_MOUSEMOVE) {
+            g_mouseX = static_cast<float>(static_cast<int16_t>(lParam & 0xFFFF));
+            g_mouseY = static_cast<float>(static_cast<int16_t>((lParam >> 16) & 0xFFFF));
+        } else if (msg == WM_LBUTTONDOWN) {
+            g_mouseX = static_cast<float>(static_cast<int16_t>(lParam & 0xFFFF));
+            g_mouseY = static_cast<float>(static_cast<int16_t>((lParam >> 16) & 0xFFFF));
+            g_mouseDown = true;
+            DWORD now = GetTickCount();
+            if (now - g_lastClickTick > 140) {
+                g_lastClickTick   = now;
+                g_mouseClicked    = true;
+                g_prevLButtonDown = true;
+            }
+            // Block clicks inside our overlay window from hitting the game
+            if (g_mouseX >= kWinX && g_mouseX <= kWinX + kWinW && g_mouseY >= kWinY && g_mouseY <= kWinY + kWinH) {
+                return 0;
+            }
+        } else if (msg == WM_LBUTTONUP) {
+            g_mouseDown = false;
+        } else if (msg == WM_CHAR && g_focusedInputId != 0) {
+            char ch = static_cast<char>(wParam);
+            if (g_focusedInputId == 1) {
+                AppendCharToInput(g_coopIpInput, sizeof(g_coopIpInput), ch);
+            } else if (g_focusedInputId == 2) {
+                AppendCharToInput(g_cmdInput, sizeof(g_cmdInput), ch);
+            } else if (g_focusedInputId == 3) {
+                AppendCharToInput(ts2::qol::GetConfig().catalogSearchFilter,
+                                  sizeof(ts2::qol::GetConfig().catalogSearchFilter), ch);
+            }
+            return 0;
+        }
+    }
+
+    return g_origWndProc ? CallWindowProcA(g_origWndProc, hWnd, msg, wParam, lParam) : 0;
+}
+
+static void EnsureWndProcHooked(HWND hWnd) {
+    if (!hWnd || g_gameHwnd == hWnd) return;
+    g_gameHwnd = hWnd;
+    g_origWndProc = reinterpret_cast<WNDPROC>(
+        SetWindowLongA(hWnd, GWL_WNDPROC, reinterpret_cast<LONG>(&HookedWndProc))
+    );
+    char titleBuf[128];
+    _snprintf(titleBuf, sizeof(titleBuf),
+              "The Sims 2 EP9 [TS2SE + Co-op Lockstep + QoL | PID %u | F10 = Overlay]",
+              static_cast<unsigned>(GetCurrentProcessId()));
+    SetWindowTextA(hWnd, titleBuf);
+    ts2::hook::Log("[DX9Overlay] Subclassed game HWND 0x%08X (orig WndProc=0x%08X)",
+                   reinterpret_cast<unsigned>(hWnd), reinterpret_cast<unsigned>(g_origWndProc));
+}
+
+// ============================================================================
+// Layout helpers: every tab is a vertical stack of sections; each section is a few rows of
+// equally sized buttons. No manual pixel math in the tabs -> consistent spacing and no clutter.
+// ============================================================================
+struct Layout {
+    float x = 0, y = 0, w = 0;
+    bool  first = true;
+};
+static Layout g_lay;
+
+static constexpr float kRowH = 26.0f;
+static constexpr float kGap  = 6.0f;
+
+static constexpr DWORD kColText   = d3d9::ColorARGB(255, 232, 240, 252);
+static constexpr DWORD kColDim    = d3d9::ColorARGB(255, 150, 172, 205);
+static constexpr DWORD kColAccent = d3d9::ColorARGB(255, 110, 215, 255);
+static constexpr DWORD kColGood   = d3d9::ColorARGB(255, 105, 235, 150);
+static constexpr DWORD kColWarn   = d3d9::ColorARGB(255, 255, 210, 95);
+static constexpr DWORD kColBad    = d3d9::ColorARGB(255, 255, 125, 115);
+
+static void LayBegin(float x, float y, float w) {
+    g_lay.x = x; g_lay.y = y; g_lay.w = w; g_lay.first = true;
+}
+
+static void LaySection(d3d9::IDirect3DDevice9* dev, const char* title, const char* right = nullptr, DWORD rightColor = kColText) {
+    if (!g_lay.first) g_lay.y += 10.0f;
+    g_lay.first = false;
+    DrawText5x7(dev, g_lay.x, g_lay.y, title, kColAccent, 1.4f);
+    if (right && right[0]) {
+        float rw = static_cast<float>(strlen(right)) * 6.0f * 1.3f;
+        DrawText5x7(dev, g_lay.x + g_lay.w - rw, g_lay.y + 1.0f, right, rightColor, 1.3f);
+    }
+    PushQuad(dev, g_lay.x, g_lay.y + 15.0f, g_lay.w, 1.0f, d3d9::ColorARGB(150, 60, 95, 150));
+    g_lay.y += 21.0f;
+}
+
+static void LayText(d3d9::IDirect3DDevice9* dev, const char* text, DWORD color = kColText, float scale = 1.3f) {
+    DrawText5x7(dev, g_lay.x, g_lay.y, text, color, scale);
+    int lines = 1;
+    for (const char* c = text; *c; ++c) if (*c == '\n') ++lines;
+    g_lay.y += lines * 9.0f * scale + 4.0f;
+}
+
+static void LayNext() { g_lay.y += kRowH + kGap; }
+
+// Button occupying `span` of `cols` equal columns, starting at column `col` of the current row.
+static bool LayBtn(d3d9::IDirect3DDevice9* dev, int col, int cols, const char* label, bool active = false, int span = 1) {
+    const float cw = (g_lay.w - kGap * (cols - 1)) / cols;
+    const float x  = g_lay.x + col * (cw + kGap);
+    const float w  = cw * span + kGap * (span - 1);
+    return Button(dev, x, g_lay.y, w, kRowH, label, active);
+}
+
+static void RunCmd(const char* cmd) {
+    char out[128];
+    ts2::se::ExecuteCommand(cmd, out, sizeof(out));
+}
+
+// ============================================================================
+// Tab 0: Sim (time, money, selected Sim)
+// ============================================================================
+static void RenderTabSim(d3d9::IDirect3DDevice9* dev, float x, float y, float w) {
+    LayBegin(x, y, w);
+
+    // --- Time ---
+    uint16_t hr = 0, mn = 0, sub = 0, day = 0;
+    ts2::se::GetSimulatorClock(hr, mn, sub, day);
+    char clock[32];
+    _snprintf(clock, sizeof(clock), "%02u:%02u", hr, mn);
+    LaySection(dev, "TEMPO", clock);
+    const int16_t speed = ts2::se::GetSimulatorSpeed();
+    const bool paused   = ts2::se::GetSimulatorPauseCount() > 0;
+    if (LayBtn(dev, 0, 4, paused ? "Pausado" : "Pausar", paused)) ts2::se::SetSimulatorPaused(!paused);
+    if (LayBtn(dev, 1, 4, "Velocidade 1x", !paused && speed == 1)) { ts2::se::SetSimulatorPaused(false); ts2::se::SetSimulatorSpeed(1); }
+    if (LayBtn(dev, 2, 4, "Velocidade 2x", !paused && speed == 2)) { ts2::se::SetSimulatorPaused(false); ts2::se::SetSimulatorSpeed(2); }
+    if (LayBtn(dev, 3, 4, "Velocidade 3x", !paused && speed == 3)) { ts2::se::SetSimulatorPaused(false); ts2::se::SetSimulatorSpeed(3); }
+    LayNext();
+    if (LayBtn(dev, 0, 4, "Manha (07h)"))    ts2::se::SetSimulatorHour(7);
+    if (LayBtn(dev, 1, 4, "Meio-dia (12h)")) ts2::se::SetSimulatorHour(12);
+    if (LayBtn(dev, 2, 4, "Tarde (18h)"))    ts2::se::SetSimulatorHour(18);
+    if (LayBtn(dev, 3, 4, "Noite (00h)"))    ts2::se::SetSimulatorHour(0);
+    LayNext();
+
+    // --- Money ---
+    char funds[40];
+    _snprintf(funds, sizeof(funds), "$%d", ts2::se::GetFamilyFunds());
+    LaySection(dev, "DINHEIRO DA FAMILIA", funds, kColWarn);
+    if (LayBtn(dev, 0, 4, "+ $1.000"))   ts2::se::ModifyFamilyFunds(1000);
+    if (LayBtn(dev, 1, 4, "+ $50.000"))  ts2::se::ModifyFamilyFunds(50000);
+    if (LayBtn(dev, 2, 4, "+ $250.000")) ts2::se::ModifyFamilyFunds(250000);
+    if (LayBtn(dev, 3, 4, "- $10.000"))  ts2::se::ModifyFamilyFunds(-10000);
+    LayNext();
+
+    // --- Selected Sim ---
+    LaySection(dev, "SIM SELECIONADO");
+    const bool motLocked = ts2::se::IsMotiveDecayLocked();
+    const bool aspLocked = ts2::se::IsAspirationLocked();
+    if (LayBtn(dev, 0, 3, "Encher necessidades"))        ts2::se::FillAllActiveSimMotives();
+    if (LayBtn(dev, 1, 3, "Congelar necessidades", motLocked)) ts2::se::SetMotiveDecayLocked(!motLocked);
+    if (LayBtn(dev, 2, 3, "Congelar aspiracao", aspLocked))    ts2::se::SetAspirationLocked(!aspLocked);
+    LayNext();
+    if (LayBtn(dev, 0, 4, "Aspiracao Platina"))   ts2::se::SetSelectedSimAspirationLevel(5);
+    if (LayBtn(dev, 1, 4, "Aspiracao Ouro"))      ts2::se::SetSelectedSimAspirationLevel(4);
+    if (LayBtn(dev, 2, 4, "+50.000 pts aspir."))  ts2::se::AddSelectedSimAspirationPoints(50000);
+    if (LayBtn(dev, 3, 4, "Trocar Sim ativo"))    ts2::se::CycleSelectedLotSim();
+    LayNext();
+
+    // --- Core needs (read-only bars + MAX) ---
+    LaySection(dev, "NECESSIDADES");
+    static const int   kNeed[8]      = {7, 1, 8, 9, 5, 6, 14, 15};
+    static const char* kNeedName[8]  = {"Fome", "Conforto", "Higiene", "Banheiro", "Energia", "Diversao", "Social", "Ambiente"};
+    const float half = (g_lay.w - 20.0f) / 2.0f;
+    for (int i = 0; i < 8; ++i) {
+        const float cx = g_lay.x + (i % 2) * (half + 20.0f);
+        const float cy = g_lay.y + (i / 2) * 24.0f;
+        const float val = ts2::se::GetSimMotive(kNeed[i]);
+        DrawText5x7(dev, cx, cy + 5.0f, kNeedName[i], kColText, 1.3f);
+        float norm = (val + 100.0f) / 200.0f;
+        if (norm < 0.0f) norm = 0.0f;
+        if (norm > 1.0f) norm = 1.0f;
+        const float bx = cx + 82.0f, bw = half - 82.0f - 46.0f;
+        PushQuad(dev, bx, cy + 4.0f, bw, 12.0f, d3d9::ColorARGB(210, 22, 28, 44));
+        const DWORD bc = (norm > 0.6f) ? d3d9::ColorARGB(235, 52, 215, 115)
+                       : (norm > 0.3f) ? d3d9::ColorARGB(235, 240, 185, 55)
+                                       : d3d9::ColorARGB(235, 235, 75, 65);
+        PushQuad(dev, bx, cy + 4.0f, bw * norm, 12.0f, bc);
+        DrawRectBorder(dev, bx, cy + 4.0f, bw, 12.0f, 1.0f, d3d9::ColorARGB(180, 70, 95, 135));
+        if (Button(dev, cx + half - 40.0f, cy, 40.0f, 20.0f, "MAX")) ts2::se::SetSimMotive(kNeed[i], 100.0f);
+    }
+    g_lay.y += 4 * 24.0f;
+}
+
+// ============================================================================
+// Tab 1: Build / Buy
+// ============================================================================
+static void RenderTabBuild(d3d9::IDirect3DDevice9* dev, float x, float y, float w) {
+    auto& cfg = ts2::qol::GetConfig();
+    LayBegin(x, y, w);
+
+    LaySection(dev, "COLOCAR OBJETOS");
+    if (LayBtn(dev, 0, 2, "Mover objetos livremente", cfg.moveObjectsEnabled)) {
+        cfg.moveObjectsEnabled = !cfg.moveObjectsEnabled;
+        RunCmd(cfg.moveObjectsEnabled ? "moveObjects on" : "moveObjects off");
+    }
+    if (LayBtn(dev, 1, 2, "Rotacao de 45 graus", cfg.rotate45DegreeEnabled)) {
+        cfg.rotate45DegreeEnabled = !cfg.rotate45DegreeEnabled;
+        RunCmd(cfg.rotate45DegreeEnabled ? "boolProp allow45DegreeAngleOfRotation true"
+                                         : "boolProp allow45DegreeAngleOfRotation false");
+    }
+    LayNext();
+    if (LayBtn(dev, 0, 2, "Posicao em 1/4 de tile", cfg.quarterTileEnabled)) {
+        cfg.quarterTileEnabled = !cfg.quarterTileEnabled;
+        RunCmd(cfg.quarterTileEnabled ? "setQuarterTilePlacement on" : "setQuarterTilePlacement off");
+    }
+    if (LayBtn(dev, 1, 2, "Fora da grade (sem snap)", !cfg.snapObjectsToGrid)) {
+        cfg.snapObjectsToGrid = !cfg.snapObjectsToGrid;
+        ts2::se::SetNativeBoolProperty("snapObjectsToGrid", cfg.snapObjectsToGrid);
+        RunCmd(cfg.snapObjectsToGrid ? "boolProp snapObjectsToGrid true" : "boolProp snapObjectsToGrid false");
+    }
+    LayNext();
+    if (LayBtn(dev, 0, 2, "Terreno e piso livres", !cfg.constrainFloorElevation)) {
+        cfg.constrainFloorElevation = !cfg.constrainFloorElevation;
+        ts2::se::SetNativeBoolProperty("constrainFloorElevation", cfg.constrainFloorElevation);
+        RunCmd(cfg.constrainFloorElevation ? "boolProp constrainFloorElevation true"
+                                           : "boolProp constrainFloorElevation false");
+    }
+    if (LayBtn(dev, 1, 2, "Construir em dorm/apto", cfg.unlockDormAndAptTools)) {
+        cfg.unlockDormAndAptTools = !cfg.unlockDormAndAptTools;
+        const bool disabledFlag = !cfg.unlockDormAndAptTools;
+        ts2::se::SetNativeBoolProperty("dormSpecificToolsDisabled", disabledFlag);
+        ts2::se::SetNativeBoolProperty("aptBaseLotSpecificToolsDisabled", disabledFlag);
+        ts2::se::SetNativeBoolProperty("aptSubLotSpecificToolsDisabled", disabledFlag);
+    }
+    LayNext();
+
+    LaySection(dev, "LIMITES DO LOTE");
+    static const int kFloors[4] = {5, 8, 12, 16};
+    for (int i = 0; i < 4; ++i) {
+        char lbl[24];
+        _snprintf(lbl, sizeof(lbl), "%d andares", kFloors[i]);
+        if (LayBtn(dev, i, 4, lbl, cfg.highestAllowedLevel == kFloors[i])) {
+            cfg.highestAllowedLevel = kFloors[i];
+            char cmd[48];
+            _snprintf(cmd, sizeof(cmd), "setHighestAllowedLevel %d", kFloors[i]);
+            RunCmd(cmd);
+        }
+    }
+    LayNext();
+    if (LayBtn(dev, 0, 3, "Telhado 15 graus")) RunCmd("roofSlopeAngle 15");
+    if (LayBtn(dev, 1, 3, "Telhado 30 graus")) RunCmd("roofSlopeAngle 30");
+    if (LayBtn(dev, 2, 3, "Telhado 45 graus")) RunCmd("roofSlopeAngle 45");
+    LayNext();
+    if (LayBtn(dev, 0, 3, "Zona residencial"))  RunCmd("changeLotZoning residential");
+    if (LayBtn(dev, 1, 3, "Zona comunitaria"))  RunCmd("changeLotZoning community");
+    if (LayBtn(dev, 2, 3, "Zona apartamento"))  RunCmd("changeLotZoning apartmentbase");
+    LayNext();
+
+    LaySection(dev, "BUSCAR NO CATALOGO");
+    char box[96];
+    _snprintf(box, sizeof(box), "%s%s", cfg.catalogSearchFilter[0] || g_focusedInputId == 3 ? cfg.catalogSearchFilter : "clique e digite...",
+              (g_focusedInputId == 3) ? "_" : "");
+    if (LayBtn(dev, 0, 4, box, g_focusedInputId == 3, 3)) g_focusedInputId = 3;
+    if (LayBtn(dev, 3, 4, "Limpar")) cfg.catalogSearchFilter[0] = '\0';
+    LayNext();
+    const ts2::qol::CatalogEntry* matches[5] = {};
+    const size_t n = ts2::qol::FilterCatalogEntries(cfg.catalogSearchFilter, matches, 5);
+    for (size_t i = 0; i < n; ++i) {
+        char row[160];
+        _snprintf(row, sizeof(row), "%-30s %-18s $%d", matches[i]->name, matches[i]->category, matches[i]->price);
+        DrawText5x7(dev, g_lay.x + 2.0f, g_lay.y + i * 15.0f, row, kColText, 1.25f);
+    }
+}
+
+// ============================================================================
+// Tab 2: Game (window, performance, camera, saving)
+// ============================================================================
+static void RenderTabGame(d3d9::IDirect3DDevice9* dev, float x, float y, float w) {
+    auto& cfg = ts2::qol::GetConfig();
+    LayBegin(x, y, w);
+
+    LaySection(dev, "JANELA E DESEMPENHO");
+    if (LayBtn(dev, 0, 2, "Tela cheia sem bordas (F11)", cfg.borderlessFullscreen)) ts2::qol::ToggleBorderlessFullscreen(g_gameHwnd);
+    if (LayBtn(dev, 1, 2, "Continuar rodando em 2o plano", cfg.backgroundSimEnabled)) ts2::qol::SetBackgroundSimEnabled(!cfg.backgroundSimEnabled);
+    LayNext();
+    if (LayBtn(dev, 0, 2, "Desbloquear FPS (sem VSync)", !cfg.vsyncEnabled)) {
+        cfg.vsyncEnabled = !cfg.vsyncEnabled;
+        RunCmd(cfg.vsyncEnabled ? "vsync on" : "vsync off");
+    }
+    if (LayBtn(dev, 1, 2, "Cheats de teste (Shift+clique)", cfg.testingCheatsEnabled)) {
+        cfg.testingCheatsEnabled = !cfg.testingCheatsEnabled;
+        RunCmd(cfg.testingCheatsEnabled ? "boolProp testingCheatsEnabled true" : "boolProp testingCheatsEnabled false");
+    }
+    LayNext();
+
+    LaySection(dev, "CAMERA E VISUAL");
+    if (LayBtn(dev, 0, 2, "Esconder diamante do Sim", !cfg.plumbBobVisible)) {
+        cfg.plumbBobVisible = !cfg.plumbBobVisible;
+        ts2::se::TogglePlumbBobVisibility();
+    }
+    if (LayBtn(dev, 1, 2, "Esconder baloes de pensamento", !cfg.showHeadlinesEnabled)) {
+        cfg.showHeadlinesEnabled = !cfg.showHeadlinesEnabled;
+        ts2::se::SetShowHeadlinesEnabled(cfg.showHeadlinesEnabled);
+    }
+    LayNext();
+
+    char next[40];
+    _snprintf(next, sizeof(next), cfg.smartAutosaveEnabled ? "proximo em %u s" : "desligado", ts2::qol::GetSecondsUntilNextAutosave());
+    LaySection(dev, "SALVAMENTO", next, kColDim);
+    if (LayBtn(dev, 0, 4, "Autosave", cfg.smartAutosaveEnabled)) cfg.smartAutosaveEnabled = !cfg.smartAutosaveEnabled;
+    if (LayBtn(dev, 1, 4, "A cada 5 min", cfg.autosaveIntervalMin == 5))   cfg.autosaveIntervalMin = 5;
+    if (LayBtn(dev, 2, 4, "A cada 15 min", cfg.autosaveIntervalMin == 15)) cfg.autosaveIntervalMin = 15;
+    if (LayBtn(dev, 3, 4, "Salvar agora (F5)")) ts2::qol::TriggerSmartSaveNow();
+    LayNext();
+
+    g_lay.y += 6.0f;
+    LayText(dev, "Atalhos:  F10 mostrar/ocultar painel   F11 tela cheia   F5 salvar   F9 sincronizar co-op", kColDim, 1.25f);
+}
+
+// ============================================================================
+// Tab 3: Graphics (post-processing: AO, shadows, fog, shafts, reflections, tone mapping...)
+// ============================================================================
+static int g_activePreset = -1;
+
+// One effect: [toggle][ - ][ name value ][ + ][ default ]. `val` may be null for plain toggles.
+static void FxRow(d3d9::IDirect3DDevice9* dev, const char* name, bool* on, const char* param, float* val,
+                  float step, float lo, float hi, float def, int prec = 2) {
+    bool changed = false;
+    if (LayBtn(dev, 0, 8, name, *on, 2)) { *on = !*on; changed = true; }
+    if (val) {
+        if (LayBtn(dev, 2, 8, "-")) { *val -= step; if (*val < lo) *val = lo; changed = true; }
+        char lbl[48];
+        _snprintf(lbl, sizeof(lbl), prec >= 4 ? "%s %.4f" : (prec == 3 ? "%s %.3f" : "%s %.2f"), param, static_cast<double>(*val));
+        LayBtn(dev, 3, 8, lbl, false, 3);
+        if (LayBtn(dev, 6, 8, "+")) { *val += step; if (*val > hi) *val = hi; changed = true; }
+        if (LayBtn(dev, 7, 8, "Padrao")) { *val = def; changed = true; }
+    }
+    if (changed) { g_activePreset = -1; ts2::fx::NotifyChanged(); }
+    LayNext();
+}
+
+static void RenderTabGraphics(d3d9::IDirect3DDevice9* dev, float x, float y, float w) {
+    auto& S = ts2::fx::GetSettings();
+    const auto& st = ts2::fx::GetStatus();
+    LayBegin(x, y, w);
+
+    LaySection(dev, "PRESETS", st.message, st.pipelineOk ? kColGood : kColWarn);
+    static const char* kPresets[4] = {"Original", "Suave", "Equilibrado", "Cinematico"};
+    for (int i = 0; i < 4; ++i) {
+        if (LayBtn(dev, i, 5, kPresets[i], g_activePreset == i)) { ts2::fx::ApplyPreset(i); g_activePreset = i; }
+    }
+    if (LayBtn(dev, 4, 5, S.enabled ? "Efeitos: LIGADO" : "Efeitos: OFF", S.enabled)) {
+        S.enabled = !S.enabled; g_activePreset = -1; ts2::fx::NotifyChanged();
+    }
+    LayNext();
+
+    LaySection(dev, "EFEITOS", "salva sozinho em ts2fx.cfg", kColDim);
+    FxRow(dev, "Oclusao (AO)",   &S.ao,             "Intensidade", &S.aoIntensity,    0.10f, 0.0f, 2.0f, 0.85f);
+    FxRow(dev, "Sombras do sol", &S.contactShadows, "Forca",       &S.shadowStrength, 0.05f, 0.0f, 1.0f, 0.40f);
+    FxRow(dev, "Nevoa",          &S.fog,            "Densidade",   &S.fogDensity,     0.0005f, 0.0f, 0.02f, 0.0040f, 4);
+    FxRow(dev, "Raios de luz",   &S.shafts,         "Forca",       &S.shaftStrength,  0.05f, 0.0f, 1.5f, 0.45f);
+    FxRow(dev, "Reflexos (SSR)", &S.ssr,            "Forca",       &S.ssrStrength,    0.10f, 0.0f, 1.5f, 0.60f);
+    FxRow(dev, "Tone mapping",   &S.tonemap,        "Forca",       &S.tonemapStrength,0.10f, 0.0f, 1.0f, 0.60f);
+    FxRow(dev, "Cor por hora",   &S.timeGrade,      "Forca",       &S.gradeStrength,  0.10f, 0.0f, 1.0f, 0.60f);
+    FxRow(dev, "Bloom",          &S.bloom,          "Forca",       &S.bloomStrength,  0.05f, 0.0f, 1.0f, 0.22f);
+    FxRow(dev, "Anti-aliasing",  &S.fxaa,           nullptr,       nullptr, 0, 0, 0, 0);
+
+    g_lay.y += 4.0f;
+    LayText(dev, "Dica: se o sol/raios parecerem do lado errado, use  fx.set sunyaw 90  (ou 180, 270) no console.", kColDim, 1.15f);
+}
+
+// ============================================================================
+// Tab 4: Co-op
+// ============================================================================
+static void RenderTabCoop(d3d9::IDirect3DDevice9* dev, float x, float y, float w) {
+    using namespace ts2::coop;
+    const auto& st = GetStats();
+    LayBegin(x, y, w);
+    char line[220];
+
+    const char* role = (st.role == Role::Host)   ? "HOST" :
+                       (st.role == Role::Client) ? "CONVIDADO" : "SOLO";
+    _snprintf(line, sizeof(line), "%s - %s", role, st.peerConnected ? "parceiro conectado" : (st.role == Role::Disconnected ? "nao conectado" : "aguardando parceiro..."));
+    LaySection(dev, "CONEXAO", line, st.peerConnected ? kColGood : kColWarn);
+    char ipBox[48];
+    _snprintf(ipBox, sizeof(ipBox), "%s%s", g_coopIpInput, (g_focusedInputId == 1) ? "_" : "");
+    if (LayBtn(dev, 0, 4, ipBox, g_focusedInputId == 1)) g_focusedInputId = 1;
+    if (LayBtn(dev, 1, 4, "Hospedar", st.role == Role::Host))   StartHost(27025);
+    if (LayBtn(dev, 2, 4, "Conectar", st.role == Role::Client)) JoinHost(g_coopIpInput, 27025);
+    if (LayBtn(dev, 3, 4, "Desconectar")) Disconnect();
+    LayNext();
+    if (st.connectMessage[0]) LayText(dev, st.connectMessage, kColDim, 1.25f);
+
+    LaySection(dev, "VIZINHANCA (O SAVE DO CONVIDADO NAO IMPORTA)");
+    const bool canSend = (st.role == Role::Host && st.peerConnected && !st.peerLoopback &&
+                          st.xferState != XferState::Sending && st.xferState != XferState::WaitSave);
+    if (LayBtn(dev, 0, 2, "Reenviar vizinhanca ao convidado")) {
+        if (canSend) { ts2::qol::TriggerSmartSaveNow(); SendNeighborhoodToGuest(6000); }
+        else ts2::se::PushConsoleLog("[Co-op] Envio indisponivel: precisa ser Host com um convidado (em outro PC) conectado.");
+    }
+    {
+        const float bx = g_lay.x + (g_lay.w + kGap) / 2.0f, bw = (g_lay.w - kGap) / 2.0f;
+        PushQuad(dev, bx, g_lay.y, bw, kRowH, d3d9::ColorARGB(220, 24, 32, 52));
+        float frac = (st.xferBytesTotal > 0) ? static_cast<float>(st.xferBytesDone) / static_cast<float>(st.xferBytesTotal) : 0.0f;
+        if (st.xferState == XferState::Done) frac = 1.0f;
+        if (frac > 1.0f) frac = 1.0f;
+        if (frac > 0.0f) PushQuad(dev, bx, g_lay.y, bw * frac,
+                                  kRowH, st.xferState == XferState::Error ? d3d9::ColorARGB(230, 190, 60, 55) : d3d9::ColorARGB(230, 40, 170, 105));
+        DrawRectBorder(dev, bx, g_lay.y, bw, kRowH, 1.0f, d3d9::ColorARGB(255, 85, 130, 200));
+        _snprintf(line, sizeof(line), "%u/%u arquivos  %d%%", st.xferFilesDone, st.xferFilesTotal, static_cast<int>(frac * 100.0f));
+        DrawText5x7(dev, bx + 8.0f, g_lay.y + 8.0f, line, kColText, 1.3f);
+    }
+    LayNext();
+    if (st.xferMessage[0]) {
+        LayText(dev, st.xferMessage, st.xferState == XferState::Error ? kColBad : (st.xferState == XferState::Done ? kColGood : kColAccent), 1.25f);
+    }
+
+    LaySection(dev, "SINCRONIA");
+    if (LayBtn(dev, 0, 4, "Sincronizar (F9)")) ForceResyncNow();
+    if (LayBtn(dev, 1, 4, st.objSyncEnabled ? "Moveis: ON" : "Moveis: OFF", st.objSyncEnabled)) SetObjectSyncEnabled(!st.objSyncEnabled);
+    if (LayBtn(dev, 2, 4, "Reenviar moveis")) RequestObjectSnapshot();
+    if (LayBtn(dev, 3, 4, "Trocar meu Sim"))  ts2::se::CycleSelectedLotSim();
+    LayNext();
+    if (LayBtn(dev, 0, 3, "Pausar (ambos)"))  SendSpeedPauseCommand(ts2::se::GetSimulatorSpeed(), true);
+    if (LayBtn(dev, 1, 3, "Retomar (ambos)")) SendSpeedPauseCommand(ts2::se::GetSimulatorSpeed(), false);
+    if (LayBtn(dev, 2, 3, st.simSyncEnabled ? "Sims & Acoes: ON" : "Sims & Acoes: OFF", st.simSyncEnabled)) SetSimSyncEnabled(!st.simSyncEnabled);
+    LayNext();
+    _snprintf(line, sizeof(line), "Moveis: %u monit. | movidos %u/%u | criados %u | vendidos %u | conflitos %u%s",
+              st.objTracked, st.objSent, st.objApplied, st.objCreated, st.objDeleted, st.objConflicts,
+              st.objSyncAvailable ? "" : " (abra lote)");
+    LayText(dev, line, kColDim, 1.22f);
+    _snprintf(line, sizeof(line), "Sims: meu slot %d (NID %d) | parceiro %d (NID %d) | poses %u/%u | motivos %u",
+              st.mySimIdx, static_cast<int>(st.mySimNeighborId),
+              st.peerSimIdx, static_cast<int>(st.peerSimNeighborId),
+              st.simsSent, st.simsApplied, st.motivesSynced);
+    LayText(dev, line, kColDim, 1.22f);
+    _snprintf(line, sizeof(line), "Interacoes Pie Menu sincronizadas: %u (ultima: menu=%d alvo=#%u) | BHAV: %u",
+              st.interactionsSynced, st.lastSyncedInteractionIdx,
+              static_cast<unsigned>(st.lastSyncedTargetSlot), st.bhavEventsSynced);
+    LayText(dev, line, kColDim, 1.22f);
+    _snprintf(line, sizeof(line), "Fundos local $%d / host $%d | Tick peer %u | CRC %08X | divergencias: %u",
+              ts2::se::GetFamilyFunds(), st.hostFunds, st.lastPeerTick, st.lastLocalCrc, st.desyncCount);
+    LayText(dev, line, kColDim, 1.22f);
+
+    g_lay.y += 2.0f;
+    LayText(dev,
+            "Host: clique em Hospedar. Convidado: no MENU PRINCIPAL, clique em Conectar.\n"
+            "Sincronia completa: Relogio/SubTick, PRNG, Fundos, Sims (pose + motivos + NeighborID),\n"
+            "Fila de Interacoes (Pie Menu / Ir Aqui) e Compra/Venda/Movimento de Moveis!",
+            kColDim, 1.18f);
+}
+
+// ============================================================================
+// Tab 4: Advanced (population, SimAntics watchdog, console, log)
+// ============================================================================
+static void RenderTabAdvanced(d3d9::IDirect3DDevice9* dev, float x, float y, float w) {
+    auto& cfg = ts2::qol::GetConfig();
+    LayBegin(x, y, w);
+
+    LaySection(dev, "SIMS");
+    if (LayBtn(dev, 0, 3, "Premios de carreira")) ts2::se::UnlockAllCareerRewardsOnLot();
+    if (LayBtn(dev, 1, 3, "Forcar gemeos"))       ts2::se::TriggerForceTwinsOnSelectedSim();
+    if (LayBtn(dev, 2, 3, "Envelhecimento", cfg.agingEnabled)) {
+        cfg.agingEnabled = !cfg.agingEnabled;
+        RunCmd(cfg.agingEnabled ? "aging on" : "aging off");
+    }
+    LayNext();
+
+    char t[64];
+    _snprintf(t, sizeof(t), "ATUAL: %u", cfg.maxTotalSims);
+    LaySection(dev, "LIMITE DE SIMS NO LOTE", t, kColDim);
+    static const uint32_t kLimits[4] = {8, 16, 32, 50};
+    for (int i = 0; i < 4; ++i) {
+        char lbl[24];
+        _snprintf(lbl, sizeof(lbl), i == 0 ? "%u (padrao)" : "%u Sims", kLimits[i]);
+        if (LayBtn(dev, i, 4, lbl, cfg.maxTotalSims == kLimits[i])) {
+            cfg.maxTotalSims = kLimits[i];
+            ts2::qol::ApplyLotAndBuildQoL(cfg.testingCheatsEnabled, cfg.rotate45DegreeEnabled, cfg.moveObjectsEnabled, kLimits[i]);
+        }
+    }
+    LayNext();
+
+    const uint32_t curIter = ts2::qol::GetMaxTreeIterations();
+    _snprintf(t, sizeof(t), "ATUAL: %u", curIter);
+    LaySection(dev, "LIMITE DO SIMANTICS (EVITA 'TRAVOU')", t, kColDim);
+    static const uint32_t kIters[4] = {10000, 25000, 50000, 100000};
+    static const char*    kIterLbl[4] = {"10.000", "25.000", "50.000", "100.000"};
+    for (int i = 0; i < 4; ++i) {
+        if (LayBtn(dev, i, 4, kIterLbl[i], curIter == kIters[i])) ts2::qol::SetMaxTreeIterations(kIters[i]);
+    }
+    LayNext();
+
+    LaySection(dev, "CONSOLE");
+    char cmdBox[140];
+    _snprintf(cmdBox, sizeof(cmdBox), "> %s%s", g_cmdInput, (g_focusedInputId == 2) ? "_" : "");
+    if (LayBtn(dev, 0, 4, cmdBox, g_focusedInputId == 2, 3)) g_focusedInputId = 2;
+    if (LayBtn(dev, 3, 4, "Executar")) ts2::se::ExecuteCommand(g_cmdInput, g_lastCmdOut, sizeof(g_lastCmdOut));
+    LayNext();
+    LayText(dev, g_lastCmdOut, kColGood, 1.25f);
+
+    LaySection(dev, "LOG");
+    const size_t logCount = ts2::se::GetConsoleLogCount();
+    const size_t startIdx = (logCount > 5) ? (logCount - 5) : 0;
+    for (size_t i = startIdx; i < logCount; ++i) {
+        DrawText5x7(dev, g_lay.x, g_lay.y + (i - startIdx) * 13.0f, ts2::se::GetConsoleLogLine(i), kColDim, 1.15f);
+    }
+}
+
+static void PollOverlayInput(d3d9::IDirect3DDevice9* dev) {
+    if (!g_gameHwnd && dev) {
+        d3d9::D3DDEVICE_CREATION_PARAMETERS cp = {};
+        if (dev->GetCreationParameters(&cp) >= 0 && cp.hFocusWindow) {
+            EnsureWndProcHooked(cp.hFocusWindow);
+        }
+    }
+
+    // Check if our game window is the active foreground window (or in the same process)
+    bool isActiveProcess = true;
+    HWND fg = GetForegroundWindow();
+    if (fg) {
+        DWORD fgPid = 0;
+        GetWindowThreadProcessId(fg, &fgPid);
+        isActiveProcess = (fgPid == GetCurrentProcessId());
+    }
+
+    if (isActiveProcess) {
+        DWORD now = GetTickCount();
+        bool f10Down = (GetAsyncKeyState(VK_F10) & 0x8000) != 0;
+        bool insDown = (GetAsyncKeyState(VK_INSERT) & 0x8000) != 0;
+        if ((f10Down || insDown) && (now - g_lastToggleTick > 220)) {
+            g_lastToggleTick = now;
+            g_visible = !g_visible;
+        }
+        bool f5Down = (GetAsyncKeyState(VK_F5) & 0x8000) != 0;
+        if (f5Down && (now - g_lastF5Tick > 350)) {
+            g_lastF5Tick = now;
+            ts2::qol::TriggerSmartSaveNow();
+        }
+        bool f9Down = (GetAsyncKeyState(VK_F9) & 0x8000) != 0;
+        if (f9Down && (now - g_lastF9Tick > 350)) {
+            g_lastF9Tick = now;
+            ts2::coop::ForceResyncNow();
+        }
+        bool f11Down = (GetAsyncKeyState(VK_F11) & 0x8000) != 0;
+        if (f11Down && (now - g_lastF11Tick > 350)) {
+            g_lastF11Tick = now;
+            ts2::qol::ToggleBorderlessFullscreen(g_gameHwnd);
+        }
+
+        if (g_visible && g_gameHwnd) {
+            POINT pt = {};
+            if (GetCursorPos(&pt) && ScreenToClient(g_gameHwnd, &pt)) {
+                g_mouseX = static_cast<float>(pt.x);
+                g_mouseY = static_cast<float>(pt.y);
+            }
+            bool lmbDown = (GetAsyncKeyState(VK_LBUTTON) & 0x8000) != 0;
+            if (lmbDown && !g_prevLButtonDown && (now - g_lastClickTick > 140)) {
+                g_lastClickTick = now;
+                g_mouseClicked  = true;
+            }
+            g_prevLButtonDown = lmbDown;
+            g_mouseDown = lmbDown;
+        }
+    }
+}
+
+static void RenderOverlay(d3d9::IDirect3DDevice9* dev) {
+    if (!dev) return;
+
+    // Poll keyboard & mouse fallback (works on both Windows native & Proton/Wine/DXVK)
+    PollOverlayInput(dev);
+
+    // Poll network & QoL timers every frame even when overlay is minimized
+    ts2::coop::PollNetwork();
+
+    // Host: as soon as a guest on another PC connects, save and stream the neighborhood automatically
+    {
+        static bool s_autoSent = false;
+        const auto& cs = ts2::coop::GetStats();
+        if (!cs.peerConnected) {
+            s_autoSent = false;
+        } else if (!s_autoSent && cs.role == ts2::coop::Role::Host && !cs.peerLoopback &&
+                   cs.xferState != ts2::coop::XferState::Sending && cs.xferState != ts2::coop::XferState::WaitSave) {
+            s_autoSent = true;
+            ts2::se::PushConsoleLog("[Co-op] Convidado conectou: salvando e enviando a vizinhanca automaticamente...");
+            ts2::qol::TriggerSmartSaveNow();
+            ts2::coop::SendNeighborhoodToGuest(6000);
+        }
+    }
+    ts2::qol::TickFrame();
+
+    // Capture full D3D9 state block so we never corrupt The Sims 2 or DXVK materials/shaders
+    d3d9::IDirect3DStateBlock9* stateBlock = nullptr;
+    if (dev->CreateStateBlock(1 /* D3DSBT_ALL */, &stateBlock) >= 0 && stateBlock) {
+        stateBlock->Capture();
+    }
+
+    // Configure D3D9 states for 2D pre-transformed vertices
+    if (g_gameHwnd) {
+        RECT rc = {};
+        if (GetClientRect(g_gameHwnd, &rc) && rc.right > rc.left && rc.bottom > rc.top) {
+            d3d9::D3DVIEWPORT9 vp = {
+                0, 0,
+                static_cast<DWORD>(rc.right - rc.left),
+                static_cast<DWORD>(rc.bottom - rc.top),
+                0.0f, 1.0f
+            };
+            dev->SetViewport(&vp);
+        }
+    }
+    dev->SetVertexShader(nullptr);
+    dev->SetPixelShader(nullptr);
+    dev->SetTexture(0, nullptr);
+    dev->SetFVF(d3d9::D3DFVF_UI_VERT);
+    dev->SetRenderState(d3d9::D3DRS_FILLMODE, d3d9::D3DFILL_SOLID);
+    dev->SetRenderState(d3d9::D3DRS_ZENABLE, FALSE);
+    dev->SetRenderState(d3d9::D3DRS_ZWRITEENABLE, FALSE);
+    dev->SetRenderState(d3d9::D3DRS_LIGHTING, FALSE);
+    dev->SetRenderState(d3d9::D3DRS_FOGENABLE, FALSE);
+    dev->SetRenderState(d3d9::D3DRS_STENCILENABLE, FALSE);
+    dev->SetRenderState(d3d9::D3DRS_CULLMODE, d3d9::D3DCULL_NONE);
+    dev->SetRenderState(d3d9::D3DRS_ALPHATESTENABLE, FALSE);
+    dev->SetRenderState(d3d9::D3DRS_SCISSORTESTENABLE, FALSE);
+    dev->SetRenderState(d3d9::D3DRS_CLIPPLANEENABLE, 0);
+    dev->SetRenderState(d3d9::D3DRS_COLORWRITEENABLE, 0x0Fu);
+    dev->SetRenderState(d3d9::D3DRS_ALPHABLENDENABLE, TRUE);
+    dev->SetRenderState(d3d9::D3DRS_SRCBLEND, d3d9::D3DBLEND_SRCALPHA);
+    dev->SetRenderState(d3d9::D3DRS_DESTBLEND, d3d9::D3DBLEND_INVSRCALPHA);
+    dev->SetTextureStageState(0, d3d9::D3DTSS_COLOROP, d3d9::D3DTOP_SELECTARG1);
+    dev->SetTextureStageState(0, d3d9::D3DTSS_COLORARG1, d3d9::D3DTA_DIFFUSE);
+    dev->SetTextureStageState(0, d3d9::D3DTSS_ALPHAOP, d3d9::D3DTOP_SELECTARG1);
+    dev->SetTextureStageState(0, d3d9::D3DTSS_ALPHAARG1, d3d9::D3DTA_DIFFUSE);
+
+    g_vertCount = 0;
+
+    uint16_t hr = 0, mn = 0, sub = 0, day = 0;
+    ts2::se::GetSimulatorClock(hr, mn, sub, day);
+    const auto& coop = ts2::coop::GetStats();
+
+    // Compact status badge when the panel is hidden
+    if (!g_visible) {
+        char badge[96];
+        _snprintf(badge, sizeof(badge), "%s  $%d  %02u:%02u   F10 = painel",
+                  coop.peerConnected ? "CO-OP" : "SOLO", ts2::se::GetFamilyFunds(), hr, mn);
+        const float bw = static_cast<float>(strlen(badge)) * 6.0f * 1.3f + 16.0f;
+        PushQuad(dev, 12.0f, 12.0f, bw, 24.0f, d3d9::ColorARGB(200, 14, 20, 34));
+        DrawRectBorder(dev, 12.0f, 12.0f, bw, 24.0f, 1.0f, d3d9::ColorARGB(220, 75, 165, 245));
+        DrawText5x7(dev, 20.0f, 19.0f, badge, d3d9::ColorARGB(255, 225, 242, 255), 1.3f);
+        FlushBatch(dev);
+        if (stateBlock) {
+            stateBlock->Apply();
+            stateBlock->Release();
+        }
+        g_mouseClicked = false;
+        return;
+    }
+
+    // Main window
+    const float wx = kWinX, wy = kWinY, ww = kWinW, wh = kWinH;
+    PushQuad(dev, wx, wy, ww, wh, d3d9::ColorARGB(238, 13, 18, 30));
+    PushQuad(dev, wx, wy, ww, 30.0f, d3d9::ColorARGB(248, 22, 46, 86));
+    DrawRectBorder(dev, wx, wy, ww, wh, 2.0f, d3d9::ColorARGB(255, 80, 165, 245));
+
+    DrawText5x7(dev, wx + 12.0f, wy + 9.0f, "THE SIMS 2 SUITE", d3d9::ColorARGB(255, 245, 252, 255), 1.5f);
+    char status[64];
+    _snprintf(status, sizeof(status), "$%d   %02u:%02u   %s", ts2::se::GetFamilyFunds(), hr, mn,
+              coop.peerConnected ? "CO-OP" : "SOLO");
+    const float sw = static_cast<float>(strlen(status)) * 6.0f * 1.4f;
+    DrawText5x7(dev, wx + ww - sw - 12.0f, wy + 10.0f, status,
+                coop.peerConnected ? d3d9::ColorARGB(255, 120, 245, 160) : d3d9::ColorARGB(255, 255, 215, 100), 1.4f);
+
+    // Tabs
+    static const char* kTabs[6] = {"Sim", "Construir", "Jogo", "Graficos", "Co-op", "Avancado"};
+    const float tabY = wy + 38.0f, tabGap = 6.0f;
+    const float tabW = (ww - 24.0f - tabGap * 5.0f) / 6.0f;
+    for (int i = 0; i < 6; ++i) {
+        if (Button(dev, wx + 12.0f + i * (tabW + tabGap), tabY, tabW, 26.0f, kTabs[i], g_activeTab == i)) {
+            g_activeTab = i;
+            g_focusedInputId = 0;
+            g_mouseClicked = false; // do not also click whatever sits under the cursor in the new tab
+        }
+    }
+
+    const float cx = wx + 14.0f, cy = wy + 74.0f, cw = ww - 28.0f;
+    switch (g_activeTab) {
+        case 0:  RenderTabSim(dev, cx, cy, cw);      break;
+        case 1:  RenderTabBuild(dev, cx, cy, cw);    break;
+        case 2:  RenderTabGame(dev, cx, cy, cw);     break;
+        case 3:  RenderTabGraphics(dev, cx, cy, cw); break;
+        case 4:  RenderTabCoop(dev, cx, cy, cw);     break;
+        default: RenderTabAdvanced(dev, cx, cy, cw); break;
+    }
+
+    // Footer
+    PushQuad(dev, wx + 12.0f, wy + wh - 24.0f, ww - 24.0f, 1.0f, d3d9::ColorARGB(150, 60, 95, 150));
+    DrawText5x7(dev, wx + 14.0f, wy + wh - 18.0f, "F10 ocultar    F11 tela cheia    F5 salvar    F9 sincronizar co-op",
+                d3d9::ColorARGB(255, 130, 150, 185), 1.15f);
+
+    FlushBatch(dev);
+    if (stateBlock) {
+        stateBlock->Apply();
+        stateBlock->Release();
+    }
+    g_mouseClicked = false;
+}
+
+// ============================================================================
+// Direct3D 9 VTable Hooks + nGZGraphic4::cDeviceDX Hooks (Windows + Proton/DXVK)
+// ============================================================================
+using Fn_Direct3DCreate9 = d3d9::IDirect3D9* (WINAPI*)(UINT sdkVersion);
+using Fn_CreateDevice    = HRESULT (STDMETHODCALLTYPE*)(
+    d3d9::IDirect3D9*, UINT, DWORD, HWND, DWORD, d3d9::D3DPRESENT_PARAMETERS*, d3d9::IDirect3DDevice9**);
+using Fn_EndScene        = HRESULT (STDMETHODCALLTYPE*)(d3d9::IDirect3DDevice9*);
+using Fn_Reset           = HRESULT (STDMETHODCALLTYPE*)(d3d9::IDirect3DDevice9*, d3d9::D3DPRESENT_PARAMETERS*);
+using Fn_cDeviceDX_EndScene      = uint8_t (__thiscall*)(void* thisPtr);
+using Fn_cDeviceDX_OnTickPresent = uint8_t (__thiscall*)(void* thisPtr, void* msgPtr);
+
+static Fn_Direct3DCreate9         g_origDirect3DCreate9      = nullptr;
+static Fn_CreateDevice            g_origCreateDevice         = nullptr;
+static Fn_EndScene                g_origEndScene             = nullptr;
+static Fn_Reset                   g_origReset                = nullptr;
+static Fn_cDeviceDX_EndScene      g_origCDeviceDXEndScene    = nullptr;
+static Fn_cDeviceDX_OnTickPresent g_origCDeviceDXOnTick      = nullptr;
+static ts2::hook::Detour          g_hookCDeviceDXOnTick      = {};
+
+static bool g_inMainPresentTick = false;
+
+// Hook on nGZGraphic4::cDeviceDX::EndScene (vtable 0xA0F4D518 slot 30 = 0xA0169920)
+// Captures the live IDirect3DDevice9* at [thisPtr + 0x38] even when ijl15.dll was loaded
+// dynamically AFTER Direct3DCreate9 / CreateDevice already executed!
+static uint8_t __fastcall Hooked_cDeviceDX_EndScene(void* thisPtr, void* /*edx*/) {
+    if (thisPtr && g_inMainPresentTick) {
+        uintptr_t base = reinterpret_cast<uintptr_t>(thisPtr);
+        int32_t sceneDepth = *reinterpret_cast<int32_t*>(base + ts2::addr::kOffset_cDeviceDX_SceneDepth);
+        auto* dev = *reinterpret_cast<d3d9::IDirect3DDevice9**>(base + ts2::addr::kOffset_cDeviceDX_D3DDevice);
+        // Only draw when sceneDepth == 1 AND we are inside the main screen OnTickPresent pass
+        // (prevents drawing the HUD into offscreen Sim Portrait / Thumbnail render targets!)
+        if (dev) ts2::fx::AttachDevice(dev);
+        if (sceneDepth == 1 && dev) {
+            static bool s_loggedDevice = false;
+            if (!s_loggedDevice) {
+                s_loggedDevice = true;
+                ts2::hook::Log("[DX9Overlay] Captured live IDirect3DDevice9* = 0x%08X via cDeviceDX::EndScene (this=0x%08X)",
+                               reinterpret_cast<unsigned>(dev), static_cast<unsigned>(base));
+            }
+            RenderOverlay(dev);
+            g_lastRenderedFrame = ++g_frameCounter;
+        }
+    }
+    return g_origCDeviceDXEndScene ? g_origCDeviceDXEndScene(thisPtr) : 1;
+}
+
+// Hook on nGZGraphic4::cDeviceDX::OnTickMessage (0xA0169C70) right around the main frame render + Present()
+static uint8_t __fastcall Hooked_cDeviceDX_OnTickPresent(void* thisPtr, void* /*edx*/, void* msgPtr) {
+    bool isRenderTick = false;
+    if (thisPtr && msgPtr) {
+        uint32_t msgId = *reinterpret_cast<uint32_t*>(reinterpret_cast<uintptr_t>(msgPtr) + 0x04);
+        if (msgId == 3) {
+            isRenderTick = true;
+            g_inMainPresentTick = true;
+        }
+    }
+    uint8_t res = g_origCDeviceDXOnTick ? g_origCDeviceDXOnTick(thisPtr, msgPtr) : 0;
+    if (isRenderTick) {
+        g_inMainPresentTick = false;
+    }
+    return res;
+}
+
+static HRESULT STDMETHODCALLTYPE HookedEndScene(d3d9::IDirect3DDevice9* pDevice) {
+    if (pDevice && g_lastRenderedFrame != g_frameCounter) {
+        RenderOverlay(pDevice);
+        g_lastRenderedFrame = ++g_frameCounter;
+    }
+    return g_origEndScene ? g_origEndScene(pDevice) : 0;
+}
+
+static HRESULT STDMETHODCALLTYPE HookedReset(d3d9::IDirect3DDevice9* pDevice, d3d9::D3DPRESENT_PARAMETERS* pPresentationParameters) {
+    g_vertCount = 0;
+    return g_origReset ? g_origReset(pDevice, pPresentationParameters) : 0;
+}
+
+static HRESULT STDMETHODCALLTYPE HookedCreateDevice(
+    d3d9::IDirect3D9* pD3D,
+    UINT Adapter,
+    DWORD DeviceType,
+    HWND hFocusWindow,
+    DWORD BehaviorFlags,
+    d3d9::D3DPRESENT_PARAMETERS* pPresentationParameters,
+    d3d9::IDirect3DDevice9** ppReturnedDeviceInterface)
+{
+    HRESULT hr = g_origCreateDevice(pD3D, Adapter, DeviceType, hFocusWindow, BehaviorFlags,
+                                    pPresentationParameters, ppReturnedDeviceInterface);
+    if (hr >= 0 && ppReturnedDeviceInterface && *ppReturnedDeviceInterface) {
+        d3d9::IDirect3DDevice9* dev = *ppReturnedDeviceInterface;
+        HWND targetWnd = (pPresentationParameters && pPresentationParameters->hDeviceWindow)
+                         ? pPresentationParameters->hDeviceWindow
+                         : hFocusWindow;
+        EnsureWndProcHooked(targetWnd);
+        ts2::fx::AttachDevice(dev);
+
+        uintptr_t vtableAddr = reinterpret_cast<uintptr_t>(dev->vtable);
+        ts2::hook::HookPointerSlot(vtableAddr + 16 * sizeof(void*),
+                                   reinterpret_cast<void*>(&HookedReset),
+                                   reinterpret_cast<void**>(&g_origReset));
+        ts2::hook::HookPointerSlot(vtableAddr + 42 * sizeof(void*),
+                                   reinterpret_cast<void*>(&HookedEndScene),
+                                   reinterpret_cast<void**>(&g_origEndScene));
+        ts2::hook::Log("[DX9Overlay] Hooked IDirect3DDevice9 (0x%08X): Reset=0x%08X, EndScene=0x%08X",
+                       reinterpret_cast<unsigned>(dev),
+                       reinterpret_cast<unsigned>(g_origReset),
+                       reinterpret_cast<unsigned>(g_origEndScene));
+    }
+    return hr;
+}
+
+static d3d9::IDirect3D9* WINAPI HookedDirect3DCreate9(UINT sdkVersion) {
+    d3d9::IDirect3D9* pD3D = g_origDirect3DCreate9 ? g_origDirect3DCreate9(sdkVersion) : nullptr;
+    if (pD3D && pD3D->vtable) {
+        uintptr_t vtableAddr = reinterpret_cast<uintptr_t>(pD3D->vtable);
+        ts2::hook::HookPointerSlot(vtableAddr + 16 * sizeof(void*),
+                                   reinterpret_cast<void*>(&HookedCreateDevice),
+                                   reinterpret_cast<void**>(&g_origCreateDevice));
+        ts2::hook::Log("[DX9Overlay] Hooked IDirect3D9::CreateDevice (SDKVersion=%u, pD3D=0x%08X)",
+                       sdkVersion, reinterpret_cast<unsigned>(pD3D));
+    }
+    return pD3D;
+}
+
+} // namespace
+
+bool InitializeDx9Overlay() {
+    // 1. Hook IAT slot 0xA0F4974C (Direct3DCreate9) in case D3D9 isn't created yet
+    uintptr_t iatSlot = ts2::addr::Rebase(ts2::addr::kIAT_Direct3DCreate9);
+    bool okIat = ts2::hook::HookPointerSlot(
+        iatSlot,
+        reinterpret_cast<void*>(&HookedDirect3DCreate9),
+        reinterpret_cast<void**>(&g_origDirect3DCreate9)
+    );
+
+    // 2. Hook nGZGraphic4::cDeviceDX vtable slot 30 (EndScene @ 0xA0169920)
+    // This works immediately even when Sims2EP9.exe loads ijl15.dll AFTER D3D9 device creation!
+    uintptr_t cDeviceDxEndSceneSlot = ts2::addr::Rebase(ts2::addr::kVTable_cDeviceDX + 30 * sizeof(void*));
+    bool okVtbl = ts2::hook::HookPointerSlot(
+        cDeviceDxEndSceneSlot,
+        reinterpret_cast<void*>(&Hooked_cDeviceDX_EndScene),
+        reinterpret_cast<void**>(&g_origCDeviceDXEndScene)
+    );
+
+    // 3. Hook nGZGraphic4::cDeviceDX::OnTickMessage (0xA0169C70, 5-byte prologue: 55 8B EC 6A FF)
+    uintptr_t onTickAddr = ts2::addr::Rebase(ts2::addr::kFunc_cDeviceDX_OnTickPresent);
+    bool okTick = ts2::hook::InstallDetour(
+        g_hookCDeviceDXOnTick,
+        onTickAddr,
+        reinterpret_cast<void*>(&Hooked_cDeviceDX_OnTickPresent),
+        5
+    );
+    g_origCDeviceDXOnTick = g_hookCDeviceDXOnTick.Original<Fn_cDeviceDX_OnTickPresent>();
+
+    ts2::hook::Log("[DX9Overlay] Installed hooks: IAT_D3D9=%d, cDeviceDX::EndScene(vt30)=%d (orig=0x%08X), cDeviceDX::OnTick=%d",
+                   okIat ? 1 : 0,
+                   okVtbl ? 1 : 0,
+                   reinterpret_cast<unsigned>(g_origCDeviceDXEndScene),
+                   okTick ? 1 : 0);
+    return okIat && okVtbl;
+}
+
+void ShutdownDx9Overlay() {
+    if (g_gameHwnd && g_origWndProc) {
+        SetWindowLongA(g_gameHwnd, GWL_WNDPROC, reinterpret_cast<LONG>(g_origWndProc));
+        g_origWndProc = nullptr;
+    }
+}
+
+bool IsOverlayVisible() {
+    return g_visible;
+}
+
+void SetOverlayVisible(bool visible) {
+    g_visible = visible;
+}
+
+} // namespace ts2::ui

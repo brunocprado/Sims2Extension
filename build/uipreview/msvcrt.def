@@ -1,0 +1,11 @@
+LIBRARY msvcrt.dll
+EXPORTS
+    _snprintf
+    memcpy
+    memset
+    strlen
+    strncmp
+    strtol
+    sin
+    cos
+    sqrt

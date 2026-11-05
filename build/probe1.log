@@ -1,0 +1,3295 @@
+==== frame 53161 ====
+BeginScene
+  SetTransform 3 [1.4286 0.0000 0.0000 0.0000 | 0.0000 0.0000 0.1111 0.0000 | 0.0000 1.4286 0.0000 0.0000 | 0.0000 0.0000 0.8889 1.0000]
+SetRenderTarget 0 1A985620 128x128 A8R8G8B8 ms=0 usage=1
+SetDepthStencilSurface null
+Clear count=0 flags=0x1 color=0x00FFFFFF z=1.000 stencil=0
+  SetVertexShader 21134838
+  SetPixelShader 0F670D30
+  SetTexture 0 00000000
+  RS 22 = 0x2
+  RS 7 = 0x1
+  RS 14 = 0x1
+  RS 15 = 0x0
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  SetVertexDeclaration 2388E550
+  SetStreamSource 0 vb=2388E610 off=0 stride=44
+  SetStreamSource 1 vb=270B87A8 off=0 stride=16
+  SetIndices 2388E670
+  VSConst c0 x236 [1.429 0.000 0.000 0.000]
+  PSConst c0 x1 [0.630 0.630 0.850 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=399 start=0 n=642 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=0 cull=2 cw=0xF vs=21134838 ps=0F670D30 fvf=0x44
+  VSConst c0 x236 [1.429 0.000 0.000 0.000]
+  PSConst c0 x1 [0.630 0.630 0.850 1.000]
+DrawIndexed t=4 base=399 minIdx=0 nv=161 start=1926 n=264 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=0 cull=2 cw=0xF vs=21134838 ps=0F670D30 fvf=0x44
+  VSConst c0 x236 [1.429 0.000 0.000 0.000]
+  PSConst c0 x1 [0.630 0.630 0.850 1.000]
+DrawIndexed t=4 base=560 minIdx=0 nv=161 start=2718 n=264 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=0 cull=2 cw=0xF vs=21134838 ps=0F670D30 fvf=0x44
+  SetVertexShader 281DAA00
+  SetVertexDeclaration 238BC808
+  SetStreamSource 0 vb=238BC928 off=0 stride=52
+  SetStreamSource 1 vb=238B9B80 off=0 stride=64
+  SetIndices 238BC988
+  VSConst c0 x236 [1.429 0.000 0.000 0.000]
+  PSConst c0 x1 [0.630 0.630 0.850 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=571 start=0 n=737 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=0 cull=2 cw=0xF vs=281DAA00 ps=0F670D30 fvf=0x44
+  SetVertexShader 281E4A20
+  SetVertexDeclaration 23921860
+  SetStreamSource 0 vb=239218F0 off=0 stride=44
+  SetStreamSource 1 vb=238E51E0 off=0 stride=44
+  SetIndices 23921950
+  VSConst c0 x236 [1.429 0.000 0.000 0.000]
+  PSConst c0 x1 [0.630 0.630 0.850 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=2043 start=0 n=2452 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=0 cull=2 cw=0xF vs=281E4A20 ps=0F670D30 fvf=0x44
+  VSConst c0 x236 [1.429 0.000 0.000 0.000]
+  PSConst c0 x1 [0.630 0.630 0.850 1.000]
+DrawIndexed t=4 base=2043 minIdx=0 nv=16 start=7356 n=16 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=0 cull=2 cw=0xF vs=281E4A20 ps=0F670D30 fvf=0x44
+  SetTexture 0 1A9855E0
+  SetVertexShader 04078F60
+  RS 22 = 0x1
+  RS 7 = 0x0
+  RS 14 = 0x0
+  RS 23 = 0x8
+  RS 27 = 0x1
+  RS 20 = 0x2
+  SetPixelShader 00000000
+  SetVertexDeclaration 0410FD30
+  SetStreamSource 0 vb=0410FE80 off=0 stride=20
+  SetIndices 0410FEB0
+  SetStreamSource 1 vb=00000000 off=0 stride=0
+SetRenderTarget 0 1A9856A0 128x128 A8R8G8B8 ms=0 usage=1
+Clear count=0 flags=0x1 color=0x00000000 z=1.000 stencil=0
+  VSConst c0 x2 [0.016 -0.016 0.000 0.000]
+DrawIndexed t=4 base=292 minIdx=0 nv=4 start=786 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=296 minIdx=0 nv=4 start=792 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=300 minIdx=0 nv=4 start=798 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=304 minIdx=0 nv=4 start=804 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=308 minIdx=0 nv=4 start=810 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=312 minIdx=0 nv=4 start=816 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=316 minIdx=0 nv=4 start=822 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=320 minIdx=0 nv=4 start=828 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=324 minIdx=0 nv=4 start=834 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=328 minIdx=0 nv=4 start=840 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=332 minIdx=0 nv=4 start=846 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=336 minIdx=0 nv=4 start=852 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=340 minIdx=0 nv=4 start=858 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=344 minIdx=0 nv=4 start=864 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=348 minIdx=0 nv=4 start=870 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=352 minIdx=0 nv=4 start=876 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=356 minIdx=0 nv=4 start=882 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=360 minIdx=0 nv=4 start=888 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=364 minIdx=0 nv=4 start=894 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=368 minIdx=0 nv=4 start=900 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=372 minIdx=0 nv=4 start=906 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=376 minIdx=0 nv=4 start=912 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=380 minIdx=0 nv=4 start=918 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=384 minIdx=0 nv=4 start=924 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=388 minIdx=0 nv=4 start=930 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=392 minIdx=0 nv=4 start=936 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=396 minIdx=0 nv=4 start=942 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=400 minIdx=0 nv=4 start=948 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=404 minIdx=0 nv=4 start=954 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=408 minIdx=0 nv=4 start=960 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=412 minIdx=0 nv=4 start=966 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=416 minIdx=0 nv=4 start=972 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=420 minIdx=0 nv=4 start=978 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=424 minIdx=0 nv=4 start=984 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=428 minIdx=0 nv=4 start=990 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=432 minIdx=0 nv=4 start=996 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=436 minIdx=0 nv=4 start=1002 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=440 minIdx=0 nv=4 start=1008 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=444 minIdx=0 nv=4 start=1014 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=448 minIdx=0 nv=4 start=1020 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=452 minIdx=0 nv=4 start=1026 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=456 minIdx=0 nv=4 start=1032 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=460 minIdx=0 nv=4 start=1038 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=464 minIdx=0 nv=4 start=1044 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=468 minIdx=0 nv=4 start=1050 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=472 minIdx=0 nv=4 start=1056 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=476 minIdx=0 nv=4 start=1062 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=480 minIdx=0 nv=4 start=1068 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=484 minIdx=0 nv=4 start=1074 n=2 z=0 zw=0 zf=8 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+SetRenderTarget 0 02CC0D60 1280x1024 X8R8G8B8 ms=0 usage=1
+SetDepthStencilSurface 02CC0DA0 1280x1024 D24S8 ms=0 usage=2
+Clear count=0 flags=0x7 color=0xFF000000 z=1.000 stencil=0
+  SetTexture 0 1ABEC2B0
+  SetVertexShader 267ED548
+  RS 19 = 0x5
+  RS 20 = 0x6
+  RS 52 = 0x1
+  RS 7 = 0x1
+  RS 23 = 0x4
+  SetVertexDeclaration 22FC4408
+  SetStreamSource 0 vb=2323E220 off=0 stride=24
+  SetIndices 2323E250
+  VSConst c0 x8 [0.016 -0.016 0.000 0.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=4 start=0 n=2 z=1 zw=0 zf=4 ab=1 at=0 lit=0 st=1 cull=1 cw=0xF vs=267ED548 ps=00000000 fvf=0x44
+  RS 22 = 0x3
+  RS 23 = 0x2
+  RS 19 = 0x9
+  SetTexture 0 00000000
+  RS 14 = 0x1
+  RS 20 = 0x1
+  SetVertexShader 00000000
+  SetVertexDeclaration 19BA1EA8
+  SetStreamSource 0 vb=19BA1ED8 off=0 stride=12
+  SetIndices 19BA1F68
+DrawIndexed t=4 base=0 minIdx=0 nv=8 start=0 n=8 z=1 zw=1 zf=2 ab=1 at=0 lit=0 st=1 cull=3 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTexture 0 26CD5058
+  RS 19 = 0x5
+  RS 20 = 0x6
+  RS 22 = 0x2
+  RS 23 = 0x4
+  SetVertexDeclaration 23046D08
+  SetStreamSource 0 vb=19ADD0B8 off=0 stride=36
+  SetIndices 19ADD3E8
+DrawIndexed t=4 base=0 minIdx=0 nv=6 start=0 n=2 z=1 zw=1 zf=4 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTexture 0 0D6AD860
+DrawIndexed t=4 base=6 minIdx=0 nv=354 start=6 n=118 z=1 zw=1 zf=4 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTexture 0 258660E8
+DrawIndexed t=4 base=360 minIdx=0 nv=6 start=360 n=2 z=1 zw=1 zf=4 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTexture 0 0EB4A220
+DrawIndexed t=4 base=366 minIdx=0 nv=12 start=366 n=4 z=1 zw=1 zf=4 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTexture 0 17FF4A90
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+  SetVertexDeclaration 19AE5040
+  SetStreamSource 0 vb=19AE50A0 off=0 stride=52
+  SetIndices 19AE50D0
+DrawIndexed t=4 base=0 minIdx=0 nv=196 start=0 n=308 z=1 zw=1 zf=4 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTexture 0 0EB4B8D0
+  SetTexture 1 0EB4BBD0
+  RS 14 = 0x0
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+DrawIndexed t=4 base=0 minIdx=0 nv=196 start=0 n=308 z=1 zw=0 zf=4 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTexture 1 0EB4BFE8
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+DrawIndexed t=4 base=0 minIdx=0 nv=196 start=0 n=308 z=1 zw=0 zf=4 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTexture 0 17FF4A90
+  SetTexture 1 00000000
+  RS 14 = 0x1
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+  SetStreamSource 0 vb=19AE5400 off=0 stride=52
+  SetIndices 19AE5430
+DrawIndexed t=4 base=0 minIdx=0 nv=417 start=0 n=584 z=1 zw=1 zf=4 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTexture 0 0EB4B8D0
+  SetTexture 1 0EB4BBD0
+  RS 14 = 0x0
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+DrawIndexed t=4 base=0 minIdx=0 nv=417 start=0 n=584 z=1 zw=0 zf=4 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTexture 1 0EB4BFE8
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+DrawIndexed t=4 base=0 minIdx=0 nv=417 start=0 n=584 z=1 zw=0 zf=4 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTexture 0 17FF4A90
+  SetTexture 1 00000000
+  RS 14 = 0x1
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+  SetStreamSource 0 vb=19AE5250 off=0 stride=52
+  SetIndices 19AE5280
+DrawIndexed t=4 base=0 minIdx=0 nv=67 start=0 n=78 z=1 zw=1 zf=4 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTexture 0 0EB4B8D0
+  SetTexture 1 0EB4BBD0
+  RS 14 = 0x0
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+DrawIndexed t=4 base=0 minIdx=0 nv=67 start=0 n=78 z=1 zw=0 zf=4 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTexture 1 0EB4BFE8
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+DrawIndexed t=4 base=0 minIdx=0 nv=67 start=0 n=78 z=1 zw=0 zf=4 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+  SetTexture 0 17FF4A90
+  SetTexture 1 17FF4E10
+  SetVertexShader 17FF54F0
+  SetPixelShader 17FF3928
+  RS 14 = 0x1
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  SetVertexDeclaration 211DEE70
+  SetStreamSource 0 vb=1A987C30 off=0 stride=32
+  SetIndices 1A987C60
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+DrawIndexed t=4 base=0 minIdx=0 nv=145 start=0 n=256 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=17FF54F0 ps=17FF3928 fvf=0x44
+DrawIndexed t=4 base=145 minIdx=0 nv=145 start=768 n=256 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=17FF54F0 ps=17FF3928 fvf=0x44
+DrawIndexed t=4 base=290 minIdx=0 nv=145 start=1536 n=256 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=17FF54F0 ps=17FF3928 fvf=0x44
+DrawIndexed t=4 base=546 minIdx=0 nv=145 start=2880 n=256 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=17FF54F0 ps=17FF3928 fvf=0x44
+DrawIndexed t=4 base=691 minIdx=0 nv=137 start=3648 n=240 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=17FF54F0 ps=17FF3928 fvf=0x44
+DrawIndexed t=4 base=828 minIdx=0 nv=111 start=4368 n=192 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=17FF54F0 ps=17FF3928 fvf=0x44
+DrawIndexed t=4 base=939 minIdx=0 nv=107 start=4944 n=184 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=17FF54F0 ps=17FF3928 fvf=0x44
+DrawIndexed t=4 base=1046 minIdx=0 nv=13 start=5496 n=16 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=17FF54F0 ps=17FF3928 fvf=0x44
+DrawIndexed t=4 base=1059 minIdx=0 nv=43 start=5544 n=64 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=17FF54F0 ps=17FF3928 fvf=0x44
+DrawIndexed t=4 base=1255 minIdx=0 nv=145 start=6528 n=256 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=17FF54F0 ps=17FF3928 fvf=0x44
+DrawIndexed t=4 base=1400 minIdx=0 nv=145 start=7296 n=256 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=17FF54F0 ps=17FF3928 fvf=0x44
+  SetTexture 0 1BE17C18
+  SetTexture 1 1BE17ED8
+  SetTexture 2 1BE18E10
+  SetVertexShader 1BE167B0
+  SetPixelShader 17FF50E8
+  RS 14 = 0x0
+  RS 23 = 0x3
+  RS 15 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetStreamSource 0 vb=1A9DB620 off=0 stride=32
+  SetIndices 1A9DB650
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+DrawIndexed t=4 base=0 minIdx=0 nv=145 start=0 n=256 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=278 minIdx=0 nv=143 start=1464 n=252 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=1637 minIdx=0 nv=14 start=8172 n=16 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=1735 minIdx=0 nv=128 start=8580 n=224 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=2118 minIdx=0 nv=117 start=10560 n=196 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=2584 minIdx=0 nv=11 start=12948 n=12 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=3355 minIdx=0 nv=5 start=16608 n=4 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+  SetTexture 0 236E8400
+  SetTexture 1 236E86C0
+  SetTexture 2 1BE19DE8
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+DrawIndexed t=4 base=145 minIdx=0 nv=133 start=768 n=232 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=421 minIdx=0 nv=129 start=2220 n=216 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=550 minIdx=0 nv=127 start=2868 n=220 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=1863 minIdx=0 nv=145 start=9252 n=256 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=2359 minIdx=0 nv=118 start=11796 n=200 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=2595 minIdx=0 nv=56 start=12984 n=84 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=3287 minIdx=0 nv=68 start=16272 n=112 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=3434 minIdx=0 nv=8 start=16896 n=8 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=3838 minIdx=0 nv=54 start=18888 n=84 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+  SetTexture 0 1C5A4948
+  SetTexture 1 1C5A4C08
+  SetTexture 2 1C5A50A0
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+DrawIndexed t=4 base=677 minIdx=0 nv=127 start=3528 n=220 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=2651 minIdx=0 nv=98 start=13236 n=168 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=3064 minIdx=0 nv=98 start=15216 n=164 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=3406 minIdx=0 nv=20 start=16800 n=24 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+  SetTexture 0 25F95550
+  SetTexture 1 25F95890
+  SetTexture 2 25F95CA8
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+DrawIndexed t=4 base=804 minIdx=0 nv=90 start=4188 n=148 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=1651 minIdx=0 nv=32 start=8220 n=48 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=1683 minIdx=0 nv=41 start=8364 n=60 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=2008 minIdx=0 nv=110 start=10020 n=180 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=2235 minIdx=0 nv=124 start=11148 n=216 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=2749 minIdx=0 nv=71 start=13740 n=116 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=2982 minIdx=0 nv=82 start=14820 n=132 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=3360 minIdx=0 nv=8 start=16620 n=8 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=3426 minIdx=0 nv=8 start=16872 n=8 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=3755 minIdx=0 nv=83 start=18480 n=136 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+  SetTexture 0 25F972E8
+  SetTexture 1 25F975A8
+  SetTexture 2 25F97A40
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+DrawIndexed t=4 base=1162 minIdx=0 nv=115 start=5880 n=196 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=2477 minIdx=0 nv=107 start=12396 n=184 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=3173 minIdx=0 nv=70 start=15744 n=116 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=3368 minIdx=0 nv=5 start=16644 n=4 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+DrawIndexed t=4 base=3373 minIdx=0 nv=33 start=16656 n=48 z=1 zw=0 zf=3 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=1BE167B0 ps=17FF50E8 fvf=0x44
+  SetTexture 0 267DCE08
+  RS 19 = 0x9
+  SetTexture 1 00000000
+  SetTexture 2 00000000
+  RS 23 = 0x4
+  SetVertexShader 00000000
+  SetPixelShader 00000000
+  SetTransform 256 [0.8192 0.5563 0.1397 0.0000 | -0.5736 0.7945 0.1996 0.0000 | -0.0000 -0.2436 0.9699 0.0000 | 27.9688 63.5322 12.1444 1.0000]
+  SetVertexDeclaration 23ED89C8
+  SetStreamSource 0 vb=19765150 off=0 stride=40
+  SetIndices 19765240
+DrawIndexed t=4 base=159 minIdx=0 nv=123 start=582 n=228 z=1 zw=0 zf=4 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTexture 0 2695A4E0
+  RS 19 = 0x2
+DrawIndexed t=4 base=159 minIdx=0 nv=123 start=582 n=228 z=1 zw=0 zf=4 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTexture 0 24B13130
+  SetVertexShader 25F96E20
+  SetPixelShader 25F96A28
+  RS 23 = 0x3
+  RS 19 = 0x9
+  RS 15 = 0x0
+  RS 20 = 0x1
+  SetVertexDeclaration 211DEE70
+  SetStreamSource 0 vb=1A987C30 off=0 stride=32
+  SetIndices 1A987C60
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c0 x1 [0.900 0.900 0.900 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=145 start=0 n=256 z=1 zw=0 zf=3 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=25F96E20 ps=25F96A28 fvf=0x44
+DrawIndexed t=4 base=145 minIdx=0 nv=145 start=768 n=256 z=1 zw=0 zf=3 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=25F96E20 ps=25F96A28 fvf=0x44
+DrawIndexed t=4 base=290 minIdx=0 nv=145 start=1536 n=256 z=1 zw=0 zf=3 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=25F96E20 ps=25F96A28 fvf=0x44
+DrawIndexed t=4 base=546 minIdx=0 nv=145 start=2880 n=256 z=1 zw=0 zf=3 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=25F96E20 ps=25F96A28 fvf=0x44
+DrawIndexed t=4 base=691 minIdx=0 nv=137 start=3648 n=240 z=1 zw=0 zf=3 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=25F96E20 ps=25F96A28 fvf=0x44
+DrawIndexed t=4 base=828 minIdx=0 nv=111 start=4368 n=192 z=1 zw=0 zf=3 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=25F96E20 ps=25F96A28 fvf=0x44
+DrawIndexed t=4 base=939 minIdx=0 nv=107 start=4944 n=184 z=1 zw=0 zf=3 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=25F96E20 ps=25F96A28 fvf=0x44
+DrawIndexed t=4 base=1046 minIdx=0 nv=13 start=5496 n=16 z=1 zw=0 zf=3 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=25F96E20 ps=25F96A28 fvf=0x44
+DrawIndexed t=4 base=1059 minIdx=0 nv=43 start=5544 n=64 z=1 zw=0 zf=3 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=25F96E20 ps=25F96A28 fvf=0x44
+DrawIndexed t=4 base=1255 minIdx=0 nv=145 start=6528 n=256 z=1 zw=0 zf=3 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=25F96E20 ps=25F96A28 fvf=0x44
+DrawIndexed t=4 base=1400 minIdx=0 nv=145 start=7296 n=256 z=1 zw=0 zf=3 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=25F96E20 ps=25F96A28 fvf=0x44
+  SetTexture 0 1C829ED8
+  SetTexture 1 24B13130
+  SetVertexShader 25BED140
+  SetPixelShader 0D6E77E0
+  RS 14 = 0x1
+  RS 23 = 0x4
+  RS 27 = 0x0
+  RS 19 = 0x2
+  SetVertexDeclaration 23ED89C8
+  SetStreamSource 0 vb=02D05198 off=0 stride=40
+  SetIndices 02D051F8
+  VSConst c0 x8 [-1.978 1.385 -0.000 2.266]
+  PSConst c0 x3 [0.800 0.800 0.800 1.000]
+DrawIndexed t=4 base=11037 minIdx=0 nv=432 start=7110 n=144 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=25BED140 ps=0D6E77E0 fvf=0x44
+  VSConst c0 x8 [-1.978 1.385 -0.000 2.266]
+  PSConst c0 x3 [0.800 0.800 0.800 1.000]
+DrawIndexed t=4 base=11469 minIdx=0 nv=240 start=7542 n=80 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=25BED140 ps=0D6E77E0 fvf=0x44
+  VSConst c0 x8 [-1.978 1.385 -0.000 2.266]
+  PSConst c0 x3 [0.800 0.800 0.800 1.000]
+DrawIndexed t=4 base=11709 minIdx=0 nv=48 start=7782 n=16 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=25BED140 ps=0D6E77E0 fvf=0x44
+  VSConst c0 x8 [-1.978 1.385 -0.000 2.266]
+  PSConst c0 x3 [0.800 0.800 0.800 1.000]
+DrawIndexed t=4 base=11757 minIdx=0 nv=192 start=7830 n=64 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=25BED140 ps=0D6E77E0 fvf=0x44
+  VSConst c0 x8 [-1.978 1.385 -0.000 2.266]
+  PSConst c0 x3 [0.800 0.800 0.800 1.000]
+DrawIndexed t=4 base=11949 minIdx=0 nv=24 start=8022 n=8 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=25BED140 ps=0D6E77E0 fvf=0x44
+  VSConst c0 x8 [-1.978 1.385 -0.000 2.266]
+  PSConst c0 x3 [0.800 0.800 0.800 1.000]
+DrawIndexed t=4 base=11973 minIdx=0 nv=768 start=8046 n=256 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=25BED140 ps=0D6E77E0 fvf=0x44
+  VSConst c0 x8 [-1.978 1.385 -0.000 2.266]
+  PSConst c0 x3 [0.800 0.800 0.800 1.000]
+DrawIndexed t=4 base=12741 minIdx=0 nv=768 start=8814 n=256 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=25BED140 ps=0D6E77E0 fvf=0x44
+  SetTexture 0 1973F598
+  VSConst c0 x8 [-1.978 1.385 -0.000 2.266]
+  PSConst c0 x4 [0.800 0.800 0.800 1.000]
+DrawIndexed t=4 base=13509 minIdx=0 nv=48 start=9582 n=16 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=25BED140 ps=0D6E77E0 fvf=0x44
+  VSConst c0 x8 [-1.978 1.385 -0.000 2.266]
+  PSConst c0 x4 [0.800 0.800 0.800 1.000]
+DrawIndexed t=4 base=13557 minIdx=0 nv=582 start=9630 n=194 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=25BED140 ps=0D6E77E0 fvf=0x44
+  VSConst c0 x8 [-1.978 1.385 -0.000 2.266]
+  PSConst c0 x4 [0.800 0.800 0.800 1.000]
+DrawIndexed t=4 base=14139 minIdx=0 nv=96 start=10212 n=32 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=25BED140 ps=0D6E77E0 fvf=0x44
+  VSConst c0 x8 [-1.978 1.385 -0.000 2.266]
+  PSConst c0 x4 [0.800 0.800 0.800 1.000]
+DrawIndexed t=4 base=14235 minIdx=0 nv=24 start=10308 n=8 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=25BED140 ps=0D6E77E0 fvf=0x44
+  VSConst c0 x8 [-1.978 1.385 -0.000 2.266]
+  PSConst c0 x4 [0.800 0.800 0.800 1.000]
+DrawIndexed t=4 base=14259 minIdx=0 nv=138 start=10332 n=46 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=25BED140 ps=0D6E77E0 fvf=0x44
+  SetTexture 0 0EAECBA0
+  VSConst c0 x8 [-1.978 1.385 -0.000 2.266]
+  PSConst c0 x4 [0.800 0.800 0.800 1.000]
+DrawIndexed t=4 base=14397 minIdx=0 nv=21 start=10470 n=7 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=25BED140 ps=0D6E77E0 fvf=0x44
+  VSConst c0 x8 [-1.978 1.385 -0.000 2.266]
+  PSConst c0 x4 [0.800 0.800 0.800 1.000]
+DrawIndexed t=4 base=14418 minIdx=0 nv=12 start=10491 n=4 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=25BED140 ps=0D6E77E0 fvf=0x44
+  VSConst c0 x8 [-1.978 1.385 -0.000 2.266]
+  PSConst c0 x4 [0.800 0.800 0.800 1.000]
+DrawIndexed t=4 base=14430 minIdx=0 nv=12 start=10503 n=4 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=25BED140 ps=0D6E77E0 fvf=0x44
+  VSConst c0 x8 [-1.978 1.385 -0.000 2.266]
+  PSConst c0 x4 [0.800 0.800 0.800 1.000]
+DrawIndexed t=4 base=14442 minIdx=0 nv=30 start=10515 n=10 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=25BED140 ps=0D6E77E0 fvf=0x44
+  SetTexture 0 0EAECEA0
+  VSConst c0 x8 [-1.978 1.385 -0.000 2.266]
+  PSConst c0 x4 [0.800 0.800 0.800 1.000]
+DrawIndexed t=4 base=14472 minIdx=0 nv=60 start=10545 n=20 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=25BED140 ps=0D6E77E0 fvf=0x44
+  VSConst c0 x8 [-1.978 1.385 -0.000 2.266]
+  PSConst c0 x4 [0.800 0.800 0.800 1.000]
+DrawIndexed t=4 base=14532 minIdx=0 nv=396 start=10605 n=132 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=25BED140 ps=0D6E77E0 fvf=0x44
+  SetTexture 0 259D4998
+  VSConst c0 x8 [-1.978 1.385 -0.000 2.266]
+  PSConst c0 x4 [0.800 0.800 0.800 1.000]
+DrawIndexed t=4 base=14928 minIdx=0 nv=372 start=11001 n=124 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=25BED140 ps=0D6E77E0 fvf=0x44
+  VSConst c0 x8 [-1.978 1.385 -0.000 2.266]
+  PSConst c0 x4 [0.800 0.800 0.800 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=240 start=11373 n=80 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=25BED140 ps=0D6E77E0 fvf=0x44
+  SetTexture 0 259D4CD8
+  VSConst c0 x8 [-1.978 1.385 -0.000 2.266]
+  PSConst c0 x4 [0.800 0.800 0.800 1.000]
+DrawIndexed t=4 base=240 minIdx=0 nv=27 start=11613 n=9 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=25BED140 ps=0D6E77E0 fvf=0x44
+  VSConst c0 x8 [-1.978 1.385 -0.000 2.266]
+  PSConst c0 x4 [0.800 0.800 0.800 1.000]
+DrawIndexed t=4 base=267 minIdx=0 nv=36 start=11640 n=12 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=25BED140 ps=0D6E77E0 fvf=0x44
+  VSConst c0 x8 [-1.978 1.385 -0.000 2.266]
+  PSConst c0 x4 [0.800 0.800 0.800 1.000]
+DrawIndexed t=4 base=303 minIdx=0 nv=36 start=11676 n=12 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=25BED140 ps=0D6E77E0 fvf=0x44
+  VSConst c0 x8 [-1.978 1.385 -0.000 2.266]
+  PSConst c0 x4 [0.800 0.800 0.800 1.000]
+DrawIndexed t=4 base=339 minIdx=0 nv=18 start=11712 n=6 z=1 zw=1 zf=4 ab=0 at=0 lit=0 st=1 cull=2 cw=0xF vs=25BED140 ps=0D6E77E0 fvf=0x44
+  SetTexture 0 19C062A8
+  SetVertexShader 19C05D20
+  SetPixelShader 19C073E0
+  RS 14 = 0x0
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 1 00000000
+  SetVertexDeclaration 211DEE70
+  SetStreamSource 0 vb=19BFB6F0 off=0 stride=32
+  SetIndices 19BFB720
+  VSConst c0 x4 [0.210 2.405 -0.000 55.179]
+DrawIndexed t=4 base=0 minIdx=0 nv=4 start=0 n=2 z=1 zw=0 zf=4 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=19C05D20 ps=19C073E0 fvf=0x44
+  VSConst c0 x4 [-2.332 -0.625 -0.000 18.925]
+DrawIndexed t=4 base=0 minIdx=0 nv=4 start=0 n=2 z=1 zw=0 zf=4 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=19C05D20 ps=19C073E0 fvf=0x44
+  SetStreamSource 0 vb=19C01668 off=0 stride=32
+  SetIndices 19C01698
+  VSConst c0 x4 [-0.210 2.405 -0.000 -23.001]
+DrawIndexed t=4 base=42 minIdx=0 nv=4 start=54 n=2 z=1 zw=0 zf=4 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=19C05D20 ps=19C073E0 fvf=0x44
+  SetStreamSource 0 vb=19930790 off=0 stride=32
+  SetIndices 19930820
+  VSConst c0 x4 [1.978 -1.385 -0.000 67.523]
+DrawIndexed t=4 base=116 minIdx=0 nv=56 start=84 n=2 z=1 zw=0 zf=4 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=19C05D20 ps=19C073E0 fvf=0x44
+  SetTexture 0 0D1BD070
+  SetTexture 1 24B13130
+  SetVertexShader 25DFD9F0
+  SetPixelShader 26B756F0
+  RS 23 = 0x2
+  SetVertexDeclaration 23ED89C8
+  SetStreamSource 0 vb=1AA177E8 off=0 stride=40
+  SetIndices 1AA17818
+  VSConst c0 x7 [-0.819 0.574 -0.000 0.939]
+  PSConst c0 x1 [0.800 0.800 0.800 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=12 start=0 n=4 z=1 zw=0 zf=2 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=25DFD9F0 ps=26B756F0 fvf=0x44
+  SetTexture 0 26B72A38
+  VSConst c0 x7 [-0.819 0.574 -0.000 0.939]
+  PSConst c0 x1 [0.800 0.800 0.800 1.000]
+DrawIndexed t=4 base=12 minIdx=0 nv=12 start=12 n=4 z=1 zw=0 zf=2 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=25DFD9F0 ps=26B756F0 fvf=0x44
+  SetTexture 0 1C8F4970
+  SetVertexShader 17FFD8E8
+  RS 22 = 0x1
+  SetTexture 1 00000000
+  RS 14 = 0x1
+  RS 23 = 0x4
+  RS 19 = 0x2
+  RS 20 = 0x1
+  SetPixelShader 00000000
+  SetVertexDeclaration 22FC4408
+  SetStreamSource 0 vb=19765150 off=0 stride=24
+  SetIndices 19765240
+  VSConst c0 x4 [1.978 -1.385 -0.000 67.523]
+DrawIndexed t=4 base=0 minIdx=0 nv=14 start=0 n=6 z=1 zw=1 zf=4 ab=1 at=0 lit=0 st=1 cull=1 cw=0xF vs=17FFD8E8 ps=00000000 fvf=0x44
+  SetTexture 0 1C8F4C30
+  RS 15 = 0x1
+  RS 20 = 0x6
+  RS 22 = 0x2
+  SetVertexShader 00000000
+  SetVertexDeclaration 21228CA8
+  SetStreamSource 0 vb=19765150 off=0 stride=20
+DrawIndexed t=4 base=17 minIdx=0 nv=144 start=18 n=34 z=1 zw=1 zf=4 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTexture 0 1C8F4EB0
+DrawIndexed t=4 base=65 minIdx=0 nv=164 start=120 n=36 z=1 zw=1 zf=4 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTexture 0 21134F10
+DrawIndexed t=4 base=93 minIdx=0 nv=144 start=228 n=22 z=1 zw=1 zf=4 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTexture 0 21135190
+DrawIndexed t=4 base=141 minIdx=0 nv=100 start=294 n=16 z=1 zw=1 zf=4 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTexture 0 267DC8C8
+DrawIndexed t=4 base=209 minIdx=0 nv=8 start=342 n=4 z=1 zw=1 zf=4 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTexture 0 267DCB88
+  RS 137 = 0x0
+DrawIndexed t=4 base=241 minIdx=0 nv=76 start=354 n=38 z=1 zw=1 zf=4 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=241 minIdx=0 nv=76 start=468 n=38 z=1 zw=1 zf=4 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTexture 0 2695A7E0
+  SetVertexShader 267907D0
+  SetPixelShader 0F395518
+  RS 137 = 0x1
+  RS 15 = 0x0
+  RS 27 = 0x0
+  RS 20 = 0x1
+  SetVertexDeclaration 211DEE70
+  SetStreamSource 0 vb=19930790 off=0 stride=32
+  SetIndices 19930820
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=58 start=0 n=16 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=267907D0 ps=0F395518 fvf=0x44
+DrawIndexed t=4 base=58 minIdx=0 nv=58 start=48 n=12 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=267907D0 ps=0F395518 fvf=0x44
+  SetPixelShader 0F589610
+  SetTexture 0 00000000
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=172 minIdx=0 nv=192 start=90 n=48 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=267907D0 ps=0F589610 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=364 minIdx=0 nv=576 start=234 n=240 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=267907D0 ps=0F589610 fvf=0x44
+  SetTexture 0 1C829BD8
+  SetPixelShader 0F395518
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=940 minIdx=0 nv=56 start=954 n=35 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=267907D0 ps=0F395518 fvf=0x44
+  RS 14 = 0x0
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 00000000
+  SetVertexShader 00000000
+  SetPixelShader 00000000
+  SetTransform 256 [-0.8192 -0.5563 -0.1397 0.0000 | 0.5736 -0.7945 -0.1996 0.0000 | -0.0000 -0.2436 0.9699 0.0000 | 0.9385 33.3356 4.5595 1.0000]
+  SetVertexDeclaration 22FC4408
+  SetStreamSource 0 vb=1A8E0630 off=0 stride=24
+  SetIndices 1A8E0660
+DrawIndexed t=4 base=0 minIdx=0 nv=24 start=0 n=12 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTexture 0 1973F318
+  SetVertexShader 267907D0
+  SetPixelShader 0F395518
+  RS 14 = 0x1
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  SetVertexDeclaration 211DEE70
+  SetStreamSource 0 vb=247BA3F0 off=0 stride=32
+  SetIndices 247BA420
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=60 start=0 n=30 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=267907D0 ps=0F395518 fvf=0x44
+DrawIndexed t=4 base=60 minIdx=0 nv=36 start=90 n=18 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=267907D0 ps=0F395518 fvf=0x44
+DrawIndexed t=4 base=96 minIdx=0 nv=8 start=144 n=4 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=267907D0 ps=0F395518 fvf=0x44
+DrawIndexed t=4 base=104 minIdx=0 nv=32 start=156 n=16 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=267907D0 ps=0F395518 fvf=0x44
+DrawIndexed t=4 base=136 minIdx=0 nv=16 start=204 n=8 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=267907D0 ps=0F395518 fvf=0x44
+DrawIndexed t=4 base=152 minIdx=0 nv=12 start=228 n=6 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=267907D0 ps=0F395518 fvf=0x44
+DrawIndexed t=4 base=164 minIdx=0 nv=36 start=246 n=18 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=267907D0 ps=0F395518 fvf=0x44
+DrawIndexed t=4 base=200 minIdx=0 nv=20 start=300 n=10 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=267907D0 ps=0F395518 fvf=0x44
+DrawIndexed t=4 base=220 minIdx=0 nv=16 start=330 n=8 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=267907D0 ps=0F395518 fvf=0x44
+DrawIndexed t=4 base=236 minIdx=0 nv=12 start=354 n=6 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=267907D0 ps=0F395518 fvf=0x44
+DrawIndexed t=4 base=248 minIdx=0 nv=12 start=372 n=6 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=267907D0 ps=0F395518 fvf=0x44
+DrawIndexed t=4 base=260 minIdx=0 nv=20 start=390 n=10 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=267907D0 ps=0F395518 fvf=0x44
+  SetTexture 0 2324D4F0
+  SetVertexShader 259D5030
+  SetPixelShader 0F48B540
+  SetStreamSource 0 vb=1AA1A8E0 off=0 stride=32
+  SetIndices 1AA1AAC0
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=914 start=0 n=904 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=914 minIdx=0 nv=914 start=2712 n=904 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=1828 minIdx=0 nv=1828 start=5424 n=1808 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=3656 minIdx=0 nv=914 start=10848 n=904 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=4570 minIdx=0 nv=914 start=13560 n=904 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=5484 minIdx=0 nv=914 start=16272 n=904 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=7312 minIdx=0 nv=1828 start=21696 n=1808 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=9140 minIdx=0 nv=914 start=27120 n=904 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=10054 minIdx=0 nv=914 start=29832 n=904 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=10968 minIdx=0 nv=914 start=32544 n=904 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  SetStreamSource 0 vb=1AA1AAF0 off=0 stride=32
+  SetIndices 1AA1AB20
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=914 start=0 n=904 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=3656 minIdx=0 nv=914 start=10848 n=904 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=4570 minIdx=0 nv=914 start=13560 n=904 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=5484 minIdx=0 nv=914 start=16272 n=904 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=6398 minIdx=0 nv=914 start=18984 n=904 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  SetStreamSource 0 vb=1AA1AB50 off=0 stride=32
+  SetIndices 1AA1AB80
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=2742 minIdx=0 nv=914 start=8136 n=904 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  SetStreamSource 0 vb=1A517FB0 off=0 stride=32
+  SetIndices 1A517FE0
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=2470 minIdx=0 nv=247 start=7320 n=244 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=2717 minIdx=0 nv=494 start=8052 n=488 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=3211 minIdx=0 nv=494 start=9516 n=488 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=3705 minIdx=0 nv=494 start=10980 n=488 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=4199 minIdx=0 nv=494 start=12444 n=488 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=5187 minIdx=0 nv=494 start=15372 n=488 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=5928 minIdx=0 nv=494 start=17568 n=488 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=6422 minIdx=0 nv=247 start=19032 n=244 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=6669 minIdx=0 nv=494 start=19764 n=488 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=7163 minIdx=0 nv=494 start=21228 n=488 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  SetVertexShader 1C3E2690
+  SetStreamSource 0 vb=1AA1ABB0 off=0 stride=32
+  SetIndices 1AA1ABE0
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=914 start=0 n=904 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=1C3E2690 ps=0F48B540 fvf=0x44
+  SetVertexShader 1C3E3450
+  SetStreamSource 0 vb=1AA1AC10 off=0 stride=32
+  SetIndices 1AA1AC40
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=914 start=0 n=904 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=1C3E3450 ps=0F48B540 fvf=0x44
+  SetStreamSource 0 vb=1A517FB0 off=0 stride=32
+  SetIndices 1A517FE0
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=5681 minIdx=0 nv=247 start=16836 n=244 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=1C3E3450 ps=0F48B540 fvf=0x44
+  SetVertexShader 266C42D8
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=4693 minIdx=0 nv=494 start=13908 n=488 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=266C42D8 ps=0F48B540 fvf=0x44
+  SetTexture 0 259D5A78
+  SetTexture 1 259D5DB8
+  SetTexture 2 24B132B0
+  SetVertexShader 26BEE760
+  SetPixelShader 26BEF638
+  SetVertexDeclaration 245918E0
+  SetStreamSource 0 vb=02D05198 off=0 stride=48
+  SetIndices 02D051F8
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=298 minIdx=0 nv=6 start=11730 n=4 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=26BEF638 fvf=0x44
+  SetTexture 0 26BF3A00
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=304 minIdx=0 nv=78 start=11742 n=52 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=26BEF638 fvf=0x44
+  SetTexture 0 26BF3A80
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=382 minIdx=0 nv=6 start=11898 n=4 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=26BEF638 fvf=0x44
+  SetTexture 0 26BF3D00
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=388 minIdx=0 nv=6 start=11910 n=4 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=26BEF638 fvf=0x44
+  SetTexture 0 26AFED68
+  SetTexture 1 26AFEDA8
+  SetTexture 3 26C4FDC0
+  SetTexture 4 24B13370
+  SetPixelShader 25C719C8
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=394 minIdx=0 nv=6 start=11922 n=4 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=25C719C8 fvf=0x44
+  SetTexture 0 26C50280
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=400 minIdx=0 nv=6 start=11934 n=4 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=25C719C8 fvf=0x44
+  SetTexture 0 26C53870
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=406 minIdx=0 nv=6 start=11946 n=4 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=25C719C8 fvf=0x44
+  SetTexture 0 26BF3A00
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=412 minIdx=0 nv=162 start=11958 n=108 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=25C719C8 fvf=0x44
+  SetTexture 0 26AFED68
+  SetTexture 1 26C538F0
+  SetPixelShader 26BEF638
+  SetTexture 3 00000000
+  SetTexture 4 00000000
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=574 minIdx=0 nv=6 start=12282 n=4 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=26BEF638 fvf=0x44
+  SetTexture 0 26C50280
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=580 minIdx=0 nv=6 start=12294 n=4 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=26BEF638 fvf=0x44
+  SetTexture 0 26BF3A00
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=586 minIdx=0 nv=106 start=12306 n=70 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=26BEF638 fvf=0x44
+  SetTexture 0 26C54350
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=692 minIdx=0 nv=12 start=12516 n=8 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=26BEF638 fvf=0x44
+  SetTexture 0 26C543D0
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=704 minIdx=0 nv=12 start=12540 n=8 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=26BEF638 fvf=0x44
+  SetTexture 0 26C53870
+  SetTexture 1 26C55358
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=716 minIdx=0 nv=6 start=12564 n=4 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=26BEF638 fvf=0x44
+  SetTexture 0 26BF3A00
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=722 minIdx=0 nv=72 start=12576 n=48 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=26BEF638 fvf=0x44
+  SetTexture 0 26C54350
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=794 minIdx=0 nv=30 start=12720 n=20 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=26BEF638 fvf=0x44
+  SetTexture 0 26AFED68
+  SetTexture 1 26C55698
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=824 minIdx=0 nv=6 start=12780 n=4 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=26BEF638 fvf=0x44
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=830 minIdx=0 nv=6 start=12792 n=4 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=26BEF638 fvf=0x44
+  SetTexture 0 26C50280
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=836 minIdx=0 nv=6 start=12804 n=4 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=26BEF638 fvf=0x44
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=842 minIdx=0 nv=6 start=12816 n=4 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=26BEF638 fvf=0x44
+  SetTexture 0 26BF3A00
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=848 minIdx=0 nv=186 start=12828 n=124 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=26BEF638 fvf=0x44
+  SetTexture 0 26BF3A80
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=1034 minIdx=0 nv=6 start=13200 n=4 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=26BEF638 fvf=0x44
+  SetTexture 0 26BF3D00
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=1040 minIdx=0 nv=6 start=13212 n=4 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=26BEF638 fvf=0x44
+  SetTexture 0 26C54350
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=1046 minIdx=0 nv=54 start=13224 n=36 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=26BEF638 fvf=0x44
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=1100 minIdx=0 nv=36 start=13332 n=24 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=26BEF638 fvf=0x44
+  SetTexture 0 26C543D0
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=1136 minIdx=0 nv=12 start=13404 n=8 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=26BEF638 fvf=0x44
+  SetTexture 0 26AFED68
+  SetTexture 1 2628A1E0
+  SetPixelShader 25E89580
+  SetTexture 2 00000000
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=1148 minIdx=0 nv=6 start=13428 n=4 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=25E89580 fvf=0x44
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=1154 minIdx=0 nv=6 start=13440 n=4 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=25E89580 fvf=0x44
+  SetTexture 0 26C50280
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=1160 minIdx=0 nv=6 start=13452 n=4 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=25E89580 fvf=0x44
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=1166 minIdx=0 nv=6 start=13464 n=4 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=25E89580 fvf=0x44
+  SetTexture 0 26C53870
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=1172 minIdx=0 nv=6 start=13476 n=4 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=25E89580 fvf=0x44
+  SetTexture 0 26BF3A00
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=1178 minIdx=0 nv=180 start=13488 n=120 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=25E89580 fvf=0x44
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=1358 minIdx=0 nv=180 start=13848 n=120 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=25E89580 fvf=0x44
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=1538 minIdx=0 nv=78 start=14208 n=52 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=25E89580 fvf=0x44
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=1616 minIdx=0 nv=84 start=14364 n=56 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=25E89580 fvf=0x44
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=1700 minIdx=0 nv=48 start=14532 n=32 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=25E89580 fvf=0x44
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=1748 minIdx=0 nv=36 start=14628 n=24 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=25E89580 fvf=0x44
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=1784 minIdx=0 nv=27 start=14700 n=9 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=25E89580 fvf=0x44
+  SetTexture 0 26BF3A80
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=1811 minIdx=0 nv=6 start=14727 n=4 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=25E89580 fvf=0x44
+  SetTexture 0 26BF3D00
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=1817 minIdx=0 nv=6 start=14739 n=4 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=25E89580 fvf=0x44
+  SetTexture 0 26C54350
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=1823 minIdx=0 nv=12 start=14751 n=8 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=25E89580 fvf=0x44
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=1835 minIdx=0 nv=24 start=14775 n=16 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=25E89580 fvf=0x44
+  SetTexture 0 26C543D0
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=1859 minIdx=0 nv=12 start=14823 n=8 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=25E89580 fvf=0x44
+  SetTexture 0 26BF3A00
+  SetTexture 1 2628A460
+  SetTexture 2 24B132B0
+  SetPixelShader 26BEF638
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=1871 minIdx=0 nv=360 start=14847 n=240 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=26BEF638 fvf=0x44
+  SetTexture 1 17FF3EB0
+  VSConst c0 x5 [-1.978 1.385 -0.000 2.266]
+  PSConst c1 x1 [0.250 0.250 0.250 1.000]
+DrawIndexed t=4 base=2231 minIdx=0 nv=360 start=15567 n=240 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26BEE760 ps=26BEF638 fvf=0x44
+  SetTexture 0 24F71780
+  SetVertexShader 17FF7A60
+  SetPixelShader 0F48B540
+  SetTexture 1 00000000
+  SetTexture 2 00000000
+  SetVertexDeclaration 24F71B18
+  SetStreamSource 0 vb=24F71BA8 off=0 stride=32
+  SetStreamSource 1 vb=189A0B70 off=0 stride=8
+  SetIndices 24F71C08
+  VSConst c0 x236 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=227 start=0 n=176 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=17FF7A60 ps=0F48B540 fvf=0x44
+  VSConst c0 x236 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=227 start=0 n=176 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=17FF7A60 ps=0F48B540 fvf=0x44
+  SetTexture 0 23526598
+  SetVertexShader 267907D0
+  SetPixelShader 0F395518
+  SetVertexDeclaration 211DEE70
+  SetStreamSource 0 vb=18C71660 off=0 stride=32
+  SetIndices 18C71690
+  SetStreamSource 1 vb=00000000 off=0 stride=0
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=224 start=0 n=218 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=267907D0 ps=0F395518 fvf=0x44
+  SetTexture 0 23526918
+  RS 15 = 0x1
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=224 minIdx=0 nv=1104 start=654 n=1037 z=1 zw=1 zf=4 ab=0 at=1 lit=1 st=1 cull=2 cw=0xF vs=267907D0 ps=0F395518 fvf=0x44
+  SetTexture 0 25F0F8D0
+  SetVertexShader 259D5030
+  SetPixelShader 0F48B540
+  SetStreamSource 0 vb=22955ED0 off=0 stride=32
+  SetIndices 22955F00
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=4 minIdx=0 nv=2903 start=6 n=2686 z=1 zw=1 zf=4 ab=0 at=1 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  SetTexture 0 22969A48
+  RS 15 = 0x0
+  SetStreamSource 0 vb=1A0E1F88 off=0 stride=32
+  SetIndices 1A0E1FB8
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=692 start=0 n=346 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  SetStreamSource 0 vb=194A74B0 off=0 stride=32
+  SetIndices 194A74E0
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=21 minIdx=0 nv=806 start=48 n=482 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=21 minIdx=0 nv=806 start=48 n=482 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  SetStreamSource 0 vb=2391C288 off=0 stride=32
+  SetIndices 2391C2B8
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=21 minIdx=0 nv=726 start=48 n=482 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=21 minIdx=0 nv=726 start=48 n=482 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  SetStreamSource 0 vb=23AA4328 off=0 stride=32
+  SetIndices 23AA4358
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=21 minIdx=0 nv=727 start=48 n=483 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=21 minIdx=0 nv=727 start=48 n=483 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  SetStreamSource 0 vb=2430B048 off=0 stride=32
+  SetIndices 2430B078
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=21 minIdx=0 nv=727 start=48 n=483 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=21 minIdx=0 nv=727 start=48 n=483 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  SetTexture 0 232C9738
+  SetVertexShader 267907D0
+  SetPixelShader 0F395518
+  RS 15 = 0x1
+  SetStreamSource 0 vb=17D928B8 off=0 stride=32
+  SetIndices 17D928E8
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=4 minIdx=0 nv=1827 start=6 n=1152 z=1 zw=1 zf=4 ab=0 at=1 lit=1 st=1 cull=2 cw=0xF vs=267907D0 ps=0F395518 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=4 minIdx=0 nv=1827 start=6 n=1152 z=1 zw=1 zf=4 ab=0 at=1 lit=1 st=1 cull=2 cw=0xF vs=267907D0 ps=0F395518 fvf=0x44
+  SetPixelShader 0F589610
+  SetTexture 0 00000000
+  RS 15 = 0x0
+  SetStreamSource 0 vb=23041C08 off=0 stride=32
+  SetIndices 23041C38
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.650]
+DrawIndexed t=4 base=0 minIdx=0 nv=102 start=0 n=145 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=267907D0 ps=0F589610 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.650]
+DrawIndexed t=4 base=0 minIdx=0 nv=102 start=0 n=145 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=267907D0 ps=0F589610 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.650]
+DrawIndexed t=4 base=0 minIdx=0 nv=102 start=0 n=145 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=267907D0 ps=0F589610 fvf=0x44
+  SetTexture 0 17D3DC20
+  SetTexture 2 241A8BE8
+  SetVertexShader 1C5A43F8
+  SetPixelShader 241ABC80
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=102 minIdx=0 nv=1567 start=435 n=1170 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=1C5A43F8 ps=241ABC80 fvf=0x44
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=102 minIdx=0 nv=1567 start=435 n=1170 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=1C5A43F8 ps=241ABC80 fvf=0x44
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=102 minIdx=0 nv=1567 start=435 n=1170 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=1C5A43F8 ps=241ABC80 fvf=0x44
+  SetTexture 0 22A61F38
+  SetVertexShader 259D5030
+  SetPixelShader 0F48B540
+  RS 15 = 0x1
+  SetTexture 2 00000000
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=1669 minIdx=0 nv=168 start=3945 n=144 z=1 zw=1 zf=4 ab=0 at=1 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=1669 minIdx=0 nv=168 start=3945 n=144 z=1 zw=1 zf=4 ab=0 at=1 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=1669 minIdx=0 nv=168 start=3945 n=144 z=1 zw=1 zf=4 ab=0 at=1 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  SetTexture 0 22682180
+  SetVertexShader 2601F438
+  SetPixelShader 0F395518
+  RS 15 = 0x0
+  SetVertexDeclaration 22B79198
+  SetStreamSource 0 vb=1AEE7F68 off=0 stride=44
+  SetIndices 1AEE7F98
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=6 minIdx=0 nv=690 start=12 n=808 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=2601F438 ps=0F395518 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=6 minIdx=0 nv=690 start=12 n=808 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=2601F438 ps=0F395518 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=696 minIdx=0 nv=296 start=2436 n=220 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=2601F438 ps=0F395518 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=696 minIdx=0 nv=296 start=2436 n=220 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=2601F438 ps=0F395518 fvf=0x44
+  SetStreamSource 0 vb=23388238 off=0 stride=44
+  SetIndices 23388268
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=6 minIdx=0 nv=690 start=12 n=808 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=2601F438 ps=0F395518 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=6 minIdx=0 nv=690 start=12 n=808 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=2601F438 ps=0F395518 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=696 minIdx=0 nv=296 start=2436 n=220 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=2601F438 ps=0F395518 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=696 minIdx=0 nv=296 start=2436 n=220 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=2601F438 ps=0F395518 fvf=0x44
+  SetTexture 0 189E5850
+  SetVertexShader 2689F388
+  SetVertexDeclaration 211DEE70
+  SetStreamSource 0 vb=22A4CB50 off=0 stride=32
+  SetIndices 22A4CB80
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=16 minIdx=0 nv=713 start=24 n=720 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=2689F388 ps=0F395518 fvf=0x44
+  SetTexture 0 2689DDD8
+  SetVertexShader 2601F438
+  RS 15 = 0x1
+  SetVertexDeclaration 245918E0
+  SetStreamSource 0 vb=02D05198 off=0 stride=48
+  SetIndices 02D051F8
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=2591 minIdx=0 nv=356 start=16287 n=236 z=1 zw=1 zf=4 ab=0 at=1 lit=1 st=1 cull=2 cw=0xF vs=2601F438 ps=0F395518 fvf=0x44
+  SetTexture 0 2628A1E0
+  SetVertexShader 268A3318
+  SetPixelShader 268A41F0
+  RS 23 = 0x8
+  RS 15 = 0x0
+  VSConst c0 x4 [-1.978 1.385 -0.000 2.266]
+DrawIndexed t=4 base=2947 minIdx=0 nv=174 start=16995 n=116 z=1 zw=1 zf=8 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A3318 ps=268A41F0 fvf=0x44
+  SetTexture 0 1B1A6298
+  SetVertexShader 259D5030
+  SetPixelShader 0F48B540
+  RS 23 = 0x4
+  SetVertexDeclaration 211DEE70
+  SetStreamSource 0 vb=189A14E8 off=0 stride=32
+  SetIndices 189A1518
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=137 start=0 n=76 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=137 start=0 n=76 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=137 start=0 n=76 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=137 start=0 n=76 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  SetStreamSource 0 vb=23526EB0 off=0 stride=32
+  SetIndices 23526EE0
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=363 start=0 n=194 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  SetStreamSource 0 vb=244EFC58 off=0 stride=32
+  SetIndices 244EFC88
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=217 start=0 n=120 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=217 start=0 n=120 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  SetStreamSource 0 vb=244F4D48 off=0 stride=32
+  SetIndices 244F4D78
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=363 start=0 n=194 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  SetTexture 0 2689D2C8
+  SetStreamSource 0 vb=21064E70 off=0 stride=32
+  SetIndices 21064EA0
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=116 minIdx=0 nv=394 start=192 n=216 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=116 minIdx=0 nv=394 start=192 n=216 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  SetStreamSource 0 vb=22A45418 off=0 stride=32
+  SetIndices 22A45448
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=116 minIdx=0 nv=394 start=192 n=216 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  SetStreamSource 0 vb=22A4A548 off=0 stride=32
+  SetIndices 22A4A578
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=8 minIdx=0 nv=589 start=12 n=374 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=8 minIdx=0 nv=589 start=12 n=374 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  SetStreamSource 0 vb=22A4C7E8 off=0 stride=32
+  SetIndices 22A4C818
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=589 start=0 n=374 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  SetTexture 0 18AE9240
+  SetVertexShader 268A19A8
+  RS 15 = 0x1
+  SetStreamSource 0 vb=1B70A988 off=0 stride=32
+  SetIndices 1B70A9B8
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=972 start=0 n=1236 z=1 zw=1 zf=4 ab=0 at=1 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  SetTexture 0 236365A8
+  SetVertexShader 25B5A290
+  SetPixelShader 0F395518
+  RS 15 = 0x0
+  SetStreamSource 0 vb=1B771888 off=0 stride=32
+  SetIndices 1B7718B8
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=1079 start=0 n=1638 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=25B5A290 ps=0F395518 fvf=0x44
+  SetTexture 0 1A114EC8
+  SetVertexShader 268A19A8
+  SetPixelShader 0F48B540
+  SetStreamSource 0 vb=1B70C188 off=0 stride=32
+  SetIndices 1B70C1B8
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=334 start=0 n=370 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  RS 15 = 0x1
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=334 minIdx=0 nv=39 start=1110 n=35 z=1 zw=1 zf=4 ab=0 at=1 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  SetVertexShader 25B5A290
+  SetPixelShader 0F395518
+  RS 15 = 0x0
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=373 minIdx=0 nv=242 start=1215 n=384 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=25B5A290 ps=0F395518 fvf=0x44
+  SetVertexShader 268A19A8
+  SetPixelShader 0F48B540
+  SetVertexDeclaration 23046D08
+  SetStreamSource 0 vb=1B70C188 off=0 stride=36
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.800]
+DrawIndexed t=4 base=547 minIdx=0 nv=75 start=2367 n=105 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  SetTexture 0 1B4AABC8
+  SetVertexShader 259D5030
+  RS 15 = 0x1
+  SetVertexDeclaration 211DEE70
+  SetStreamSource 0 vb=22B11888 off=0 stride=32
+  SetIndices 22B118B8
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=1007 start=0 n=940 z=1 zw=1 zf=4 ab=0 at=1 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  SetTexture 0 25A91C50
+  SetVertexShader 268A19A8
+  RS 15 = 0x0
+  SetStreamSource 0 vb=1B4FF440 off=0 stride=32
+  SetIndices 1B4FF470
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=97 start=0 n=94 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  SetStreamSource 0 vb=23199608 off=0 stride=32
+  SetIndices 23199638
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=273 start=0 n=354 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  SetTexture 0 22969A48
+  SetVertexShader 25A93A08
+  SetStreamSource 0 vb=1A0DFB40 off=0 stride=32
+  SetIndices 1A0DFB70
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=689 start=0 n=345 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=25A93A08 ps=0F48B540 fvf=0x44
+  SetTexture 0 25A974C0
+  SetVertexShader 2689F388
+  SetPixelShader 0F395518
+  SetVertexDeclaration 22B79198
+  SetStreamSource 0 vb=1B5B1A38 off=0 stride=44
+  SetIndices 1B5B1A68
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=1160 start=0 n=1273 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=2689F388 ps=0F395518 fvf=0x44
+  SetTexture 0 2689D2C8
+  SetVertexShader 25A9A770
+  SetPixelShader 0F48B540
+  SetVertexDeclaration 211DEE70
+  SetStreamSource 0 vb=22A45418 off=0 stride=32
+  SetIndices 22A45448
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=116 minIdx=0 nv=394 start=192 n=216 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=25A9A770 ps=0F48B540 fvf=0x44
+  SetTexture 0 25A9E708
+  SetVertexShader 259D5030
+  RS 15 = 0x1
+  SetStreamSource 0 vb=250D0850 off=0 stride=32
+  SetIndices 250D0880
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=4 minIdx=0 nv=1412 start=6 n=1208 z=1 zw=1 zf=4 ab=0 at=1 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=4 minIdx=0 nv=1412 start=6 n=1208 z=1 zw=1 zf=4 ab=0 at=1 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  SetTexture 0 22658EB0
+  RS 15 = 0x0
+  SetStreamSource 0 vb=235D3750 off=0 stride=32
+  SetIndices 235D3780
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=20 minIdx=0 nv=1734 start=30 n=1286 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  SetTexture 0 18AE9240
+  RS 15 = 0x1
+  SetStreamSource 0 vb=1B70A988 off=0 stride=32
+  SetIndices 1B70A9B8
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=972 start=0 n=1236 z=1 zw=1 zf=4 ab=0 at=1 lit=1 st=1 cull=2 cw=0xF vs=259D5030 ps=0F48B540 fvf=0x44
+  SetTexture 0 2689D2C8
+  SetVertexShader 25D3B250
+  RS 15 = 0x0
+  SetStreamSource 0 vb=22A4C7E8 off=0 stride=32
+  SetIndices 22A4C818
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=589 start=0 n=374 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=25D3B250 ps=0F48B540 fvf=0x44
+  SetTexture 0 25D36AC8
+  SetVertexShader 268A19A8
+  SetVertexDeclaration 22B79198
+  SetStreamSource 0 vb=2412F2D8 off=0 stride=44
+  SetIndices 2412F338
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=859 start=0 n=845 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+DrawIndexed t=4 base=859 minIdx=0 nv=432 start=2535 n=333 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  SetTexture 0 1A80AC18
+  SetTexture 4 25DFE870
+  SetVertexShader 25DFA208
+  SetPixelShader 25E004F8
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=1291 minIdx=0 nv=32 start=3534 n=18 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=25DFA208 ps=25E004F8 fvf=0x44
+  SetTexture 2 241A8BE8
+  SetVertexShader 25E017D8
+  SetPixelShader 241AA5B8
+  SetTexture 0 00000000
+  SetTexture 4 00000000
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=1323 minIdx=0 nv=1093 start=3588 n=949 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=25E017D8 ps=241AA5B8 fvf=0x44
+  SetVertexDeclaration 211DEE70
+  SetStreamSource 0 vb=1A809BC8 off=0 stride=32
+  SetIndices 1A809BF8
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=93 start=0 n=120 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=25E017D8 ps=241AA5B8 fvf=0x44
+  SetTexture 0 1B1A6298
+  SetVertexShader 26B7F450
+  SetPixelShader 0F48B540
+  SetTexture 2 00000000
+  SetStreamSource 0 vb=23526EB0 off=0 stride=32
+  SetIndices 23526EE0
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=363 start=0 n=194 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26B7F450 ps=0F48B540 fvf=0x44
+  SetStreamSource 0 vb=244EFC58 off=0 stride=32
+  SetIndices 244EFC88
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=217 start=0 n=120 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26B7F450 ps=0F48B540 fvf=0x44
+  SetVertexShader 26B80D18
+  SetStreamSource 0 vb=23E51B10 off=0 stride=32
+  SetIndices 23E51B40
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=363 start=0 n=194 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26B80D18 ps=0F48B540 fvf=0x44
+  SetStreamSource 0 vb=227EEBD0 off=0 stride=32
+  SetIndices 227EEC00
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=217 start=0 n=120 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26B80D18 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=217 start=0 n=120 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26B80D18 ps=0F48B540 fvf=0x44
+  SetStreamSource 0 vb=227F41C0 off=0 stride=32
+  SetIndices 227F41F0
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=347 start=0 n=194 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26B80D18 ps=0F48B540 fvf=0x44
+  SetVertexShader 1C3E2690
+  SetStreamSource 0 vb=244EFC58 off=0 stride=32
+  SetIndices 244EFC88
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=217 start=0 n=120 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=1C3E2690 ps=0F48B540 fvf=0x44
+  SetStreamSource 0 vb=244F4D48 off=0 stride=32
+  SetIndices 244F4D78
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=363 start=0 n=194 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=1C3E2690 ps=0F48B540 fvf=0x44
+  SetTexture 0 22A436F8
+  SetVertexShader 268A19A8
+  SetStreamSource 0 vb=22FF17B0 off=0 stride=32
+  SetIndices 22FF17E0
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=1916 start=0 n=1187 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  SetTexture 0 22969A48
+  SetVertexShader 1C3E3450
+  SetStreamSource 0 vb=2391C288 off=0 stride=32
+  SetIndices 2391C2B8
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=21 minIdx=0 nv=726 start=48 n=482 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=1C3E3450 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=21 minIdx=0 nv=726 start=48 n=482 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=1C3E3450 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=21 minIdx=0 nv=726 start=48 n=482 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=1C3E3450 ps=0F48B540 fvf=0x44
+  SetVertexShader 268A19A8
+  SetStreamSource 0 vb=194A74B0 off=0 stride=32
+  SetIndices 194A74E0
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=21 minIdx=0 nv=806 start=48 n=482 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=21 minIdx=0 nv=806 start=48 n=482 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=21 minIdx=0 nv=806 start=48 n=482 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  SetTexture 0 1A104D68
+  SetVertexShader 2689F388
+  SetPixelShader 0F395518
+  SetStreamSource 0 vb=22E7C4D0 off=0 stride=32
+  SetIndices 22E7C500
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=893 start=0 n=830 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=2689F388 ps=0F395518 fvf=0x44
+  SetTexture 0 22699300
+  SetVertexShader 268A19A8
+  SetPixelShader 0F48B540
+  SetStreamSource 0 vb=1B4AD648 off=0 stride=32
+  SetIndices 1B4AD678
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=93 start=0 n=94 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  SetStreamSource 0 vb=24E62E28 off=0 stride=32
+  SetIndices 24E62E58
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=266 start=0 n=354 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  SetStreamSource 0 vb=2269E7F0 off=0 stride=32
+  SetIndices 2269E820
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=116 start=0 n=166 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  SetTexture 0 19852950
+  SetVertexShader 2689F388
+  SetPixelShader 0F395518
+  RS 15 = 0x1
+  SetStreamSource 0 vb=1A2D8058 off=0 stride=32
+  SetIndices 1A2D8088
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=48 minIdx=0 nv=90 start=72 n=64 z=1 zw=1 zf=4 ab=0 at=1 lit=1 st=1 cull=2 cw=0xF vs=2689F388 ps=0F395518 fvf=0x44
+DrawIndexed t=4 base=452 minIdx=0 nv=92 start=978 n=52 z=1 zw=1 zf=4 ab=0 at=1 lit=1 st=1 cull=2 cw=0xF vs=2689F388 ps=0F395518 fvf=0x44
+  SetStreamSource 0 vb=22BF5138 off=0 stride=32
+  SetIndices 22BF5168
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=288 minIdx=0 nv=104 start=486 n=64 z=1 zw=1 zf=4 ab=0 at=1 lit=1 st=1 cull=2 cw=0xF vs=2689F388 ps=0F395518 fvf=0x44
+DrawIndexed t=4 base=392 minIdx=0 nv=28 start=678 n=20 z=1 zw=1 zf=4 ab=0 at=1 lit=1 st=1 cull=2 cw=0xF vs=2689F388 ps=0F395518 fvf=0x44
+  SetStreamSource 0 vb=198436B0 off=0 stride=32
+  SetIndices 198436E0
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=502 minIdx=0 nv=108 start=990 n=66 z=1 zw=1 zf=4 ab=0 at=1 lit=1 st=1 cull=2 cw=0xF vs=2689F388 ps=0F395518 fvf=0x44
+DrawIndexed t=4 base=610 minIdx=0 nv=56 start=1188 n=48 z=1 zw=1 zf=4 ab=0 at=1 lit=1 st=1 cull=2 cw=0xF vs=2689F388 ps=0F395518 fvf=0x44
+  SetTexture 0 19851EC8
+  SetTexture 2 241A8BE8
+  SetVertexShader 25E017D8
+  SetPixelShader 241ABC80
+  RS 15 = 0x0
+  SetStreamSource 0 vb=1A2D8058 off=0 stride=32
+  SetIndices 1A2D8088
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=138 minIdx=0 nv=314 start=264 n=238 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=25E017D8 ps=241ABC80 fvf=0x44
+  SetStreamSource 0 vb=22BF5138 off=0 stride=32
+  SetIndices 22BF5168
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=32 minIdx=0 nv=256 start=48 n=146 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=25E017D8 ps=241ABC80 fvf=0x44
+  SetStreamSource 0 vb=198436B0 off=0 stride=32
+  SetIndices 198436E0
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=32 minIdx=0 nv=470 start=48 n=314 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=25E017D8 ps=241ABC80 fvf=0x44
+  SetTexture 0 270B46B0
+  SetVertexShader 26B864B0
+  SetPixelShader 270AFD10
+  SetTexture 2 00000000
+  SetVertexDeclaration 2388E550
+  SetStreamSource 0 vb=2388E610 off=0 stride=44
+  SetStreamSource 1 vb=270B87A8 off=0 stride=16
+  SetIndices 2388E670
+  VSConst c0 x236 [2.414 0.000 0.000 0.000]
+  PSConst c4 x12 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=399 start=0 n=642 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=26B864B0 ps=270AFD10 fvf=0x44
+  SetTexture 0 26B72DB8
+  SetVertexShader 268A19A8
+  SetPixelShader 0F48B540
+  SetVertexDeclaration 211DEE70
+  SetStreamSource 0 vb=20F97148 off=0 stride=32
+  SetIndices 20F97178
+  SetStreamSource 1 vb=00000000 off=0 stride=0
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=199 start=0 n=286 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  SetStreamSource 0 vb=1B4FF440 off=0 stride=32
+  SetIndices 1B4FF470
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=97 start=0 n=94 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  SetTexture 0 22B13AD8
+  SetStreamSource 0 vb=22B0F738 off=0 stride=32
+  SetIndices 22B0F768
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=116 start=0 n=166 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  SetStreamSource 0 vb=20F97148 off=0 stride=32
+  SetIndices 20F97178
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=199 start=0 n=286 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  SetTexture 0 22690C30
+  SetVertexShader 2689F388
+  SetPixelShader 0F395518
+  SetStreamSource 0 vb=22EAF190 off=0 stride=32
+  SetIndices 22EAF1F0
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=2269 start=0 n=1849 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=2689F388 ps=0F395518 fvf=0x44
+  SetTexture 0 2269A530
+  SetStreamSource 0 vb=22679A68 off=0 stride=32
+  SetIndices 22679A98
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=1717 start=0 n=1532 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=2689F388 ps=0F395518 fvf=0x44
+  SetTexture 0 22E7D950
+  RS 15 = 0x1
+  SetStreamSource 0 vb=2267B4A8 off=0 stride=32
+  SetIndices 2267B4D8
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=1398 start=0 n=897 z=1 zw=1 zf=4 ab=0 at=1 lit=1 st=1 cull=2 cw=0xF vs=2689F388 ps=0F395518 fvf=0x44
+  SetTexture 0 26CCBED0
+  SetVertexShader 268A19A8
+  SetPixelShader 0F48B540
+  RS 15 = 0x0
+  SetStreamSource 0 vb=1B4FF440 off=0 stride=32
+  SetIndices 1B4FF470
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=97 start=0 n=94 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  SetTexture 0 26CD4538
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=97 start=0 n=94 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  SetTexture 0 19C3C0E8
+  SetVertexShader 22F31040
+  SetPixelShader 241ADC58
+  RS 15 = 0x1
+  SetStreamSource 0 vb=19C01668 off=0 stride=32
+  SetIndices 19C01698
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [1.500 1.500 1.500 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=42 start=0 n=18 z=1 zw=1 zf=4 ab=0 at=1 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetTexture 0 19C06568
+  SetStreamSource 0 vb=19BFB6F0 off=0 stride=32
+  SetIndices 19BFB720
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=4 minIdx=0 nv=304 start=6 n=104 z=1 zw=1 zf=4 ab=0 at=1 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=4 minIdx=0 nv=304 start=6 n=104 z=1 zw=1 zf=4 ab=0 at=1 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetTexture 0 26524900
+  SetVertexShader 281FD310
+  SetPixelShader 270AFD10
+  RS 15 = 0x0
+  SetVertexDeclaration 238BC808
+  SetStreamSource 0 vb=238BC928 off=0 stride=52
+  SetStreamSource 1 vb=238B9B80 off=0 stride=64
+  SetIndices 238BC988
+  VSConst c0 x236 [2.414 0.000 0.000 0.000]
+  PSConst c4 x12 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=571 start=0 n=737 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=281FD310 ps=270AFD10 fvf=0x44
+  SetTexture 0 26528C38
+  SetVertexShader 281FB6C0
+  SetVertexDeclaration 23921860
+  SetStreamSource 0 vb=239218F0 off=0 stride=44
+  SetStreamSource 1 vb=238E51E0 off=0 stride=44
+  SetIndices 23921950
+  VSConst c0 x236 [2.414 0.000 0.000 0.000]
+  PSConst c4 x12 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=2043 start=0 n=2452 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=281FB6C0 ps=270AFD10 fvf=0x44
+  SetTexture 0 26528FB8
+  RS 15 = 0x1
+  VSConst c0 x236 [2.414 0.000 0.000 0.000]
+  PSConst c4 x12 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=2043 minIdx=0 nv=16 start=7356 n=16 z=1 zw=1 zf=4 ab=0 at=1 lit=1 st=1 cull=2 cw=0xF vs=281FB6C0 ps=270AFD10 fvf=0x44
+  SetTexture 0 25B583A8
+  SetVertexShader 268A19A8
+  SetPixelShader 0F48B540
+  RS 15 = 0x0
+  SetVertexDeclaration 211DEE70
+  SetStreamSource 0 vb=22755200 off=0 stride=32
+  SetIndices 22755260
+  SetStreamSource 1 vb=00000000 off=0 stride=0
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=1331 start=0 n=1223 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  SetStreamSource 0 vb=189ED6C0 off=0 stride=32
+  SetIndices 189ED720
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=157 minIdx=0 nv=1101 start=510 n=967 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  SetStreamSource 0 vb=228BCD88 off=0 stride=32
+  SetIndices 228BCDE8
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=368 start=0 n=196 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  SetTexture 0 25B60740
+  SetVertexShader 25B5A290
+  SetPixelShader 0F395518
+  SetStreamSource 0 vb=22755200 off=0 stride=32
+  SetIndices 22755260
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=1331 minIdx=0 nv=157 start=3669 n=170 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=25B5A290 ps=0F395518 fvf=0x44
+  SetStreamSource 0 vb=228BCD88 off=0 stride=32
+  SetIndices 228BCDE8
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=368 minIdx=0 nv=234 start=588 n=228 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=25B5A290 ps=0F395518 fvf=0x44
+  SetTexture 0 25B646A8
+  SetTexture 2 241A8BE8
+  SetVertexShader 25E017D8
+  SetPixelShader 241ABC80
+  SetStreamSource 0 vb=18BC53F0 off=0 stride=32
+  SetIndices 18BC5480
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=8 minIdx=0 nv=1390 start=12 n=1446 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=25E017D8 ps=241ABC80 fvf=0x44
+  SetTexture 0 22ED8170
+  SetStreamSource 0 vb=18ADFB50 off=0 stride=32
+  SetIndices 18ADFBE0
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=1315 start=0 n=1664 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=25E017D8 ps=241ABC80 fvf=0x44
+  SetTexture 0 25D36808
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=1315 minIdx=0 nv=167 start=4992 n=234 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=25E017D8 ps=241ABC80 fvf=0x44
+  SetTexture 0 25B60740
+  SetTexture 3 25DFEC70
+  SetVertexShader 25B5A290
+  SetPixelShader 25E02A68
+  SetTexture 2 00000000
+  SetStreamSource 0 vb=189ED6C0 off=0 stride=32
+  SetIndices 189ED720
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=157 start=0 n=170 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=25B5A290 ps=25E02A68 fvf=0x44
+  SetTexture 0 26B71B98
+  SetVertexShader 268A19A8
+  SetPixelShader 0F48B540
+  SetTexture 3 00000000
+  SetStreamSource 0 vb=18AEA000 off=0 stride=32
+  SetIndices 18AEA060
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=835 start=0 n=1154 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  SetTexture 0 18A66AE8
+  SetVertexShader 25B5A290
+  SetPixelShader 0F395518
+  RS 15 = 0x1
+  SetStreamSource 0 vb=22FC4498 off=0 stride=32
+  SetIndices 22FC44F8
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=20 minIdx=0 nv=1631 start=30 n=1137 z=1 zw=1 zf=4 ab=0 at=1 lit=1 st=1 cull=2 cw=0xF vs=25B5A290 ps=0F395518 fvf=0x44
+  SetTexture 0 24417FF0
+  RS 15 = 0x0
+  SetStreamSource 0 vb=245138E0 off=0 stride=32
+  SetIndices 24513910
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=150 start=0 n=72 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=25B5A290 ps=0F395518 fvf=0x44
+  SetTexture 0 21272F20
+  SetStreamSource 0 vb=18085B90 off=0 stride=32
+  SetIndices 18085C20
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=54 start=0 n=72 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=25B5A290 ps=0F395518 fvf=0x44
+  SetTexture 0 242D4760
+  SetStreamSource 0 vb=179F6318 off=0 stride=32
+  SetIndices 179F63A8
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=184 start=0 n=184 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=25B5A290 ps=0F395518 fvf=0x44
+  SetTexture 0 2118B530
+  SetVertexShader 268A19A8
+  SetPixelShader 0F48B540
+  SetStreamSource 0 vb=245138E0 off=0 stride=32
+  SetIndices 24513910
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=154 minIdx=0 nv=4 start=222 n=2 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  SetTexture 0 27105258
+  SetVertexShader 26B864B0
+  SetPixelShader 270AFD10
+  RS 15 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetVertexDeclaration 2388E550
+  SetStreamSource 0 vb=2388E610 off=0 stride=44
+  SetStreamSource 1 vb=270B87A8 off=0 stride=16
+  SetIndices 2388E670
+  VSConst c0 x236 [2.414 0.000 0.000 0.000]
+  PSConst c4 x12 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=399 minIdx=0 nv=161 start=1926 n=264 z=1 zw=1 zf=4 ab=1 at=1 lit=1 st=1 cull=2 cw=0xF vs=26B864B0 ps=270AFD10 fvf=0x44
+  VSConst c0 x236 [2.414 0.000 0.000 0.000]
+  PSConst c4 x12 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=560 minIdx=0 nv=161 start=2718 n=264 z=1 zw=1 zf=4 ab=1 at=1 lit=1 st=1 cull=2 cw=0xF vs=26B864B0 ps=270AFD10 fvf=0x44
+  SetTexture 0 22787C08
+  SetVertexShader 25D32C20
+  SetPixelShader 0F47B480
+  RS 14 = 0x0
+  RS 15 = 0x0
+  SetVertexDeclaration 211DEE70
+  SetStreamSource 0 vb=22780E60 off=0 stride=32
+  SetIndices 22780EC0
+  SetStreamSource 1 vb=00000000 off=0 stride=0
+  VSConst c0 x255 [2.414 0.000 0.000 0.000]
+DrawIndexed t=4 base=60 minIdx=0 nv=41 start=108 n=60 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=25D32C20 ps=0F47B480 fvf=0x44
+  SetTexture 0 2275D1A8
+  SetVertexShader 26B724C8
+  SetStreamSource 0 vb=227560B0 off=0 stride=32
+  SetIndices 22756110
+  VSConst c0 x255 [2.414 0.000 0.000 0.000]
+DrawIndexed t=4 base=36 minIdx=0 nv=44 start=108 n=66 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=26B724C8 ps=0F47B480 fvf=0x44
+  SetTexture 0 1A994560
+  SetTexture 1 1C8F4870
+  SetTexture 2 24B13130
+  RS 137 = 0x0
+  RS 23 = 0x2
+  RS 15 = 0x1
+  RS 19 = 0x1
+  RS 20 = 0x3
+  RS 14 = 0x1
+  SetVertexShader 00000000
+  SetPixelShader 00000000
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+  SetTransform 18 [-0.0128 0.0090 -0.0000 0.0000 | -0.0087 -0.0124 -0.2436 0.0000 | -0.0022 -0.0031 0.9699 0.0000 | 0.3117 0.4196 3.6989 1.0000]
+  SetTexture 0 1A944258
+  SetTransform 16 [-0.1757 0.0421 -0.0467 0.0000 | 0.0665 0.1300 -0.0815 0.0000 | 0.0167 -0.0749 -0.1676 0.0000 | -1.5827 -2.8020 3.6218 1.0000]
+  SetTransform 17 [-0.0878 0.0210 -0.0467 0.0000 | 0.0332 0.0650 -0.0815 0.0000 | 0.0083 -0.0375 -0.1676 0.0000 | -0.5414 -1.1510 3.6218 1.0000]
+  SetStreamSource 0 vb=02D05198 off=0 stride=12
+  SetIndices 02D051F8
+  SetVertexDeclaration 19BA1EA8
+DrawIndexed t=4 base=12484 minIdx=0 nv=180 start=17343 n=288 z=1 zw=1 zf=2 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+  SetTexture 0 1A97FE78
+  SetTransform 16 [-0.3672 0.1053 -0.1566 0.0000 | 0.1389 0.3253 -0.2729 0.0000 | 0.0349 -0.1875 -0.5614 0.0000 | -3.8903 -5.1185 5.9608 1.0000]
+  SetTransform 17 [-0.1836 0.0526 -0.1566 0.0000 | 0.0695 0.1626 -0.2729 0.0000 | 0.0174 -0.0937 -0.5614 0.0000 | -1.6952 -2.3092 5.9608 1.0000]
+DrawIndexed t=4 base=12664 minIdx=0 nv=50 start=18207 n=64 z=1 zw=1 zf=2 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+  SetTexture 0 1A97FFB8
+  SetTransform 16 [-0.3672 0.1053 -0.1566 0.0000 | 0.1389 0.3253 -0.2729 0.0000 | 0.0349 -0.1875 -0.5614 0.0000 | -3.5625 -4.9577 5.7216 1.0000]
+  SetTransform 17 [-0.1836 0.0526 -0.1566 0.0000 | 0.0695 0.1626 -0.2729 0.0000 | 0.0174 -0.0937 -0.5614 0.0000 | -1.5312 -2.2288 5.7216 1.0000]
+DrawIndexed t=4 base=12714 minIdx=0 nv=50 start=18399 n=64 z=1 zw=1 zf=2 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+  SetTexture 0 1A97FE38
+  SetTransform 16 [-0.0865 0.0200 -0.0199 0.0000 | 0.0327 0.0618 -0.0346 0.0000 | 0.0082 -0.0356 -0.0713 0.0000 | 1.0770 0.1558 0.8390 1.0000]
+  SetTransform 17 [-0.0433 0.0100 -0.0199 0.0000 | 0.0164 0.0309 -0.0346 0.0000 | 0.0041 -0.0178 -0.0713 0.0000 | 0.7885 0.3279 0.8390 1.0000]
+DrawIndexed t=4 base=12764 minIdx=0 nv=228 start=18591 n=360 z=1 zw=1 zf=2 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+  SetTexture 0 1A9801B8
+  SetTransform 16 [-0.0836 0.0205 -0.0203 0.0000 | 0.0316 0.0634 -0.0354 0.0000 | 0.0079 -0.0365 -0.0728 0.0000 | 1.4808 -0.2806 1.2640 1.0000]
+  SetTransform 17 [-0.0418 0.0103 -0.0203 0.0000 | 0.0158 0.0317 -0.0354 0.0000 | 0.0040 -0.0183 -0.0728 0.0000 | 0.9904 0.1097 1.2640 1.0000]
+DrawIndexed t=4 base=12992 minIdx=0 nv=238 start=19671 n=376 z=1 zw=1 zf=2 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+  SetTexture 0 1A9802B8
+  SetTransform 16 [-0.0865 0.0200 -0.0199 0.0000 | 0.0327 0.0618 -0.0346 0.0000 | 0.0082 -0.0356 -0.0713 0.0000 | 1.4854 -0.3202 1.3120 1.0000]
+  SetTransform 17 [-0.0433 0.0100 -0.0199 0.0000 | 0.0164 0.0309 -0.0346 0.0000 | 0.0041 -0.0178 -0.0713 0.0000 | 0.9927 0.0899 1.3120 1.0000]
+DrawIndexed t=4 base=13230 minIdx=0 nv=224 start=20823 n=356 z=1 zw=1 zf=2 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+  SetTexture 0 1A9803B8
+  SetTransform 16 [-0.0747 0.0173 -0.0170 0.0000 | 0.0283 0.0535 -0.0296 0.0000 | 0.0071 -0.0308 -0.0608 0.0000 | 0.7190 -0.2741 1.3344 1.0000]
+  SetTransform 17 [-0.0374 0.0087 -0.0170 0.0000 | 0.0141 0.0267 -0.0296 0.0000 | 0.0036 -0.0154 -0.0608 0.0000 | 0.6095 0.1129 1.3344 1.0000]
+DrawIndexed t=4 base=13454 minIdx=0 nv=672 start=21903 n=960 z=1 zw=1 zf=2 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+  SetTexture 0 1A9804B8
+  SetTransform 16 [-0.6429 0.1245 -0.3620 0.0000 | 0.2432 0.3847 -0.6309 0.0000 | 0.0611 -0.2217 -1.2980 0.0000 | -5.4653 -4.3474 7.7578 1.0000]
+  SetTransform 17 [-0.3215 0.0622 -0.3620 0.0000 | 0.1216 0.1923 -0.6309 0.0000 | 0.0305 -0.1108 -1.2980 0.0000 | -2.4826 -1.9237 7.7578 1.0000]
+DrawIndexed t=4 base=14126 minIdx=0 nv=32 start=25503 n=4 z=1 zw=1 zf=2 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+  SetTransform 16 [-0.6429 0.1245 -0.3620 0.0000 | 0.2432 0.3847 -0.6309 0.0000 | 0.0611 -0.2217 -1.2980 0.0000 | -8.3363 -5.2974 10.5209 1.0000]
+  SetTransform 17 [-0.3215 0.0622 -0.3620 0.0000 | 0.1216 0.1923 -0.6309 0.0000 | 0.0305 -0.1108 -1.2980 0.0000 | -3.9181 -2.3987 10.5209 1.0000]
+DrawIndexed t=4 base=14158 minIdx=0 nv=32 start=25611 n=12 z=1 zw=1 zf=2 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+  SetTexture 0 1A97FE38
+  SetTransform 16 [-0.0865 0.0200 -0.0199 0.0000 | 0.0327 0.0618 -0.0346 0.0000 | 0.0082 -0.0356 -0.0713 0.0000 | 1.0770 0.1558 0.8390 1.0000]
+  SetTransform 17 [-0.0433 0.0100 -0.0199 0.0000 | 0.0164 0.0309 -0.0346 0.0000 | 0.0041 -0.0178 -0.0713 0.0000 | 0.7885 0.3279 0.8390 1.0000]
+DrawIndexed t=4 base=14190 minIdx=0 nv=24 start=25719 n=6 z=1 zw=1 zf=2 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+  SetTexture 0 1A9801B8
+  SetTransform 16 [-0.0836 0.0205 -0.0203 0.0000 | 0.0316 0.0634 -0.0354 0.0000 | 0.0079 -0.0365 -0.0728 0.0000 | 1.4808 -0.2806 1.2640 1.0000]
+  SetTransform 17 [-0.0418 0.0103 -0.0203 0.0000 | 0.0158 0.0317 -0.0354 0.0000 | 0.0040 -0.0183 -0.0728 0.0000 | 0.9904 0.1097 1.2640 1.0000]
+DrawIndexed t=4 base=14214 minIdx=0 nv=24 start=25755 n=8 z=1 zw=1 zf=2 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+  SetTexture 0 1A9803B8
+  SetTransform 16 [-0.0747 0.0173 -0.0170 0.0000 | 0.0283 0.0535 -0.0296 0.0000 | 0.0071 -0.0308 -0.0608 0.0000 | 0.7190 -0.2741 1.3344 1.0000]
+  SetTransform 17 [-0.0374 0.0087 -0.0170 0.0000 | 0.0141 0.0267 -0.0296 0.0000 | 0.0036 -0.0154 -0.0608 0.0000 | 0.6095 0.1129 1.3344 1.0000]
+DrawIndexed t=4 base=14238 minIdx=0 nv=24 start=25791 n=4 z=1 zw=1 zf=2 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+  SetTexture 0 1A994560
+  SetTexture 2 00000000
+  SetTransform 16 [1.0000 0.0000 0.0000 0.0000 | 0.0000 1.0000 0.0000 0.0000 | 0.0000 0.0000 1.0000 0.0000 | 0.0000 0.0000 0.0000 1.0000]
+  SetTransform 17 [1.0000 0.0000 0.0000 0.0000 | 0.0000 1.0000 0.0000 0.0000 | 0.0000 0.0000 1.0000 0.0000 | 0.0000 0.0000 0.0000 1.0000]
+  SetTransform 18 [1.0000 0.0000 0.0000 0.0000 | 0.0000 1.0000 0.0000 0.0000 | 0.0000 0.0000 1.0000 0.0000 | 0.0000 0.0000 0.0000 1.0000]
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+  SetTexture 0 1A942708
+  SetTransform 16 [-0.4894 0.0908 -0.1724 0.0000 | 0.1851 0.2807 -0.3005 0.0000 | 0.0465 -0.1618 -0.6183 0.0000 | -0.9889 -3.3196 5.5151 1.0000]
+  SetTransform 17 [-0.2447 0.0454 -0.1724 0.0000 | 0.0926 0.1403 -0.3005 0.0000 | 0.0233 -0.0809 -0.6183 0.0000 | -0.2445 -1.4098 5.5151 1.0000]
+  SetStreamSource 0 vb=02D05198 off=0 stride=20
+  SetVertexDeclaration 21228CA8
+DrawIndexed t=4 base=8558 minIdx=0 nv=50 start=25827 n=64 z=1 zw=1 zf=2 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+  SetTexture 0 1A9432D0
+  SetTransform 16 [-0.4894 0.0908 -0.1724 0.0000 | 0.1851 0.2807 -0.3005 0.0000 | 0.0465 -0.1618 -0.6183 0.0000 | -1.5562 -3.5069 5.8657 1.0000]
+  SetTransform 17 [-0.2447 0.0454 -0.1724 0.0000 | 0.0926 0.1403 -0.3005 0.0000 | 0.0233 -0.0809 -0.6183 0.0000 | -0.5281 -1.5034 5.8657 1.0000]
+DrawIndexed t=4 base=8608 minIdx=0 nv=50 start=26019 n=64 z=1 zw=1 zf=2 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+  SetTexture 0 1A9436D0
+  SetTransform 16 [-0.4014 0.1014 -0.1606 0.0000 | 0.1519 0.3135 -0.2799 0.0000 | 0.0381 -0.1807 -0.5760 0.0000 | -0.9539 -3.9285 5.2771 1.0000]
+  SetTransform 17 [-0.2007 0.0507 -0.1606 0.0000 | 0.0759 0.1567 -0.2799 0.0000 | 0.0191 -0.0903 -0.5760 0.0000 | -0.2270 -1.7142 5.2771 1.0000]
+DrawIndexed t=4 base=8658 minIdx=0 nv=32 start=26211 n=36 z=1 zw=1 zf=2 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+  SetTexture 0 1A985320
+  SetTransform 16 [-0.3890 0.0496 -0.0768 0.0000 | 0.1472 0.1533 -0.1338 0.0000 | 0.0370 -0.0883 -0.2752 0.0000 | -3.1608 -1.1252 2.5023 1.0000]
+  SetTransform 17 [-0.1945 0.0248 -0.0768 0.0000 | 0.0736 0.0766 -0.1338 0.0000 | 0.0185 -0.0442 -0.2752 0.0000 | -1.3304 -0.3126 2.5023 1.0000]
+DrawIndexed t=4 base=8690 minIdx=0 nv=98 start=26319 n=2 z=1 zw=1 zf=2 ab=1 at=1 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTransform 3 [2.4142 0.0000 0.0000 0.0000 | 0.0000 0.0000 1.0001 1.0000 | 0.0000 3.0200 0.0000 0.0000 | 0.0000 0.0000 -0.2000 0.0000]
+  SetTexture 0 1A985660
+  RS 14 = 0x0
+  RS 19 = 0x9
+  RS 20 = 0x6
+  SetTexture 1 00000000
+  RS 23 = 0x4
+  RS 15 = 0x0
+  SetTransform 16 [1.0000 0.0000 0.0000 0.0000 | 0.0000 1.0000 0.0000 0.0000 | 0.0000 0.0000 1.0000 0.0000 | 0.0000 0.0000 0.0000 1.0000]
+  SetTransform 17 [1.0000 0.0000 0.0000 0.0000 | 0.0000 1.0000 0.0000 0.0000 | 0.0000 0.0000 1.0000 0.0000 | 0.0000 0.0000 0.0000 1.0000]
+  SetTransform 256 [-0.2658 0.9350 0.2349 0.0000 | -0.9640 -0.2578 -0.0647 0.0000 | -0.0000 -0.2436 0.9699 0.0000 | 0.2842 8.3990 -0.9257 1.0000]
+  SetVertexDeclaration 211DEE70
+  SetStreamSource 0 vb=1A9860F0 off=0 stride=32
+  SetIndices 1A986120
+DrawIndexed t=4 base=0 minIdx=0 nv=4 start=0 n=2 z=1 zw=0 zf=4 ab=1 at=0 lit=0 st=1 cull=2 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTexture 0 22A825A8
+  SetVertexShader 0F3569D0
+  RS 137 = 0x1
+  RS 14 = 0x1
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  SetStreamSource 0 vb=22748D08 off=0 stride=32
+  SetIndices 22748D68
+  VSConst c0 x8 [1.385 1.978 -0.000 -11.605]
+DrawIndexed t=4 base=0 minIdx=0 nv=4 start=0 n=2 z=1 zw=1 zf=4 ab=0 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F3569D0 ps=00000000 fvf=0x44
+  SetTexture 0 232C93B8
+  SetVertexShader 22F31040
+  SetPixelShader 241ADC58
+  RS 14 = 0x0
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetStreamSource 0 vb=17D928B8 off=0 stride=32
+  SetIndices 17D928E8
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.500]
+DrawIndexed t=4 base=1831 minIdx=0 nv=221 start=3462 n=104 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.500]
+DrawIndexed t=4 base=1831 minIdx=0 nv=221 start=3462 n=104 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetTexture 2 241A8BE8
+  SetVertexShader 1C5A43F8
+  SetPixelShader 241AA5B8
+  SetTexture 0 00000000
+  SetStreamSource 0 vb=2430B048 off=0 stride=32
+  SetIndices 2430B078
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.350]
+DrawIndexed t=4 base=0 minIdx=0 nv=21 start=0 n=16 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=1C5A43F8 ps=241AA5B8 fvf=0x44
+  SetStreamSource 0 vb=23AA4328 off=0 stride=32
+  SetIndices 23AA4358
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.350]
+DrawIndexed t=4 base=0 minIdx=0 nv=21 start=0 n=16 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=1C5A43F8 ps=241AA5B8 fvf=0x44
+  SetTexture 0 22969F88
+  SetVertexShader 0F62B1D0
+  SetPixelShader 241ADC58
+  SetTexture 2 00000000
+  SetStreamSource 0 vb=2430B048 off=0 stride=32
+  SetIndices 2430B078
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.500]
+DrawIndexed t=4 base=748 minIdx=0 nv=24 start=1497 n=20 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=241ADC58 fvf=0x44
+  SetStreamSource 0 vb=23AA4328 off=0 stride=32
+  SetIndices 23AA4358
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.500]
+DrawIndexed t=4 base=748 minIdx=0 nv=24 start=1497 n=20 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=241ADC58 fvf=0x44
+  SetTexture 2 241A8BE8
+  SetVertexShader 1C5A43F8
+  SetPixelShader 241AA5B8
+  SetTexture 0 00000000
+  SetStreamSource 0 vb=194A74B0 off=0 stride=32
+  SetIndices 194A74E0
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.350]
+DrawIndexed t=4 base=0 minIdx=0 nv=21 start=0 n=16 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=1C5A43F8 ps=241AA5B8 fvf=0x44
+  SetStreamSource 0 vb=2391C288 off=0 stride=32
+  SetIndices 2391C2B8
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.350]
+DrawIndexed t=4 base=0 minIdx=0 nv=21 start=0 n=16 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=1C5A43F8 ps=241AA5B8 fvf=0x44
+  SetTexture 0 22969F88
+  SetVertexShader 0F62B1D0
+  SetPixelShader 241ADC58
+  SetTexture 2 00000000
+  SetStreamSource 0 vb=194A74B0 off=0 stride=32
+  SetIndices 194A74E0
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.500]
+DrawIndexed t=4 base=827 minIdx=0 nv=24 start=1494 n=20 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=241ADC58 fvf=0x44
+  SetStreamSource 0 vb=2391C288 off=0 stride=32
+  SetIndices 2391C2B8
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.500]
+DrawIndexed t=4 base=747 minIdx=0 nv=24 start=1494 n=20 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=241ADC58 fvf=0x44
+  SetTexture 0 189E5390
+  SetVertexShader 22F31040
+  SetStreamSource 0 vb=22A4CB50 off=0 stride=32
+  SetIndices 22A4CB80
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 1.000]
+DrawIndexed t=4 base=4 minIdx=0 nv=4 start=6 n=2 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetTexture 0 0C6C2320
+  SetVertexShader 0F62B1D0
+  SetStreamSource 0 vb=22A4A548 off=0 stride=32
+  SetIndices 22A4A578
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.450]
+DrawIndexed t=4 base=0 minIdx=0 nv=8 start=0 n=4 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=241ADC58 fvf=0x44
+  SetTexture 0 189E5390
+  SetVertexShader 22F31040
+  SetStreamSource 0 vb=22A4CB50 off=0 stride=32
+  SetIndices 22A4CB80
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 1.000]
+DrawIndexed t=4 base=729 minIdx=0 nv=16 start=2184 n=14 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetTexture 0 0C6C2320
+  SetVertexShader 0F62B1D0
+  SetStreamSource 0 vb=22A4C7E8 off=0 stride=32
+  SetIndices 22A4C818
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.450]
+DrawIndexed t=4 base=594 minIdx=0 nv=8 start=1131 n=4 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=241ADC58 fvf=0x44
+  SetTexture 2 241A8BE8
+  SetVertexShader 1C5A43F8
+  SetPixelShader 241AA5B8
+  SetTexture 0 00000000
+  SetStreamSource 0 vb=22A4A548 off=0 stride=32
+  SetIndices 22A4A578
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.350]
+DrawIndexed t=4 base=597 minIdx=0 nv=5 start=1134 n=3 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=1C5A43F8 ps=241AA5B8 fvf=0x44
+  SetStreamSource 0 vb=22A4C7E8 off=0 stride=32
+  SetIndices 22A4C818
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.350]
+DrawIndexed t=4 base=589 minIdx=0 nv=5 start=1122 n=3 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=1C5A43F8 ps=241AA5B8 fvf=0x44
+  SetStreamSource 0 vb=21064E70 off=0 stride=32
+  SetIndices 21064EA0
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.350]
+DrawIndexed t=4 base=0 minIdx=0 nv=116 start=0 n=64 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=1C5A43F8 ps=241AA5B8 fvf=0x44
+  SetStreamSource 0 vb=22A45418 off=0 stride=32
+  SetIndices 22A45448
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.350]
+DrawIndexed t=4 base=0 minIdx=0 nv=116 start=0 n=64 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=1C5A43F8 ps=241AA5B8 fvf=0x44
+  SetTexture 0 0C6C2320
+  SetVertexShader 0F62B1D0
+  SetPixelShader 241ADC58
+  SetTexture 2 00000000
+  SetVertexDeclaration 23046D08
+  SetStreamSource 0 vb=21064E70 off=0 stride=36
+  SetIndices 21064EA0
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.450]
+DrawIndexed t=4 base=454 minIdx=0 nv=18 start=840 n=10 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=241ADC58 fvf=0x44
+  SetStreamSource 0 vb=22A45418 off=0 stride=36
+  SetIndices 22A45448
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.450]
+DrawIndexed t=4 base=454 minIdx=0 nv=18 start=840 n=10 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=241ADC58 fvf=0x44
+  SetTexture 2 241A8BE8
+  SetVertexShader 1C5A43F8
+  SetPixelShader 241AA5B8
+  SetTexture 0 00000000
+  SetVertexDeclaration 211DEE70
+  SetStreamSource 0 vb=194A74B0 off=0 stride=32
+  SetIndices 194A74E0
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.350]
+DrawIndexed t=4 base=0 minIdx=0 nv=21 start=0 n=16 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=1C5A43F8 ps=241AA5B8 fvf=0x44
+  SetStreamSource 0 vb=2391C288 off=0 stride=32
+  SetIndices 2391C2B8
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.350]
+DrawIndexed t=4 base=0 minIdx=0 nv=21 start=0 n=16 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=1C5A43F8 ps=241AA5B8 fvf=0x44
+  SetTexture 0 22969F88
+  SetVertexShader 0F62B1D0
+  SetPixelShader 241ADC58
+  SetTexture 2 00000000
+  SetStreamSource 0 vb=194A74B0 off=0 stride=32
+  SetIndices 194A74E0
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.500]
+DrawIndexed t=4 base=827 minIdx=0 nv=24 start=1494 n=20 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=241ADC58 fvf=0x44
+  SetStreamSource 0 vb=2391C288 off=0 stride=32
+  SetIndices 2391C2B8
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.500]
+DrawIndexed t=4 base=747 minIdx=0 nv=24 start=1494 n=20 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=241ADC58 fvf=0x44
+  SetTexture 0 1B5AAB20
+  SetVertexShader 22F31040
+  SetStreamSource 0 vb=1B70A988 off=0 stride=32
+  SetIndices 1B70A9B8
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.500]
+DrawIndexed t=4 base=972 minIdx=0 nv=4 start=3708 n=2 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetVertexShader 0F62B1D0
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.500]
+DrawIndexed t=4 base=976 minIdx=0 nv=126 start=3714 n=42 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=241ADC58 fvf=0x44
+  SetTexture 2 241A8BE8
+  SetVertexShader 1C5A43F8
+  SetPixelShader 241AA5B8
+  SetTexture 0 00000000
+  SetStreamSource 0 vb=23AA4328 off=0 stride=32
+  SetIndices 23AA4358
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.350]
+DrawIndexed t=4 base=0 minIdx=0 nv=21 start=0 n=16 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=1C5A43F8 ps=241AA5B8 fvf=0x44
+  SetStreamSource 0 vb=2430B048 off=0 stride=32
+  SetIndices 2430B078
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.350]
+DrawIndexed t=4 base=0 minIdx=0 nv=21 start=0 n=16 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=1C5A43F8 ps=241AA5B8 fvf=0x44
+  SetTexture 0 18B41978
+  SetVertexShader 268A19A8
+  SetPixelShader 0F48B540
+  SetTexture 2 00000000
+  SetStreamSource 0 vb=18BC53F0 off=0 stride=32
+  SetIndices 18BC5480
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=1398 minIdx=0 nv=8 start=4350 n=6 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  SetTexture 0 22969F88
+  SetVertexShader 0F62B1D0
+  SetPixelShader 241ADC58
+  SetStreamSource 0 vb=23AA4328 off=0 stride=32
+  SetIndices 23AA4358
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.500]
+DrawIndexed t=4 base=748 minIdx=0 nv=24 start=1497 n=20 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=241ADC58 fvf=0x44
+  SetStreamSource 0 vb=2430B048 off=0 stride=32
+  SetIndices 2430B078
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.500]
+DrawIndexed t=4 base=748 minIdx=0 nv=24 start=1497 n=20 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=241ADC58 fvf=0x44
+  SetTexture 0 18B3E6E8
+  SetVertexShader 22F31040
+  SetStreamSource 0 vb=18BC53F0 off=0 stride=32
+  SetIndices 18BC5480
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.400]
+DrawIndexed t=4 base=4 minIdx=0 nv=4 start=6 n=2 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetVertexShader 0EEC3DE0
+  SetTexture 0 00000000
+  SetPixelShader 00000000
+  SetVertexDeclaration 23046D08
+  SetStreamSource 0 vb=22765118 off=0 stride=36
+  SetIndices 22765148
+  VSConst c0 x11 [2.414 0.000 0.000 0.000]
+DrawIndexed t=4 base=8 minIdx=0 nv=8 start=12 n=4 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0EEC3DE0 ps=00000000 fvf=0x44
+  SetTexture 0 23637850
+  SetVertexShader 22F31040
+  SetPixelShader 241ADC58
+  SetVertexDeclaration 211DEE70
+  SetStreamSource 0 vb=1B771888 off=0 stride=32
+  SetIndices 1B7718B8
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.700]
+DrawIndexed t=4 base=1079 minIdx=0 nv=6 start=4914 n=4 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetVertexShader 0EEC3DE0
+  SetTexture 0 00000000
+  SetPixelShader 00000000
+  SetVertexDeclaration 23046D08
+  SetStreamSource 0 vb=22755200 off=0 stride=36
+  SetIndices 22755260
+  VSConst c0 x11 [2.414 0.000 0.000 0.000]
+DrawIndexed t=4 base=1488 minIdx=0 nv=48 start=4179 n=56 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0EEC3DE0 ps=00000000 fvf=0x44
+  SetTexture 0 22B11090
+  SetVertexShader 22F31040
+  SetPixelShader 241ADC58
+  SetVertexDeclaration 211DEE70
+  SetStreamSource 0 vb=229C1EA8 off=0 stride=32
+  SetIndices 229C1ED8
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=4 start=0 n=2 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetVertexShader 0EEC3DE0
+  SetTexture 0 00000000
+  SetPixelShader 00000000
+  SetVertexDeclaration 23046D08
+  SetStreamSource 0 vb=22765118 off=0 stride=36
+  SetIndices 22765148
+  VSConst c0 x11 [2.414 0.000 0.000 0.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=8 start=0 n=4 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0EEC3DE0 ps=00000000 fvf=0x44
+  SetTexture 0 22787C08
+  SetVertexShader 267907D0
+  SetPixelShader 0F395518
+  SetVertexDeclaration 211DEE70
+  SetStreamSource 0 vb=22780E60 off=0 stride=32
+  SetIndices 22780EC0
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=60 start=0 n=36 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=267907D0 ps=0F395518 fvf=0x44
+  SetVertexShader 0EEC3DE0
+  SetTexture 0 00000000
+  SetPixelShader 00000000
+  SetVertexDeclaration 23046D08
+  SetStreamSource 0 vb=228CB2B0 off=0 stride=36
+  SetIndices 228CB2E0
+  VSConst c0 x11 [2.414 0.000 0.000 0.000]
+DrawIndexed t=4 base=16 minIdx=0 nv=14 start=24 n=8 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0EEC3DE0 ps=00000000 fvf=0x44
+  SetTexture 0 22ED7D70
+  SetVertexShader 22F31040
+  SetPixelShader 241ADC58
+  SetVertexDeclaration 211DEE70
+  SetStreamSource 0 vb=2277EB80 off=0 stride=32
+  SetIndices 2277EBB0
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.400]
+DrawIndexed t=4 base=16 minIdx=0 nv=4 start=24 n=2 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetTexture 2 241A8BE8
+  SetVertexShader 25A98D28
+  SetPixelShader 241AA5B8
+  SetTexture 0 00000000
+  SetStreamSource 0 vb=1A0DFB40 off=0 stride=32
+  SetIndices 1A0DFB70
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.350]
+DrawIndexed t=4 base=689 minIdx=0 nv=16 start=1035 n=8 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=25A98D28 ps=241AA5B8 fvf=0x44
+  SetVertexShader 1C5A43F8
+  SetStreamSource 0 vb=1A0E1F88 off=0 stride=32
+  SetIndices 1A0E1FB8
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.350]
+DrawIndexed t=4 base=692 minIdx=0 nv=16 start=1038 n=8 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=1C5A43F8 ps=241AA5B8 fvf=0x44
+  SetTexture 0 22969F88
+  SetVertexShader 0F62B1D0
+  SetPixelShader 241ADC58
+  SetTexture 2 00000000
+  SetStreamSource 0 vb=1A0DFB40 off=0 stride=32
+  SetIndices 1A0DFB70
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.500]
+DrawIndexed t=4 base=705 minIdx=0 nv=20 start=1059 n=20 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=241ADC58 fvf=0x44
+  SetStreamSource 0 vb=1A0E1F88 off=0 stride=32
+  SetIndices 1A0E1FB8
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.500]
+DrawIndexed t=4 base=708 minIdx=0 nv=20 start=1062 n=20 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=241ADC58 fvf=0x44
+  SetVertexShader 0EEC3DE0
+  SetTexture 0 00000000
+  SetPixelShader 00000000
+  SetVertexDeclaration 23046D08
+  SetStreamSource 0 vb=189ED6C0 off=0 stride=36
+  SetIndices 189ED720
+  VSConst c0 x11 [2.414 0.000 0.000 0.000]
+DrawIndexed t=4 base=1258 minIdx=0 nv=36 start=3411 n=42 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0EEC3DE0 ps=00000000 fvf=0x44
+  SetStreamSource 0 vb=228CB2B0 off=0 stride=36
+  SetIndices 228CB2E0
+  VSConst c0 x11 [2.414 0.000 0.000 0.000]
+DrawIndexed t=4 base=30 minIdx=0 nv=16 start=48 n=8 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0EEC3DE0 ps=00000000 fvf=0x44
+  SetStreamSource 0 vb=228B2558 off=0 stride=36
+  SetIndices 228B2588
+  VSConst c0 x11 [2.414 0.000 0.000 0.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=8 start=0 n=4 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0EEC3DE0 ps=00000000 fvf=0x44
+  SetTexture 0 22758AD0
+  SetVertexShader 268A19A8
+  SetPixelShader 0F48B540
+  SetVertexDeclaration 211DEE70
+  SetStreamSource 0 vb=227560B0 off=0 stride=32
+  SetIndices 22756110
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=36 start=0 n=36 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  SetVertexShader 0EEC3DE0
+  SetTexture 0 00000000
+  SetPixelShader 00000000
+  SetVertexDeclaration 23046D08
+  SetStreamSource 0 vb=1B70C188 off=0 stride=36
+  SetIndices 1B70C1B8
+  VSConst c0 x11 [2.414 0.000 0.000 0.000]
+DrawIndexed t=4 base=622 minIdx=0 nv=14 start=2682 n=12 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0EEC3DE0 ps=00000000 fvf=0x44
+  SetTexture 0 1B5AAB20
+  SetVertexShader 22F31040
+  SetPixelShader 241ADC58
+  SetVertexDeclaration 211DEE70
+  SetStreamSource 0 vb=1B70A988 off=0 stride=32
+  SetIndices 1B70A9B8
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.500]
+DrawIndexed t=4 base=972 minIdx=0 nv=4 start=3708 n=2 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetVertexShader 0F62B1D0
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.500]
+DrawIndexed t=4 base=976 minIdx=0 nv=126 start=3714 n=42 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=241ADC58 fvf=0x44
+  SetVertexShader 0EEC3DE0
+  SetTexture 0 00000000
+  SetPixelShader 00000000
+  SetVertexDeclaration 23046D08
+  SetStreamSource 0 vb=228B2558 off=0 stride=36
+  SetIndices 228B2588
+  VSConst c0 x11 [2.414 0.000 0.000 0.000]
+DrawIndexed t=4 base=8 minIdx=0 nv=8 start=12 n=4 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0EEC3DE0 ps=00000000 fvf=0x44
+  SetTexture 0 0C6C2320
+  SetVertexShader 0F62B1D0
+  SetPixelShader 241ADC58
+  SetVertexDeclaration 211DEE70
+  SetStreamSource 0 vb=22A4C7E8 off=0 stride=32
+  SetIndices 22A4C818
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.450]
+DrawIndexed t=4 base=594 minIdx=0 nv=8 start=1131 n=4 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=241ADC58 fvf=0x44
+  SetStreamSource 0 vb=22A4A548 off=0 stride=32
+  SetIndices 22A4A578
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.450]
+DrawIndexed t=4 base=0 minIdx=0 nv=8 start=0 n=4 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=241ADC58 fvf=0x44
+  SetTexture 2 241A8BE8
+  SetVertexShader 25D38E68
+  SetPixelShader 241AA5B8
+  SetTexture 0 00000000
+  SetStreamSource 0 vb=22A4C7E8 off=0 stride=32
+  SetIndices 22A4C818
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.350]
+DrawIndexed t=4 base=589 minIdx=0 nv=5 start=1122 n=3 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=25D38E68 ps=241AA5B8 fvf=0x44
+  SetVertexShader 1C5A43F8
+  SetStreamSource 0 vb=22A4A548 off=0 stride=32
+  SetIndices 22A4A578
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.350]
+DrawIndexed t=4 base=597 minIdx=0 nv=5 start=1134 n=3 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=1C5A43F8 ps=241AA5B8 fvf=0x44
+  SetTexture 0 1A80A918
+  SetVertexShader 25E017D8
+  SetPixelShader 241ABC80
+  SetStreamSource 0 vb=1A808238 off=0 stride=32
+  SetIndices 1A808298
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=8 start=0 n=4 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=25E017D8 ps=241ABC80 fvf=0x44
+  SetStreamSource 0 vb=1A809BC8 off=0 stride=32
+  SetIndices 1A809BF8
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=93 minIdx=0 nv=36 start=360 n=32 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=25E017D8 ps=241ABC80 fvf=0x44
+  SetStreamSource 0 vb=1A807778 off=0 stride=32
+  SetIndices 1A8077A8
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=8 start=0 n=4 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=25E017D8 ps=241ABC80 fvf=0x44
+  SetStreamSource 0 vb=1A807478 off=0 stride=32
+  SetIndices 1A8074A8
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=8 start=0 n=4 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=25E017D8 ps=241ABC80 fvf=0x44
+  SetVertexShader 25A9DDA0
+  SetPixelShader 241AA5B8
+  SetTexture 0 00000000
+  SetStreamSource 0 vb=22A45418 off=0 stride=32
+  SetIndices 22A45448
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.350]
+DrawIndexed t=4 base=0 minIdx=0 nv=116 start=0 n=64 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=25A9DDA0 ps=241AA5B8 fvf=0x44
+  SetVertexShader 1C5A43F8
+  SetStreamSource 0 vb=21064E70 off=0 stride=32
+  SetIndices 21064EA0
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.350]
+DrawIndexed t=4 base=0 minIdx=0 nv=116 start=0 n=64 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=1C5A43F8 ps=241AA5B8 fvf=0x44
+  SetTexture 0 1A80A918
+  SetVertexShader 25E017D8
+  SetPixelShader 241ABC80
+  SetStreamSource 0 vb=1A80A018 off=0 stride=32
+  SetIndices 1A80A048
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=36 start=0 n=32 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=25E017D8 ps=241ABC80 fvf=0x44
+  SetStreamSource 0 vb=1A804D88 off=0 stride=32
+  SetIndices 1A804DB8
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=8 start=0 n=4 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=25E017D8 ps=241ABC80 fvf=0x44
+  SetTexture 0 0C6C2320
+  SetVertexShader 0F62B1D0
+  SetPixelShader 241ADC58
+  SetTexture 2 00000000
+  SetVertexDeclaration 23046D08
+  SetStreamSource 0 vb=22A45418 off=0 stride=36
+  SetIndices 22A45448
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.450]
+DrawIndexed t=4 base=454 minIdx=0 nv=18 start=840 n=10 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=241ADC58 fvf=0x44
+  SetStreamSource 0 vb=21064E70 off=0 stride=36
+  SetIndices 21064EA0
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.450]
+DrawIndexed t=4 base=454 minIdx=0 nv=18 start=840 n=10 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=241ADC58 fvf=0x44
+  SetTexture 0 1A80BC80
+  SetVertexShader 22F31040
+  SetVertexDeclaration 211DEE70
+  SetStreamSource 0 vb=1A802660 off=0 stride=32
+  SetIndices 1A802690
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.650]
+DrawIndexed t=4 base=0 minIdx=0 nv=16 start=0 n=16 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetTexture 0 18A672C0
+  SetStreamSource 0 vb=1A748E20 off=0 stride=32
+  SetIndices 1A748E50
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.400]
+DrawIndexed t=4 base=16 minIdx=0 nv=8 start=24 n=4 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+DrawIndexed t=4 base=0 minIdx=0 nv=4 start=0 n=2 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetTexture 0 197EEEC8
+  SetVertexShader 25B5A290
+  SetPixelShader 0F395518
+  SetStreamSource 0 vb=245138E0 off=0 stride=32
+  SetIndices 24513910
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=150 minIdx=0 nv=4 start=216 n=2 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=25B5A290 ps=0F395518 fvf=0x44
+  SetTexture 0 281D7680
+  RS 137 = 0x0
+  RS 22 = 0x1
+  RS 15 = 0x1
+  RS 20 = 0x2
+  SetVertexShader 00000000
+  SetPixelShader 00000000
+  SetTransform 256 [-0.8192 -0.5563 -0.1397 0.0000 | 0.5736 -0.7945 -0.1996 0.0000 | -0.0000 -0.2436 0.9699 0.0000 | 0.9385 33.3356 4.5595 1.0000]
+  SetStreamSource 0 vb=02D05198 off=0 stride=24
+  SetIndices 02D051F8
+  SetVertexDeclaration 211B9BD8
+DrawIndexed t=4 base=7324 minIdx=0 nv=4 start=26751 n=2 z=1 zw=0 zf=4 ab=1 at=1 lit=0 st=1 cull=1 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=7328 minIdx=0 nv=4 start=26757 n=2 z=1 zw=0 zf=4 ab=1 at=1 lit=0 st=1 cull=1 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTexture 0 21227EB0
+DrawIndexed t=4 base=7332 minIdx=0 nv=4 start=26763 n=2 z=1 zw=0 zf=4 ab=1 at=1 lit=0 st=1 cull=1 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+DrawIndexed t=4 base=7336 minIdx=0 nv=4 start=26769 n=2 z=1 zw=0 zf=4 ab=1 at=1 lit=0 st=1 cull=1 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTexture 0 281D7680
+DrawIndexed t=4 base=7340 minIdx=0 nv=4 start=26775 n=2 z=1 zw=0 zf=4 ab=1 at=1 lit=0 st=1 cull=1 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+  SetTexture 2 241A8BE8
+  SetVertexShader 25B5F398
+  SetPixelShader 241AA5B8
+  RS 20 = 0x6
+  SetTexture 0 00000000
+  RS 137 = 0x1
+  RS 22 = 0x2
+  RS 15 = 0x0
+  SetVertexDeclaration 1A7DE130
+  SetStreamSource 0 vb=1A7DE190 off=0 stride=32
+  SetStreamSource 1 vb=19880EA0 off=0 stride=84
+  SetIndices 1A7DE1F0
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.650]
+DrawIndexed t=4 base=0 minIdx=0 nv=240 start=0 n=124 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=25B5F398 ps=241AA5B8 fvf=0x44
+  SetTexture 0 0D1BF890
+  SetVertexShader 22F31040
+  SetPixelShader 241ADC58
+  SetTexture 2 00000000
+  SetVertexDeclaration 211DEE70
+  SetStreamSource 0 vb=22E7C4D0 off=0 stride=32
+  SetIndices 22E7C500
+  SetStreamSource 1 vb=00000000 off=0 stride=0
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.400]
+DrawIndexed t=4 base=909 minIdx=0 nv=6 start=2520 n=4 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+DrawIndexed t=4 base=915 minIdx=0 nv=12 start=2532 n=6 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetTexture 2 241A8BE8
+  SetVertexShader 26B808C8
+  SetPixelShader 241AA5B8
+  SetTexture 0 00000000
+  SetStreamSource 0 vb=2391C288 off=0 stride=32
+  SetIndices 2391C2B8
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.350]
+DrawIndexed t=4 base=0 minIdx=0 nv=21 start=0 n=16 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=26B808C8 ps=241AA5B8 fvf=0x44
+  SetVertexShader 25E017D8
+  SetStreamSource 0 vb=194A74B0 off=0 stride=32
+  SetIndices 194A74E0
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.350]
+DrawIndexed t=4 base=0 minIdx=0 nv=21 start=0 n=16 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=25E017D8 ps=241AA5B8 fvf=0x44
+  SetTexture 0 22969F88
+  SetVertexShader 0F62B1D0
+  SetPixelShader 241ADC58
+  SetTexture 2 00000000
+  SetStreamSource 0 vb=2391C288 off=0 stride=32
+  SetIndices 2391C2B8
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.500]
+DrawIndexed t=4 base=747 minIdx=0 nv=24 start=1494 n=20 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=241ADC58 fvf=0x44
+  SetStreamSource 0 vb=194A74B0 off=0 stride=32
+  SetIndices 194A74E0
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.500]
+DrawIndexed t=4 base=827 minIdx=0 nv=24 start=1494 n=20 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=241ADC58 fvf=0x44
+  SetTexture 0 22B11090
+  SetVertexShader 22F31040
+  SetStreamSource 0 vb=24E63740 off=0 stride=32
+  SetIndices 24E63770
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=4 start=0 n=2 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetTexture 2 241A8BE8
+  SetVertexShader 26B808C8
+  SetPixelShader 241AA5B8
+  SetTexture 0 00000000
+  SetStreamSource 0 vb=2391C288 off=0 stride=32
+  SetIndices 2391C2B8
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.350]
+DrawIndexed t=4 base=0 minIdx=0 nv=21 start=0 n=16 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=26B808C8 ps=241AA5B8 fvf=0x44
+  SetVertexShader 25E017D8
+  SetStreamSource 0 vb=194A74B0 off=0 stride=32
+  SetIndices 194A74E0
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.350]
+DrawIndexed t=4 base=0 minIdx=0 nv=21 start=0 n=16 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=25E017D8 ps=241AA5B8 fvf=0x44
+  SetTexture 0 22969F88
+  SetVertexShader 0F62B1D0
+  SetPixelShader 241ADC58
+  SetTexture 2 00000000
+  SetStreamSource 0 vb=2391C288 off=0 stride=32
+  SetIndices 2391C2B8
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.500]
+DrawIndexed t=4 base=747 minIdx=0 nv=24 start=1494 n=20 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=241ADC58 fvf=0x44
+  SetStreamSource 0 vb=194A74B0 off=0 stride=32
+  SetIndices 194A74E0
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.500]
+DrawIndexed t=4 base=827 minIdx=0 nv=24 start=1494 n=20 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=241ADC58 fvf=0x44
+  SetTexture 0 22B11090
+  SetVertexShader 22F31040
+  SetStreamSource 0 vb=234BC9C0 off=0 stride=32
+  SetIndices 234BC9F0
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=4 start=0 n=2 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetTexture 2 241A8BE8
+  SetVertexShader 26B808C8
+  SetPixelShader 241AA5B8
+  SetTexture 0 00000000
+  SetStreamSource 0 vb=2391C288 off=0 stride=32
+  SetIndices 2391C2B8
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.350]
+DrawIndexed t=4 base=0 minIdx=0 nv=21 start=0 n=16 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=26B808C8 ps=241AA5B8 fvf=0x44
+  SetVertexShader 25E017D8
+  SetStreamSource 0 vb=194A74B0 off=0 stride=32
+  SetIndices 194A74E0
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.350]
+DrawIndexed t=4 base=0 minIdx=0 nv=21 start=0 n=16 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=25E017D8 ps=241AA5B8 fvf=0x44
+  SetTexture 0 22969F88
+  SetVertexShader 0F62B1D0
+  SetPixelShader 241ADC58
+  SetTexture 2 00000000
+  SetStreamSource 0 vb=2391C288 off=0 stride=32
+  SetIndices 2391C2B8
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.500]
+DrawIndexed t=4 base=747 minIdx=0 nv=24 start=1494 n=20 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=241ADC58 fvf=0x44
+  SetStreamSource 0 vb=194A74B0 off=0 stride=32
+  SetIndices 194A74E0
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.500]
+DrawIndexed t=4 base=827 minIdx=0 nv=24 start=1494 n=20 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=241ADC58 fvf=0x44
+  SetPixelShader 26CCEA00
+  RS 19 = 0x1
+  RS 20 = 0x2
+  SetTexture 0 00000000
+  RS 14 = 0x1
+  SetStreamSource 0 vb=230A5148 off=0 stride=32
+  SetIndices 230A5178
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+DrawIndexed t=4 base=877 minIdx=0 nv=67 start=2064 n=94 z=1 zw=1 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=26CCEA00 fvf=0x44
+  SetTexture 0 230A5B90
+  SetTexture 2 241A8BE8
+  SetVertexShader 25E017D8
+  SetPixelShader 26CD2068
+  RS 14 = 0x0
+  RS 19 = 0x5
+  RS 20 = 0x6
+  VSConst c0 x256 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.750]
+DrawIndexed t=4 base=877 minIdx=0 nv=67 start=2064 n=94 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=25E017D8 ps=26CD2068 fvf=0x44
+  SetTexture 0 22B11090
+  SetVertexShader 22F31040
+  SetPixelShader 241ADC58
+  SetTexture 2 00000000
+  SetStreamSource 0 vb=20F96C68 off=0 stride=32
+  SetIndices 20F96C98
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=4 start=0 n=2 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetTexture 0 230A5B90
+  SetVertexShader 25B5A290
+  SetPixelShader 26CD07B0
+  RS 15 = 0x1
+  SetStreamSource 0 vb=230A5148 off=0 stride=32
+  SetIndices 230A5178
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.750]
+DrawIndexed t=4 base=122 minIdx=0 nv=755 start=540 n=508 z=1 zw=0 zf=4 ab=1 at=1 lit=1 st=1 cull=2 cw=0xF vs=25B5A290 ps=26CD07B0 fvf=0x44
+  SetVertexShader 0F62B1D0
+  SetPixelShader 26CCEA00
+  RS 19 = 0x1
+  RS 20 = 0x2
+  SetTexture 0 00000000
+  RS 14 = 0x1
+  RS 15 = 0x0
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=122 start=0 n=180 z=1 zw=1 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=0F62B1D0 ps=26CCEA00 fvf=0x44
+  SetVertexShader 268A19A8
+  SetPixelShader 26CCF8D8
+  RS 14 = 0x0
+  RS 19 = 0x5
+  RS 20 = 0x6
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 0.550]
+DrawIndexed t=4 base=0 minIdx=0 nv=122 start=0 n=180 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=26CCF8D8 fvf=0x44
+  SetTexture 0 22B11090
+  SetVertexShader 22F31040
+  SetPixelShader 241ADC58
+  SetStreamSource 0 vb=1B4FF440 off=0 stride=32
+  SetIndices 1B4FF470
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 1.000]
+DrawIndexed t=4 base=97 minIdx=0 nv=4 start=282 n=2 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetTexture 0 18A66668
+  SetStreamSource 0 vb=22FC4498 off=0 stride=32
+  SetIndices 22FC44F8
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=8 start=0 n=4 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetTexture 0 18CBCC78
+  SetStreamSource 0 vb=22679A68 off=0 stride=32
+  SetIndices 22679A98
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.400]
+DrawIndexed t=4 base=1717 minIdx=0 nv=6 start=4596 n=4 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetTexture 0 22B11090
+  SetStreamSource 0 vb=1B4FF440 off=0 stride=32
+  SetIndices 1B4FF470
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 1.000]
+DrawIndexed t=4 base=97 minIdx=0 nv=4 start=282 n=2 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetStreamSource 0 vb=20F96C68 off=0 stride=32
+  SetIndices 20F96C98
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=4 start=0 n=2 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetStreamSource 0 vb=1B4FF440 off=0 stride=32
+  SetIndices 1B4FF470
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 1.000]
+DrawIndexed t=4 base=97 minIdx=0 nv=4 start=282 n=2 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetTexture 0 226935D0
+  SetStreamSource 0 vb=22EAF190 off=0 stride=32
+  SetIndices 22EAF1F0
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.700]
+DrawIndexed t=4 base=2525 minIdx=0 nv=8 start=6159 n=4 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetTexture 0 22E7DD10
+  SetStreamSource 0 vb=2267B4A8 off=0 stride=32
+  SetIndices 2267B4D8
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.400]
+DrawIndexed t=4 base=1417 minIdx=0 nv=4 start=2730 n=2 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetTexture 0 19852950
+  SetVertexShader 268A19A8
+  SetPixelShader 0F48B540
+  SetStreamSource 0 vb=22BF5138 off=0 stride=32
+  SetIndices 22BF5168
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=32 start=0 n=16 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  SetTexture 0 22693550
+  SetVertexShader 2689F388
+  SetPixelShader 0F395518
+  SetStreamSource 0 vb=22EAF190 off=0 stride=32
+  SetIndices 22EAF1F0
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=2269 minIdx=0 nv=256 start=5547 n=204 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=2689F388 ps=0F395518 fvf=0x44
+  SetTexture 0 22B11090
+  SetVertexShader 22F31040
+  SetPixelShader 241ADC58
+  SetStreamSource 0 vb=1B4FF440 off=0 stride=32
+  SetIndices 1B4FF470
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 1.000]
+DrawIndexed t=4 base=97 minIdx=0 nv=4 start=282 n=2 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetStreamSource 0 vb=1B4AD648 off=0 stride=32
+  SetIndices 1B4AD678
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 1.000]
+DrawIndexed t=4 base=93 minIdx=0 nv=4 start=282 n=2 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetTexture 0 19852950
+  SetVertexShader 268A19A8
+  SetPixelShader 0F48B540
+  SetStreamSource 0 vb=198436B0 off=0 stride=32
+  SetIndices 198436E0
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=32 start=0 n=16 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  SetTexture 0 19852550
+  SetVertexShader 22F31040
+  SetPixelShader 241ADC58
+  SetStreamSource 0 vb=1A2C8360 off=0 stride=32
+  SetIndices 1A2C8390
+  VSConst c0 x15 [2.414 0.000 0.000 0.000]
+  PSConst c0 x4 [0.000 0.000 0.000 0.400]
+DrawIndexed t=4 base=0 minIdx=0 nv=6 start=0 n=4 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=22F31040 ps=241ADC58 fvf=0x44
+  SetTexture 0 19852950
+  SetVertexShader 268A19A8
+  SetPixelShader 0F48B540
+  SetStreamSource 0 vb=1A2D8058 off=0 stride=32
+  SetIndices 1A2D8088
+  VSConst c0 x50 [2.414 0.000 0.000 0.000]
+  PSConst c2 x16 [1.000 1.000 1.000 1.000]
+DrawIndexed t=4 base=0 minIdx=0 nv=48 start=0 n=24 z=1 zw=0 zf=4 ab=1 at=0 lit=1 st=1 cull=2 cw=0xF vs=268A19A8 ps=0F48B540 fvf=0x44
+  SetVertexShader 04078F60
+  RS 22 = 0x1
+  RS 7 = 0x0
+  RS 15 = 0x1
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 52 = 0x0
+  SetPixelShader 00000000
+  SetVertexDeclaration 0410FD30
+  SetStreamSource 0 vb=0410FE80 off=0 stride=20
+  SetIndices 0410FEB0
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF791F0
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=488 minIdx=0 nv=4 start=1080 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 0CF79270
+DrawIndexed t=4 base=492 minIdx=0 nv=4 start=1086 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79370
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=496 minIdx=0 nv=4 start=1092 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79470
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=500 minIdx=0 nv=4 start=1098 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF791F0
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=504 minIdx=0 nv=4 start=1104 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF791F0
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=508 minIdx=0 nv=4 start=1110 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79470
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=512 minIdx=0 nv=4 start=1116 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF792F0
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=516 minIdx=0 nv=4 start=1122 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF792F0
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=520 minIdx=0 nv=4 start=1128 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF793F0
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=524 minIdx=0 nv=4 start=1134 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 20 = 0x6
+  SetTexture 0 0CF79370
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=528 minIdx=0 nv=4 start=1140 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 20 = 0x6
+  SetTexture 0 0CF79370
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=532 minIdx=0 nv=4 start=1146 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79470
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=536 minIdx=0 nv=4 start=1152 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 1969A2F0
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=540 minIdx=0 nv=4 start=1158 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79370
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=544 minIdx=0 nv=4 start=1164 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79370
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=548 minIdx=0 nv=4 start=1170 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF793F0
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=552 minIdx=0 nv=4 start=1176 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF793F0
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=556 minIdx=0 nv=4 start=1182 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79470
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=560 minIdx=0 nv=4 start=1188 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF792F0
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=564 minIdx=0 nv=4 start=1194 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79530
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=568 minIdx=0 nv=4 start=1200 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF792F0
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=572 minIdx=0 nv=4 start=1206 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF793F0
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=576 minIdx=0 nv=4 start=1212 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79470
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=580 minIdx=0 nv=4 start=1218 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79530
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=584 minIdx=0 nv=4 start=1224 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79530
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=588 minIdx=0 nv=4 start=1230 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79530
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=592 minIdx=0 nv=4 start=1236 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79470
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=596 minIdx=0 nv=4 start=1242 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79470
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=600 minIdx=0 nv=4 start=1248 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79470
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=604 minIdx=0 nv=4 start=1254 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 1969A2F0
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=608 minIdx=0 nv=4 start=1260 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79470
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=612 minIdx=0 nv=4 start=1266 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF793F0
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=616 minIdx=0 nv=4 start=1272 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79530
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=620 minIdx=0 nv=4 start=1278 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79530
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=624 minIdx=0 nv=4 start=1284 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79530
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=628 minIdx=0 nv=4 start=1290 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79530
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=632 minIdx=0 nv=4 start=1296 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79270
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=636 minIdx=0 nv=4 start=1302 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF793F0
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=640 minIdx=0 nv=4 start=1308 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79530
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=644 minIdx=0 nv=4 start=1314 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79530
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=648 minIdx=0 nv=4 start=1320 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF793F0
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=652 minIdx=0 nv=4 start=1326 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF793F0
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=656 minIdx=0 nv=4 start=1332 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 1B724560
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=660 minIdx=0 nv=20 start=1338 n=10 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 1B724560
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=680 minIdx=0 nv=20 start=1368 n=10 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF793F0
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=700 minIdx=0 nv=4 start=1398 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=704 minIdx=0 nv=4 start=1404 n=2 z=0 zw=0 zf=4 ab=0 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=708 minIdx=0 nv=4 start=1410 n=2 z=0 zw=0 zf=4 ab=0 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=712 minIdx=0 nv=4 start=1416 n=2 z=0 zw=0 zf=4 ab=0 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=716 minIdx=0 nv=4 start=1422 n=2 z=0 zw=0 zf=4 ab=0 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=720 minIdx=0 nv=4 start=1428 n=2 z=0 zw=0 zf=4 ab=0 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=724 minIdx=0 nv=4 start=1434 n=2 z=0 zw=0 zf=4 ab=0 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=728 minIdx=0 nv=4 start=1440 n=2 z=0 zw=0 zf=4 ab=0 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=732 minIdx=0 nv=4 start=1446 n=2 z=0 zw=0 zf=4 ab=0 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=736 minIdx=0 nv=4 start=1452 n=2 z=0 zw=0 zf=4 ab=0 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79370
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=740 minIdx=0 nv=4 start=1458 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79470
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=744 minIdx=0 nv=4 start=1464 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79470
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=748 minIdx=0 nv=4 start=1470 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79470
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=752 minIdx=0 nv=4 start=1476 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79530
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=756 minIdx=0 nv=4 start=1482 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF793F0
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=760 minIdx=0 nv=4 start=1488 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79470
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=764 minIdx=0 nv=4 start=1494 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79530
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=768 minIdx=0 nv=4 start=1500 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79530
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=772 minIdx=0 nv=4 start=1506 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79470
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=776 minIdx=0 nv=4 start=1512 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79270
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=780 minIdx=0 nv=4 start=1518 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF793F0
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=784 minIdx=0 nv=4 start=1524 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 1B724560
+SetViewport 185,975 107x20 z=0.00..1.00
+  VSConst c0 x2 [0.019 -0.100 0.000 0.000]
+DrawIndexed t=4 base=788 minIdx=0 nv=36 start=1530 n=18 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 1969A2F0
+SetViewport 0,0 1280x1024 z=0.00..1.00
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=824 minIdx=0 nv=4 start=1584 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF793F0
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=828 minIdx=0 nv=4 start=1590 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79370
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=832 minIdx=0 nv=4 start=1596 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79530
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=836 minIdx=0 nv=4 start=1602 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79270
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=840 minIdx=0 nv=4 start=1608 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF79370
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=844 minIdx=0 nv=24 start=1614 n=12 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 20 = 0x6
+  SetTexture 0 0CF79470
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=868 minIdx=0 nv=4 start=1650 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF793F0
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=872 minIdx=0 nv=4 start=1656 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 19 = 0x2
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 20 = 0x6
+  SetTexture 0 0CF79270
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=876 minIdx=0 nv=4 start=1662 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+  SetTexture 0 00000000
+  RS 27 = 0x0
+  RS 20 = 0x1
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+  SetTexture 0 0CF793F0
+  VSConst c0 x2 [0.002 -0.002 0.000 0.000]
+DrawIndexed t=4 base=880 minIdx=0 nv=4 start=1668 n=2 z=0 zw=0 zf=4 ab=1 at=1 lit=1 st=0 cull=1 cw=0xF vs=04078F60 ps=00000000 fvf=0x44
+SetViewport 0,0 1280x1024 z=0.00..1.00
+  SetVertexShader 00000000
+  SetPixelShader 00000000
+  SetTexture 0 00000000
+  SetFVF 0x44
+  RS 7 = 0x0
+  RS 14 = 0x0
+  RS 137 = 0x0
+  RS 28 = 0x0
+  RS 52 = 0x0
+  RS 22 = 0x1
+  RS 15 = 0x0
+  RS 168 = 0xF
+  RS 27 = 0x1
+  RS 19 = 0x5
+  RS 20 = 0x6
+DrawPrimitiveUP t=4 n=8192 stride=20 z=0 zw=0 zf=4 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+DrawPrimitiveUP t=4 n=4680 stride=20 z=0 zw=0 zf=4 ab=1 at=0 lit=0 st=0 cull=1 cw=0xF vs=00000000 ps=00000000 fvf=0x44
+Present (frame 53161)

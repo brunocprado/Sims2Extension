@@ -1,0 +1,5 @@
+LIBRARY KERNEL32.dll
+EXPORTS
+    SetEnvironmentVariableA@8
+    ExitProcess@4
+    GetCommandLineA@0

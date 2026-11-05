@@ -1,0 +1,435 @@
+=================================================================
+1. cTSGlobals (vt=0xa107085c) - Global Singletons & Service Getters
+=================================================================
+VTable 0xa107085c (offset 0, 59 methods):
+  Constructor/VTable Xrefs in .text: ['0xa0dc7ca0', '0xa0dc7d4f']
+  [00] 0xa0dc80eb: cmp    DWORD PTR [esp+0x4],0x7a3e566d | 7a | jne    0xa0dc8105 | mov    eax,DWORD PTR [esp+0x8]
+  [01] 0xa0145510: add    ecx,0x4 | jmp    0xa01b9910 | sub    ecx,0x4 | jmp    0xa0145510
+  [02] 0xa01a8880: add    ecx,0x4 | jmp    0xa01b994a | sub    ecx,0x4 | jmp    0xa01a8880
+  [03] 0xa015e800: mov    eax,DWORD PTR [ecx+0x20] | ret | int3 | int3
+  [04] 0xa015ec20: mov    eax,DWORD PTR [ecx+0x24] | ret | int3 | int3
+  [05] 0xa015f640: mov    eax,DWORD PTR [ecx+0x28] | ret | int3 | int3
+  [06] 0xa0145aa0: mov    eax,DWORD PTR [ecx+0x30] | ret | push   esi | mov    esi,DWORD PTR [esp+0x8]
+  [07] 0xa0147ad0: mov    eax,DWORD PTR [ecx+0x34] | ret | int3 | int3
+  [08] 0xa0169780: mov    eax,DWORD PTR [ecx+0x38] | ret | int3 | int3
+  [09] 0xa02303f0: mov    eax,DWORD PTR [ecx+0x60] | ret | mov    ecx,DWORD PTR [ecx+0x38] | test   ecx,ecx
+  [10] 0xa022ff70: mov    eax,DWORD PTR [ecx+0x64] | ret | int3 | int3
+  [11] 0xa0254e60: mov    eax,DWORD PTR [ecx+0x68] | ret | int3 | int3
+  [12] 0xa02559e0: mov    eax,DWORD PTR [ecx+0x6c] | ret | int3 | int3
+  [13] 0xa0147a40: mov    eax,DWORD PTR [ecx+0x2c] | ret | int3 | int3
+  [14] 0xa0167760: mov    eax,DWORD PTR [ecx+0x3c] | ret | int3 | int3
+  [15] 0xa0167780: mov    eax,DWORD PTR [ecx+0x44] | ret | int3 | int3
+  [16] 0xa0167770: mov    eax,DWORD PTR [ecx+0x40] | ret | int3 | int3
+  [17] 0xa022fd40: mov    eax,DWORD PTR [ecx+0x8c] | ret | mov    eax,DWORD PTR [esp+0x8] | movss  xmm1,DWORD PTR [esp+0x4]
+  [18] 0xa01457f0: mov    eax,DWORD PTR [ecx+0x48] | ret | push   esi | mov    esi,ecx
+  [19] 0xa016a230: mov    eax,DWORD PTR [ecx+0x4c] | ret | int3 | int3
+  [20] 0xa01e0c30: mov    eax,DWORD PTR [ecx+0x50] | ret | int3 | int3
+  [21] 0xa016ec30: mov    eax,DWORD PTR [ecx+0x54] | ret | int3 | int3
+  [22] 0xa01e0250: mov    eax,DWORD PTR [ecx+0x58] | ret | int3 | int3
+  [23] 0xa0229e30: mov    eax,DWORD PTR [ecx+0x5c] | ret | mov    eax,0xa0eba29d | call   0xa09bf134
+  [24] 0xa01d4090: mov    eax,DWORD PTR [ecx+0x70] | ret | sub    ecx,0x4 | jmp    0xa0b3d570
+  [25] 0xa0251ea0: mov    eax,DWORD PTR [ecx+0x74] | ret | int3 | int3
+  [26] 0xa024c070: mov    eax,DWORD PTR [ecx+0x78] | ret | int3 | int3
+  [27] 0xa024a5c0: mov    eax,DWORD PTR [ecx+0x7c] | ret | int3 | int3
+  [28] 0xa0239940: mov    eax,DWORD PTR [ecx+0x80] | ret | sub    esp,0x10 | push   ebx
+  [29] 0xa02391e0: mov    eax,DWORD PTR [ecx+0x84] | ret | push   ebp | mov    ebp,esp
+  [30] 0xa0231840: mov    eax,DWORD PTR [ecx+0x88] | ret | push   edi | mov    edi,ecx
+  [31] 0xa0dc8346: mov    eax,0xa0f33bb8 | call   0xa09bf134 | mov    eax,fs:0x2c | sub    esp,0x38
+  [32] 0xa0418d50: mov    al,BYTE PTR [ecx+0x90] | ret | int3 | int3
+  [33] 0xa024c090: mov    eax,DWORD PTR [ecx+0x94] | ret | int3 | int3
+  [34] 0xa0dc8191: add    ecx,0x20 | jmp    0xa0142350 | mov    eax,0xa0f33b83 | call   0xa09bf134
+  [35] 0xa05dadd0: add    ecx,0x24 | jmp    0xa0142350 | mov    eax,0xa0ee6ccd | call   0xa09bf134
+  [36] 0xa0dc8159: add    ecx,0x28 | jmp    0xa0142350 | sub    ecx,0xffffff80 | jmp    0xa0142350
+  [37] 0xa0760fc2: add    ecx,0x30 | jmp    0xa0142350 | push   esi | mov    esi,DWORD PTR [esp+0x8]
+  [38] 0xa0230e6f: add    ecx,0x34 | jmp    0xa0142350 | mov    eax,DWORD PTR [esp+0x4] | mov    DWORD PTR [ecx+0x10c],eax
+  [39] 0xa0dc8169: add    ecx,0x38 | jmp    0xa0142350 | add    ecx,0x6c | jmp    0xa0142350
+  [40] 0xa0dc8179: add    ecx,0x68 | jmp    0xa0142350 | add    ecx,0x70 | jmp    0xa0142350
+  [41] 0xa0dc8171: add    ecx,0x6c | jmp    0xa0142350 | add    ecx,0x68 | jmp    0xa0142350
+  [42] 0xa0dc813b: add    ecx,0x60 | jmp    0xa0142350 | add    ecx,0x84 | jmp    0xa0142350
+  [43] 0xa0b0962f: add    ecx,0x64 | jmp    0xa0142350 | mov    edx,DWORD PTR [esp+0x4] | cmp    edx,0x6
+  [44] 0xa073c69c: add    ecx,0x3c | jmp    0xa0142350 | add    ecx,0x10 | mov    eax,DWORD PTR [ecx]
+  [45] 0xa0210c69: add    ecx,0x2c | jmp    0xa0142350 | int3 | int3
+  [46] 0xa0dc814e: add    ecx,0x8c | jmp    0xa0142350 | add    ecx,0x28 | jmp    0xa0142350
+  [47] 0xa0dc8189: add    ecx,0x48 | jmp    0xa0142350 | add    ecx,0x20 | jmp    0xa0142350
+  [48] 0xa0dc811d: add    ecx,0x4c | jmp    0xa0142350 | add    ecx,0x88 | jmp    0xa0142350
+  [49] 0xa0230e2d: add    ecx,0x50 | jmp    0xa0142350 | int3 | int3
+  [50] 0xa0dc8181: add    ecx,0x70 | jmp    0xa0142350 | add    ecx,0x48 | jmp    0xa0142350
+  [51] 0xa0dc8264: add    ecx,0x74 | jmp    0xa0142350 | push   ebx | push   esi
+  [52] 0xa0cb2740: add    ecx,0x78 | jmp    0xa0142350 | push   esi | mov    esi,ecx
+  [53] 0xa0dc8161: sub    ecx,0xffffff80 | jmp    0xa0142350 | add    ecx,0x38 | jmp    0xa0142350
+  [54] 0xa0dc8143: add    ecx,0x84 | jmp    0xa0142350 | add    ecx,0x8c | jmp    0xa0142350
+  [55] 0xa0dc8125: add    ecx,0x88 | jmp    0xa0142350 | add    ecx,0x94 | jmp    0xa0142350
+  [56] 0xa0dc8199: mov    eax,0xa0f33b83 | call   0xa09bf134 | mov    eax,fs:0x2c | sub    esp,0x20
+  [57] 0xa041a9c0: mov    al,BYTE PTR [esp+0x4] | mov    BYTE PTR [ecx+0x90],al | ret    0x4 | int3
+  [58] 0xa0dc8130: add    ecx,0x94 | jmp    0xa0142350 | add    ecx,0x60 | jmp    0xa0142350
+VTable 0xa107094c (offset 4, 13 methods):
+  Constructor/VTable Xrefs in .text: ['0xa0dc7ca7', '0xa0dc7d57']
+  [00] 0xa0dc810d: sub    ecx,0x4 | jmp    0xa0dc80eb | sub    ecx,0x8 | jmp    0xa0dc80eb
+  [01] 0xa0145518: sub    ecx,0x4 | jmp    0xa0145510 | sub    ecx,0x8 | jmp    0xa0145510
+  [02] 0xa01a8888: sub    ecx,0x4 | jmp    0xa01a8880 | sub    ecx,0x8 | jmp    0xa01a8880
+  [03] 0xa0145a40: mov    eax,DWORD PTR [ecx+0xc] | ret | push   ebp | mov    ebp,esp
+  [04] 0xa0149f30: mov    eax,DWORD PTR [esp+0x4] | mov    DWORD PTR [ecx+0xc],eax | ret    0x4 | int3
+  [05] 0xa0149fc0: mov    eax,DWORD PTR [ecx+0x10] | ret | int3 | int3
+  [06] 0xa01563e0: mov    al,BYTE PTR [ecx+0x18] | ret | int3 | int3
+  [07] 0xa01b9960: mov    al,BYTE PTR [esp+0x4] | mov    BYTE PTR [ecx+0x18],al | ret    0x4 | mov    eax,DWORD PTR [esp+0x4]
+  [08] 0xa0dc7fde: push   ebx | push   ebp | push   esi | push   edi
+  [09] 0xa0dc826c: push   ebx | push   esi | mov    esi,ecx | xor    ebx,ebx
+  [10] 0xa0148530: mov    al,0x1 | ret    0x4 | int3 | int3
+  [11] 0xa0148530: mov    al,0x1 | ret    0x4 | int3 | int3
+  [12] 0xa0149fd0: mov    eax,DWORD PTR [ecx+0x14] | ret | int3 | int3
+VTable 0xa1070984 (offset 8, 6 methods):
+  Constructor/VTable Xrefs in .text: ['0xa0dc7cae', '0xa0dc7d5e']
+  [00] 0xa0dc8115: sub    ecx,0x8 | jmp    0xa0dc80eb | add    ecx,0x4c | jmp    0xa0142350
+  [01] 0xa0145520: sub    ecx,0x8 | jmp    0xa0145510 | int3 | int3
+  [02] 0xa01a8890: sub    ecx,0x8 | jmp    0xa01a8880 | mov    eax,DWORD PTR [esp+0x4] | push   esi
+  [03] 0xa0dc7fb4: sub    ecx,0x8 | jmp    0xa0dc7fbc | push   esi | mov    esi,ecx
+  [04] 0xa01b9814: push   esi | mov    esi,ecx | lea    eax,[esi+0x4] | cmp    DWORD PTR [eax],0x0
+  [05] 0xa0147d00: mov    eax,DWORD PTR [ecx+0x4] | ret | int3 | int3
+
+=================================================================
+2. cTSSimulator & cITSSimulator - All VTables & Methods
+=================================================================
+cTSSimulator VTable 0xa0f79a0c (offset 0, 5 methods):
+  Constructor/VTable Xrefs in .text: ['0xa048051f', '0xa048078d']
+  [00] 0xa0481570: mov    eax,DWORD PTR [esp+0x4] | mov    edx,ecx | cmp    eax,0x1 | je     0xa048158e | cmp    eax,0x7a3e555d
+  [01] 0xa0145530: mov    eax,DWORD PTR [ecx+0x8] | inc    eax | mov    DWORD PTR [ecx+0x8],eax | ret | push   ebp
+  [02] 0xa0481bf0: mov    eax,DWORD PTR [ecx+0x8] | cmp    eax,0x1 | ja     0xa0481c02 | mov    eax,DWORD PTR [ecx] | push   0x1
+  [03] 0xa04808c0: push   ebp | mov    ebp,esp | mov    eax,fs:0x0 | push   0xffffffff | push   0xa0ed7edd
+  [04] 0xa0480770: push   ebp | mov    ebp,esp | mov    eax,fs:0x0 | push   0xffffffff | push   0xa0eb2fa0
+cTSSimulator VTable 0xa0f79a24 (offset 4, 55 methods):
+  Constructor/VTable Xrefs in .text: ['0xa0480526', '0xa0480794']
+  [00] 0xa04815a9: sub    ecx,0x4 | jmp    0xa0481570 | int3 | int3 | int3
+  [01] 0xa0144bbe: sub    ecx,0x4 | jmp    0xa0145530 | mov    eax,0xa3cad79a | ret | push   esi
+  [02] 0xa0481c07: sub    ecx,0x4 | jmp    0xa0481bf0 | int3 | push   ebp | mov    ebp,esp
+  [03] 0xa0483640: push   ebp | mov    ebp,esp | push   0xffffffff | push   0xa0eb8a24 | mov    eax,fs:0x0
+  [04] 0xa04815c0: push   ebp | mov    ebp,esp | push   0xffffffff | push   0xa0eb8a24 | mov    eax,fs:0x0
+  [05] 0xa0480b10: mov    eax,0x53494d49 | ret | int3 | int3 | int3
+  [06] 0xa0480f70: push   ebp | mov    ebp,esp | push   0xffffffff | push   0xa0eb621d | mov    eax,fs:0x0
+  [07] 0xa04828e0: push   ebp | mov    ebp,esp | mov    eax,fs:0x0 | push   0xffffffff | push   0xa0eb3210
+  [08] 0xa0481050: push   ebp | mov    ebp,esp | mov    eax,fs:0x0 | xorps  xmm0,xmm0 | push   0xffffffff
+  [09] 0xa0481030: push   esi | mov    esi,ecx | mov    eax,DWORD PTR [esi] | call   DWORD PTR [eax+0x20] | mov    eax,DWORD PTR [esi]
+  [10] 0xa04829b0: push   ebp | mov    ebp,esp | mov    eax,fs:0x0 | push   0xffffffff | push   0xa0ed8048
+  [11] 0xa0483390: sub    esp,0x8 | push   ebx | push   ebp | push   esi | mov    esi,ecx
+  [12] 0xa0482f90: push   ebp | mov    ebp,esp | mov    eax,fs:0x0 | push   0xffffffff | push   0xa0ed8048
+  [13] 0xa0481230: sub    esp,0x10 | cmp    DWORD PTR [esp+0x14],0x0 | jne    0xa0481274 | mov    eax,DWORD PTR [ecx+0x8c] | add    eax,DWORD PTR [ecx+0x88]
+  [14] 0xa0483630: mov    al,BYTE PTR [ecx+0xd6] | ret | int3 | int3 | int3
+  [15] 0xa0480d70: movsx  eax,WORD PTR [esp+0x4] | mov    ax,WORD PTR [ecx+eax*2+0x10] | ret    0x4 | int3 | int3
+  [16] 0xa0482540: push   ebp | mov    ebp,esp | mov    eax,fs:0x0 | push   0xffffffff | push   0xa0eb5d1d
+  [17] 0xa0480d80: movsx  eax,WORD PTR [esp+0x4] | add    eax,0x8 | lea    eax,[ecx+eax*2] | ret    0x4 | int3
+  [18] 0xa024c050: mov    eax,DWORD PTR [ecx+0x90] | ret | int3 | int3 | int3
+  [19] 0xa0481c10: push   ebp | mov    ebp,esp | push   0xffffffff | push   0xa0ed7fed | mov    eax,fs:0x0
+  [20] 0xa0482730: push   ebp | mov    ebp,esp | cmp    BYTE PTR [ebp+0xc],0x0 | mov    eax,fs:0x0 | push   0xffffffff
+  [21] 0xa0480f20: movsx  eax,WORD PTR [ecx+0x30] | ret | int3 | int3 | int3
+  [22] 0xa0255280: mov    eax,DWORD PTR [ecx+0xa8] | ret | int3 | int3 | int3
+  [23] 0xa0482720: mov    eax,DWORD PTR [esp+0x4] | mov    DWORD PTR [ecx+0xa8],eax | ret    0x4 | int3 | int3
+  [24] 0xa0481490: push   ebp | mov    ebp,esp | mov    eax,fs:0x0 | push   0xffffffff | push   0xa0ed3618
+  [25] 0xa0482180: push   ebp | mov    ebp,esp | push   0xffffffff | push   0xa0ed3618 | mov    eax,fs:0x0
+  [26] 0xa0481220: cmp    WORD PTR [ecx+0x32],0x0 | setne  al | ret | int3 | int3
+  [27] 0xa0480d90: movsx  eax,WORD PTR [ecx+0x36] | ret | int3 | int3 | int3
+  [28] 0xa04826c0: mov    ax,WORD PTR [esp+0x4] | mov    WORD PTR [ecx+0x36],ax | mov    ax,WORD PTR [esp+0x8] | mov    WORD PTR [ecx+0x7e],ax | ret    0x8
+  [29] 0xa0480d60: mov    eax,DWORD PTR [ecx+0x8c] | add    eax,DWORD PTR [ecx+0x88] | ret | int3 | int3
+  [30] 0xa04824d0: push   esi | mov    esi,DWORD PTR [esp+0x8] | mov    eax,esi | push   edi | mov    edi,ecx
+  [31] 0xa0482620: mov    eax,DWORD PTR [esp+0x4] | push   ebx | mov    ebx,ecx | push   esi | push   edi
+  [32] 0xa0482480: mov    eax,DWORD PTR [esp+0x4] | push   ebx | mov    ebx,ecx | push   esi | push   edi
+  [33] 0xa0254070: mov    eax,DWORD PTR [ecx+0x98] | ret | int3 | int3 | int3
+  [34] 0xa024b6b0: mov    eax,DWORD PTR [ecx+0x9c] | ret | int3 | int3 | int3
+  [35] 0xa0480f60: mov    eax,DWORD PTR [ecx+0x9c] | add    eax,DWORD PTR [ecx+0x98] | ret | int3 | int3
+  [36] 0xa024b6a0: mov    eax,DWORD PTR [ecx+0xa0] | ret | int3 | int3 | int3
+  [37] 0xa04822e0: mov    eax,DWORD PTR [esp+0x4] | mov    DWORD PTR [ecx+0xa0],eax | ret    0x4 | int3 | int3
+  [38] 0xa024c090: mov    eax,DWORD PTR [ecx+0x94] | ret | int3 | int3 | int3
+  [39] 0xa0482670: push   ebx | push   esi | push   edi | mov    edi,DWORD PTR [esp+0x10] | mov    eax,0x10624dd3
+  [40] 0xa0480da0: push   ecx | push   ebx | push   esi | push   edi | mov    edi,ecx
+  [41] 0xa04822f0: push   ebp | mov    ebp,esp | mov    eax,fs:0x0 | mov    dx,WORD PTR [ebp+0x10] | push   0xffffffff
+  [42] 0xa0480860: push   esi | push   edi | mov    edi,ecx | mov    ecx,DWORD PTR [edi+0x110] | mov    eax,DWORD PTR [ecx]
+  [43] 0xa0480ed0: push   esi | mov    esi,ecx | mov    ecx,0x1 | movzx  edx,WORD PTR [esi+0x58] | test   dx,dx
+  [44] 0xa0483300: push   ebx | mov    ebx,DWORD PTR [esp+0xc] | push   esi | mov    esi,ecx | push   edi
+  [45] 0xa0480f40: mov    edx,ecx | mov    ecx,DWORD PTR [esp+0x4] | test   ecx,ecx | je     0xa0480f5d | mov    edx,DWORD PTR [edx+0x110]
+  [46] 0xa0480ef0: mov    edx,DWORD PTR [esp+0x4] | mov    eax,ecx | mov    ecx,DWORD PTR [esp+0x8] | test   ecx,ecx | je     0xa0480f18
+  [47] 0xa0480d00: sub    esp,0xc | mov    edx,DWORD PTR [ecx+0x104] | push   ebx | push   ebp | mov    ebp,DWORD PTR [esp+0x18]
+  [48] 0xa0480f30: mov    eax,DWORD PTR [ecx] | push   0x4 | call   DWORD PTR [eax+0x3c] | cwde | ret
+  [49] 0xa0482820: push   ebp | mov    ebp,esp | mov    eax,fs:0x0 | push   0xffffffff | push   0xa0ed3618
+  [50] 0xa0480890: movzx  ecx,WORD PTR [ecx+0x10] | cmp    cx,0x6 | jge    0xa04808a0 | mov    eax,0x2 | ret
+  [51] 0xa0480c60: mov    edx,ecx | push   esi | movsx  esi,WORD PTR [edx+0x20] | cmp    esi,0x76c | jl     0xa0480ca2
+  [52] 0xa0480830: mov    eax,DWORD PTR [ecx+0xb0] | mov    edx,DWORD PTR [esp+0x4] | test   eax,eax | je     0xa0480846 | add    eax,edx
+  [53] 0xa024b010: mov    eax,DWORD PTR [ecx+0xac] | ret | int3 | int3 | int3
+  [54] 0xa04826e0: push   ebx | mov    ebx,ecx | push   esi | mov    esi,DWORD PTR [esp+0xc] | push   edi
+
+=================================================================
+3. cTSTreeSim & cEdithObject - SimAntics VM Execution
+=================================================================
+cTSTreeSim VTable 0xa0f868a4 (offset 0, 38 methods):
+  [00] 0xa0577d20: mov    eax,DWORD PTR [esp+0x4] | cmp    eax,0x3ac12b12 | je     0xa0577d37 | mov    DWORD PTR [esp+0x4],eax | add    ecx,0x4
+  [01] 0xa01dae00: add    ecx,0x4 | jmp    0xa0149280 | sub    ecx,0x4 | jmp    0xa01dae00 | jmp    0xa0145510
+  [02] 0xa01e3c50: add    ecx,0x4 | jmp    0xa01b97b9 | sub    ecx,0x4 | jmp    0xa01e3c50 | jmp    0xa01a8880
+  [03] 0xa0159240: lea    eax,[ecx+0x18] | ret | int3 | int3 | int3
+  [04] 0xa0159240: lea    eax,[ecx+0x18] | ret | int3 | int3 | int3
+  [05] 0xa0576420: mov    eax,DWORD PTR [ecx+0x18] | add    ecx,0x18 | mov    eax,DWORD PTR [eax+0x10] | jmp    eax | int3
+  [06] 0xa09c0bca: push   esi | call   0xa09c0bc3 | mov    esi,eax | test   esi,esi | je     0xa09c0be0
+  [07] 0xa09c0bca: push   esi | call   0xa09c0bc3 | mov    esi,eax | test   esi,esi | je     0xa09c0be0
+  [08] 0xa09c0bca: push   esi | call   0xa09c0bc3 | mov    esi,eax | test   esi,esi | je     0xa09c0be0
+  [09] 0xa01412b0: ret    0x0 | call   0xa02456e0 | mov    ecx,DWORD PTR [esp+0x4] | push   eax | call   0xa01ae3aa
+  [10] 0xa0577290: push   esi | mov    esi,ecx | mov    eax,DWORD PTR [esi+0x18] | lea    ecx,[esi+0x18] | call   DWORD PTR [eax+0x28]
+  [11] 0xa0578040: sub    esp,0x8 | push   esi | mov    esi,ecx | mov    eax,DWORD PTR [esi+0x18] | lea    ecx,[esi+0x18]
+  [12] 0xa0577690: push   ebp | mov    ebp,esp | push   0xffffffff | push   0xa0ee308d | mov    eax,fs:0x0
+  [13] 0xa0576500: push   ebp | mov    ebp,esp | mov    eax,fs:0x0 | push   0xffffffff | push   0xa0ee3015
+  [14] 0xa0577a40: push   esi | mov    esi,DWORD PTR [esp+0x8] | push   edi | mov    edi,ecx | test   esi,esi
+  [15] 0xa05780b0: push   ebp | mov    ebp,esp | push   0xffffffff | push   0xa0ee30bd | mov    eax,fs:0x0
+  [16] 0xa0577c00: push   esi | push   DWORD PTR [esp+0x8] | mov    esi,ecx | mov    eax,DWORD PTR [esi+0x18] | lea    ecx,[esi+0x18]
+  [17] 0xa04512b0: mov    ax,WORD PTR [ecx+0x34] | ret | int3 | int3 | int3
+  [18] 0xa0576400: xor    eax,eax | mov    WORD PTR [ecx+0x34],ax | ret | int3 | int3
+  [19] 0xa0577450: push   ecx | push   ebx | push   esi | push   edi | mov    edi,ecx
+  [20] 0xa0577270: mov    eax,DWORD PTR [ecx+0x20] | sub    eax,DWORD PTR [ecx+0x1c] | add    ecx,0x18 | sar    eax,0x2 | dec    eax
+  [21] 0xa0577510: push   ebx | push   esi | push   edi | mov    edi,ecx | mov    esi,0x0
+  [22] 0xa05775a0: mov    edx,DWORD PTR [ecx+0x18] | add    ecx,0x18 | movsx  eax,WORD PTR [esp+0x4] | mov    DWORD PTR [esp+0x4],eax | jmp    DWORD PTR [edx+0x24]
+  [23] 0xa0577610: mov    eax,DWORD PTR [ecx+0x20] | sub    eax,DWORD PTR [ecx+0x1c] | sar    eax,0x2 | ret | int3
+  [24] 0xa0577310: push   ebp | mov    ebp,esp | push   0xffffffff | push   0xa0ee3055 | mov    eax,fs:0x0
+  [25] 0xa0145a40: mov    eax,DWORD PTR [ecx+0xc] | ret | push   ebp | mov    ebp,esp | sub    esp,0x14
+  [26] 0xa0577620: mov    ax,WORD PTR [ecx+0x36] | ret | int3 | int3 | int3
+  [27] 0xa05780a0: xor    eax,eax | mov    WORD PTR [ecx+0x36],ax | ret | int3 | int3
+  [28] 0xa05774e0: cmp    DWORD PTR [ecx+0x28],0xfffd | sete   al | ret | int3 | int3
+  [29] 0xa015eb00: mov    al,BYTE PTR [ecx+0x2c] | ret | int3 | int3 | int3
+  [30] 0xa0577590: mov    eax,ds:0xa1211914 | ret | int3 | int3 | int3
+  [31] 0xa0578500: mov    eax,DWORD PTR [esp+0x4] | mov    ds:0xa1211914,eax | ret    0x4 | int3 | int3
+  [32] 0xa0576410: add    ecx,0x4c | call   0xa05789e0 | ret    0x4 | int3 | int3
+  [33] 0xa0577be0: mov    al,ds:0xa1211910 | ret | int3 | int3 | int3
+  [34] 0xa01416b0: mov    eax,ecx | ret | mov    eax,DWORD PTR [esp+0x8] | mov    ecx,DWORD PTR [esp+0x4] | add    DWORD PTR [eax],0x23
+  [35] 0xa01416b0: mov    eax,ecx | ret | mov    eax,DWORD PTR [esp+0x8] | mov    ecx,DWORD PTR [esp+0x4] | add    DWORD PTR [eax],0x23
+  [36] 0xa0577ac0: push   ebp | mov    ebp,esp | push   0xffffffff | push   0xa0ee30a0 | mov    eax,fs:0x0
+  [37] 0xa0578680: push   esi | mov    esi,ecx | mov    eax,DWORD PTR [esi+0x18] | lea    ecx,[esi+0x18] | call   DWORD PTR [eax+0x3c]
+cTSTreeSim VTable 0xa0f86940 (offset 4, 6 methods):
+  [00] 0xa0577d47: sub    ecx,0x4 | jmp    0xa0577d20 | int3 | mov    eax,DWORD PTR [esp+0x4] | sub    eax,0x1
+  [01] 0xa01dae08: sub    ecx,0x4 | jmp    0xa01dae00 | jmp    0xa0145510 | sub    ecx,0x4 | jmp    0xa01dae10
+  [02] 0xa01e3c58: sub    ecx,0x4 | jmp    0xa01e3c50 | jmp    0xa01a8880 | sub    ecx,0x4 | jmp    0xa01e3c60
+  [03] 0xa0575e58: sub    ecx,0x4 | jmp    0xa0575e60 | push   ebp | mov    ebp,esp | mov    eax,fs:0x0
+  [04] 0xa01b9808: mov    eax,DWORD PTR [ecx+0x4] | test   eax,eax | je     0xa01b9813 | dec    eax | mov    DWORD PTR [ecx+0x4],eax
+  [05] 0xa0147d00: mov    eax,DWORD PTR [ecx+0x4] | ret | int3 | int3 | int3
+
+=================================================================
+4. BHAV Primitives: RandomParam, PushActionParam, GenericSimCallParam Xrefs
+=================================================================
+  RandomParam               vt=0xa0f7856c -> xrefs=['0xa046ad02']
+  PushActionParam           vt=0xa0f78490 -> xrefs=['0xa046adfa']
+  GenericSimCallParam       vt=0xa0f78418 -> xrefs=['0xa046abcc']
+  RunPrivateTreeParam       vt=0xa0f782ec -> xrefs=['0xa046ba44']
+  SetMotiveDeltaParam       vt=0xa0f78350 -> xrefs=['0xa046b16a']
+  GosubActionParam          vt=0xa0f78378 -> xrefs=['0xa046b1a8']
+
+=================================================================
+5. CreateMutexA Sites & Single-Instance Check
+=================================================================
+--- CreateMutexA call around 0xa00e8f36 ---
+a00e8f06 <.text+0xe7f06>:
+a00e8f06:	52                   	push   edx
+a00e8f07:	e8 f6 fe ff ff       	call   0xa00e8e02
+a00e8f0c:	59                   	pop    ecx
+a00e8f0d:	66 89 86 8a 00 00 00 	mov    WORD PTR [esi+0x8a],ax
+a00e8f14:	0f b7 86 8c 00 00 00 	movzx  eax,WORD PTR [esi+0x8c]
+a00e8f1b:	0f b7 8e 8a 00 00 00 	movzx  ecx,WORD PTR [esi+0x8a]
+a00e8f22:	0f af c1             	imul   eax,ecx
+a00e8f25:	c1 f8 0c             	sar    eax,0xc
+a00e8f28:	66 89 86 8e 00 00 00 	mov    WORD PTR [esi+0x8e],ax
+a00e8f2f:	5e                   	pop    esi
+a00e8f30:	c3                   	ret
+a00e8f31:	33 c0                	xor    eax,eax
+a00e8f33:	50                   	push   eax
+a00e8f34:	50                   	push   eax
+a00e8f35:	50                   	push   eax
+a00e8f36:	ff 15 ac 93 f4 a0    	call   DWORD PTR ds:0xa0f493ac
+a00e8f3c:	a3 34 f5 31 a1       	mov    ds:0xa131f534,eax
+a00e8f41:	c3                   	ret
+a00e8f42:	ff 35 34 f5 31 a1    	push   DWORD PTR ds:0xa131f534
+a00e8f48:	ff 15 f4 91 f4 a0    	call   DWORD PTR ds:0xa0f491f4
+a00e8f4e:	c3                   	ret
+a00e8f4f:	6a ff                	push   0xffffffff
+a00e8f51:	ff 35 34 f5 31 a1    	push   DWORD PTR ds:0xa131f534
+a00e8f57:	ff 15 fc 91 f4 a0    	call   DWORD PTR ds:0xa0f491fc
+a00e8f5d:	c3                   	ret
+a00e8f5e:	ff 35 34 f5 31 a1    	push   DWORD PTR ds:0xa131f534
+a00e8f64:	ff 15 a8 93 f4 a0    	call   DWORD PTR ds:0xa0f493a8
+a00e8f6a:	c3                   	ret
+a00e8f6b:	83 3d 54 f5 31 a1 00 	cmp    DWORD PTR ds:0xa131f554,0x0
+a00e8f72:	56                   	push   esi
+a00e8f73:	57                   	push   edi
+a00e8f74:	75 54                	jne    0xa00e8fca
+--- CreateMutexA call around 0xa099ec4b ---
+a099ec1b <.text+0x99dc1b>:
+a099ec1b:	85 f6                	test   esi,esi
+a099ec1d:	75 17                	jne    0xa099ec36
+a099ec1f:	ff 15 90 91 f4 a0    	call   DWORD PTR ds:0xa0f49190
+a099ec25:	50                   	push   eax
+a099ec26:	68 80 b4 fc a0       	push   0xa0fcb480
+a099ec2b:	e8 a0 03 fe ff       	call   0xa097efd0
+a099ec30:	83 c4 08             	add    esp,0x8
+a099ec33:	cc                   	int3
+a099ec34:	85 f6                	test   esi,esi
+a099ec36:	0f 95 c0             	setne  al
+a099ec39:	5e                   	pop    esi
+a099ec3a:	5d                   	pop    ebp
+a099ec3b:	c2 04 00             	ret    0x4
+a099ec3e:	8d 41 01             	lea    eax,[ecx+0x1]
+a099ec41:	33 c9                	xor    ecx,ecx
+a099ec43:	38 08                	cmp    BYTE PTR [eax],cl
+a099ec45:	0f 44 c1             	cmove  eax,ecx
+a099ec48:	50                   	push   eax
+a099ec49:	51                   	push   ecx
+a099ec4a:	51                   	push   ecx
+a099ec4b:	ff 15 ac 93 f4 a0    	call   DWORD PTR ds:0xa0f493ac
+a099ec51:	89 06                	mov    DWORD PTR [esi],eax
+a099ec53:	85 c0                	test   eax,eax
+a099ec55:	75 15                	jne    0xa099ec6c
+a099ec57:	ff 15 90 91 f4 a0    	call   DWORD PTR ds:0xa0f49190
+a099ec5d:	50                   	push   eax
+a099ec5e:	68 d4 b4 fc a0       	push   0xa0fcb4d4
+a099ec63:	e8 68 03 fe ff       	call   0xa097efd0
+a099ec68:	83 c4 08             	add    esp,0x8
+a099ec6b:	cc                   	int3
+a099ec6c:	83 3e 00             	cmp    DWORD PTR [esi],0x0
+a099ec6f:	5e                   	pop    esi
+a099ec70:	0f 95 c0             	setne  al
+a099ec73:	5d                   	pop    ebp
+a099ec74:	c2 04 00             	ret    0x4
+a099ec77:	32 c0                	xor    al,al
+a099ec79:	5e                   	pop    esi
+a099ec7a:	5d                   	pop    ebp
+a099ec7b:	c2 04 00             	ret    0x4
+a099ec7e:	cc                   	int3
+a099ec7f:	cc                   	int3
+a099ec80:	55                   	push   ebp
+a099ec81:	8b ec                	mov    ebp,esp
+a099ec83:	53                   	push   ebx
+a099ec84:	8b 5d 08             	mov    ebx,DWORD PTR [ebp+0x8]
+a099ec87:	56                   	push   esi
+a099ec88:	8b f1                	mov    esi,ecx
+a099ec8a:	57                   	push   edi
+--- CreateMutexA call around 0xa0dff380 ---
+a0dff350 <.text+0xdfe350>:
+a0dff350:	c0 40 c3 e8          	rol    BYTE PTR [eax-0x3d],0xe8
+a0dff354:	b8 2c 2f ff c1       	mov    eax,0xc1ff2f2c
+a0dff359:	e0 02                	loopne 0xa0dff35d
+a0dff35b:	50                   	push   eax
+a0dff35c:	e8 6e d3 bc ff       	call   0xa09cc6cf
+a0dff361:	a3 9c 39 32 a1       	mov    ds:0xa132399c,eax
+a0dff366:	59                   	pop    ecx
+a0dff367:	85 c0                	test   eax,eax
+a0dff369:	74 6a                	je     0xa0dff3d5
+a0dff36b:	56                   	push   esi
+a0dff36c:	57                   	push   edi
+a0dff36d:	e8 9e 2c 2f ff       	call   0xa00f2010
+a0dff372:	8b f8                	mov    edi,eax
+a0dff374:	33 f6                	xor    esi,esi
+a0dff376:	85 ff                	test   edi,edi
+a0dff378:	7e 1a                	jle    0xa0dff394
+a0dff37a:	6a 00                	push   0x0
+a0dff37c:	6a 00                	push   0x0
+a0dff37e:	6a 00                	push   0x0
+a0dff380:	ff 15 ac 93 f4 a0    	call   DWORD PTR ds:0xa0f493ac
+a0dff386:	8b 0d 9c 39 32 a1    	mov    ecx,DWORD PTR ds:0xa132399c
+a0dff38c:	89 04 b1             	mov    DWORD PTR [ecx+esi*4],eax
+a0dff38f:	46                   	inc    esi
+a0dff390:	3b f7                	cmp    esi,edi
+a0dff392:	7c e6                	jl     0xa0dff37a
+a0dff394:	68 b0 f0 97 a0       	push   0xa097f0b0
+a0dff399:	e8 22 2e 2f ff       	call   0xa00f21c0
+a0dff39e:	c7 04 24 2d f4 df a0 	mov    DWORD PTR [esp],0xa0dff42d
+a0dff3a5:	e8 06 2e 2f ff       	call   0xa00f21b0
+a0dff3aa:	c7 04 24 d8 f3 df a0 	mov    DWORD PTR [esp],0xa0dff3d8
+a0dff3b1:	e8 ca 2d 2f ff       	call   0xa00f2180
+a0dff3b6:	c7 04 24 0e f4 df a0 	mov    DWORD PTR [esp],0xa0dff40e
+a0dff3bd:	e8                   	.byte 0xe8
+a0dff3be:	ce                   	into
+a0dff3bf:	2d                   	.byte 0x2d
+--- CreateMutexA call around 0xa0dff3ec ---
+a0dff3bc <.text+0xdfe3bc>:
+a0dff3bc:	a0 e8 ce 2d 2f       	mov    al,ds:0x2f2dcee8
+a0dff3c1:	ff c7                	inc    edi
+a0dff3c3:	04 24                	add    al,0x24
+a0dff3c5:	f8                   	clc
+a0dff3c6:	f3 df a0 e8 d2 2d 2f 	repz fbld TBYTE PTR [eax+0x2f2dd2e8]
+a0dff3cd:	ff 59 33             	call   FWORD PTR [ecx+0x33]
+a0dff3d0:	c0 5f 40 5e          	rcr    BYTE PTR [edi+0x40],0x5e
+a0dff3d4:	c3                   	ret
+a0dff3d5:	33 c0                	xor    eax,eax
+a0dff3d7:	c3                   	ret
+a0dff3d8:	56                   	push   esi
+a0dff3d9:	6a 04                	push   0x4
+a0dff3db:	e8 ef d2 bc ff       	call   0xa09cc6cf
+a0dff3e0:	8b f0                	mov    esi,eax
+a0dff3e2:	59                   	pop    ecx
+a0dff3e3:	85 f6                	test   esi,esi
+a0dff3e5:	74 0d                	je     0xa0dff3f4
+a0dff3e7:	33 c0                	xor    eax,eax
+a0dff3e9:	50                   	push   eax
+a0dff3ea:	50                   	push   eax
+a0dff3eb:	50                   	push   eax
+a0dff3ec:	ff 15 ac 93 f4 a0    	call   DWORD PTR ds:0xa0f493ac
+a0dff3f2:	89 06                	mov    DWORD PTR [esi],eax
+a0dff3f4:	8b c6                	mov    eax,esi
+a0dff3f6:	5e                   	pop    esi
+a0dff3f7:	c3                   	ret
+a0dff3f8:	56                   	push   esi
+a0dff3f9:	8b 74 24 08          	mov    esi,DWORD PTR [esp+0x8]
+a0dff3fd:	ff 36                	push   DWORD PTR [esi]
+a0dff3ff:	ff 15 f4 91 f4 a0    	call   DWORD PTR ds:0xa0f491f4
+a0dff405:	56                   	push   esi
+a0dff406:	e8 a9 d2 bc ff       	call   0xa09cc6b4
+a0dff40b:	59                   	pop    ecx
+a0dff40c:	5e                   	pop    esi
+a0dff40d:	c3                   	ret
+a0dff40e:	f6 44 24 04 01       	test   BYTE PTR [esp+0x4],0x1
+a0dff413:	8b 44 24 08          	mov    eax,DWORD PTR [esp+0x8]
+a0dff417:	8b 00                	mov    eax,DWORD PTR [eax]
+a0dff419:	74 0a                	je     0xa0dff425
+a0dff41b:	6a ff                	push   0xffffffff
+a0dff41d:	50                   	push   eax
+a0dff41e:	ff 15 fc 91 f4 a0    	call   DWORD PTR ds:0xa0f491fc
+a0dff424:	c3                   	ret
+a0dff425:	50                   	push   eax
+a0dff426:	ff 15 a8 93 f4 a0    	call   DWORD PTR ds:0xa0f493a8
+--- CreateMutexA call around 0xa0e06e12 ---
+a0e06de2 <.text+0xe05de2>:
+a0e06de2:	59                   	pop    ecx
+a0e06de3:	85 ff                	test   edi,edi
+a0e06de5:	74 0f                	je     0xa0e06df6
+a0e06de7:	8d 4f 08             	lea    ecx,[edi+0x8]
+a0e06dea:	89 6f 04             	mov    DWORD PTR [edi+0x4],ebp
+a0e06ded:	e8 39 e4 33 ff       	call   0xa014522b
+a0e06df2:	89 2f                	mov    DWORD PTR [edi],ebp
+a0e06df4:	eb 02                	jmp    0xa0e06df8
+a0e06df6:	8b fd                	mov    edi,ebp
+a0e06df8:	8b 74 24 14          	mov    esi,DWORD PTR [esp+0x14]
+a0e06dfc:	8d 4f 08             	lea    ecx,[edi+0x8]
+a0e06dff:	89 7b 04             	mov    DWORD PTR [ebx+0x4],edi
+a0e06e02:	8b 01                	mov    eax,DWORD PTR [ecx]
+a0e06e04:	56                   	push   esi
+a0e06e05:	ff 50 40             	call   DWORD PTR [eax+0x40]
+a0e06e08:	8b 06                	mov    eax,DWORD PTR [esi]
+a0e06e0a:	8b ce                	mov    ecx,esi
+a0e06e0c:	ff 50 14             	call   DWORD PTR [eax+0x14]
+a0e06e0f:	50                   	push   eax
+a0e06e10:	55                   	push   ebp
+a0e06e11:	55                   	push   ebp
+a0e06e12:	ff 15 ac 93 f4 a0    	call   DWORD PTR ds:0xa0f493ac
+a0e06e18:	33 c9                	xor    ecx,ecx
+a0e06e1a:	89 07                	mov    DWORD PTR [edi],eax
+a0e06e1c:	85 c0                	test   eax,eax
+a0e06e1e:	8b c3                	mov    eax,ebx
+a0e06e20:	0f 95 c1             	setne  cl
+a0e06e23:	89 4f 04             	mov    DWORD PTR [edi+0x4],ecx
+a0e06e26:	5f                   	pop    edi
+a0e06e27:	5e                   	pop    esi
+a0e06e28:	5d                   	pop    ebp
+a0e06e29:	5b                   	pop    ebx
+a0e06e2a:	c2 04 00             	ret    0x4
+a0e06e2d:	56                   	push   esi
+a0e06e2e:	8b 71 04             	mov    esi,DWORD PTR [ecx+0x4]
+a0e06e31:	c7 01 48 5d 07 a1    	mov    DWORD PTR [ecx],0xa1075d48
+a0e06e37:	ff 36                	push   DWORD PTR [esi]
+a0e06e39:	ff 15 f4 91 f4 a0    	call   DWORD PTR ds:0xa0f491f4
+a0e06e3f:	6a 01                	push   0x1
+a0e06e41:	8b ce                	mov    ecx,esi
+a0e06e43:	e8 93 23 41 ff       	call   0xa02191db
+a0e06e48:	5e                   	pop    esi
+a0e06e49:	c3                   	ret
+a0e06e4a:	56                   	push   esi
+a0e06e4b:	8b f1                	mov    esi,ecx
+a0e06e4d:	e8 db ff ff ff       	call   0xa0e06e2d

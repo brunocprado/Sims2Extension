@@ -1,0 +1,15 @@
+LIBRARY USER32.dll
+EXPORTS
+    SetWindowLongA@12
+    GetWindowLongA@8
+    CallWindowProcA@20
+    GetClientRect@8
+    GetWindowRect@8
+    SetWindowPos@28
+    GetSystemMetrics@4
+    GetAsyncKeyState@4
+    SetWindowTextA@8
+    GetCursorPos@4
+    ScreenToClient@8
+    GetForegroundWindow@0
+    GetWindowThreadProcessId@8

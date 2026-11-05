@@ -1,0 +1,22 @@
+LIBRARY WS2_32.dll
+EXPORTS
+    WSAStartup@8
+    WSACleanup@0
+    WSAGetLastError@0
+    socket@12
+    closesocket@4
+    bind@12
+    sendto@24
+    recvfrom@24
+    ioctlsocket@12
+    listen@8
+    accept@12
+    connect@12
+    send@16
+    recv@16
+    select@20
+    setsockopt@20
+    getsockopt@20
+    htons@4
+    ntohs@4
+    inet_addr@4
