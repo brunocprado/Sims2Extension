@@ -1,5 +1,6 @@
 #include "ts2/ui_kit.hpp"
 #include "ts2/d3d9_ext.hpp"
+#include "ts2/i18n.hpp"
 
 // ----------------------------------------------------------------------------
 // GDI imports (only used once per font to bake a glyph atlas)
@@ -513,6 +514,7 @@ float FontHeight(Font f) {
 float TextWidth(Font f, const char* s) {
     Atlas* a = EnsureAtlas(f);
     if (!a || !s) return 0.0f;
+    s = i18n::Tr(s);
     float w = 0.0f;
     for (const char* p = s; *p;) {
         const uint32_t cp = NextCp(p);
@@ -524,6 +526,7 @@ float TextWidth(Font f, const char* s) {
 
 void Text(Font f, float x, float y, const char* s, DWORD c) {
     if (!s || !*s) return;
+    s = i18n::Tr(s);
     UseFont(f);
     Atlas* a = EnsureAtlas(f);
     if (!a) return;
@@ -551,6 +554,7 @@ void TextCenter(Font f, float cx, float y, const char* s, DWORD c) { Text(f, cx 
 
 void TextFit(Font f, float x, float y, float maxW, const char* s, DWORD c) {
     if (!s) return;
+    s = i18n::Tr(s);
     Atlas* a = EnsureAtlas(f);
     if (!a) return;
     if (TextWidth(f, s) <= maxW) { Text(f, x, y, s, c); return; }
@@ -741,6 +745,25 @@ bool FxRow(const char* name, bool* on, float* val, float lo, float hi, float def
         TextRight(F_BODY, x + w - 76.0f, y + (rowH - fh) * 0.5f, buf, *on ? kText : kDim);
         if (Button(x + w - 68.0f, y + 6.0f, 60.0f, 22.0f, "Padrão", false, F_SMALL)) { *val = def; changed = true; }
     }
+    g_lay.y += rowH + 4.0f;
+    return changed;
+}
+
+bool ValRow(const char* name, float* val, float lo, float hi, float def, int decimals) {
+    const float rowH = 34.0f;
+    const float x = g_lay.x, y = g_lay.y, w = g_lay.w;
+    bool changed = false;
+    RoundRect(x, y, w, rowH, 9.0f, Col(255, 255, 255, 16), Col(255, 255, 255, 9));
+    const float fh = FontHeight(F_BODY);
+    TextFit(F_BODY, x + 16.0f, y + (rowH - fh) * 0.5f, 212.0f, name, kText);
+    int id = 7919;
+    for (const char* p = name; *p; ++p) id = id * 33 + static_cast<unsigned char>(*p);
+    const float sx = x + 236.0f, sw = w - 236.0f - 160.0f;
+    if (Slider(id, sx, y + 6.0f, sw, val, lo, hi)) changed = true;
+    char buf[24];
+    _snprintf(buf, sizeof(buf), decimals >= 4 ? "%.4f" : (decimals == 3 ? "%.3f" : "%.2f"), static_cast<double>(*val));
+    TextRight(F_BODY, x + w - 76.0f, y + (rowH - fh) * 0.5f, buf, kText);
+    if (Button(x + w - 68.0f, y + 6.0f, 60.0f, 22.0f, "Padrão", false, F_SMALL)) { *val = def; changed = true; }
     g_lay.y += rowH + 4.0f;
     return changed;
 }

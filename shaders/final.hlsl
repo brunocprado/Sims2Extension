@@ -9,6 +9,8 @@ float4 c_tex   : register(c0);
 float4 c_grade : register(c1);   // bloomStrength, vignette, saturation, contrast
 float4 c_misc  : register(c2);   // exposure, tonemapStrength, tonemapExposure, shaftsOn
 float4 c_tint  : register(c3);   // time-of-day tint rgb (1 = neutral), 0
+float4 c_wb    : register(c4);   // temperature (-1 cool .. 1 warm), tint (-1 green .. 1 magenta), lift (shadows), gain (highlights)
+float4 c_tone  : register(c5);   // split toning strength, vibrance, 0, 0
 
 // Narkowicz ACES fit (linear in, linear out)
 float3 ACES(float3 x) {
@@ -30,6 +32,23 @@ float4 PSMain(float2 uv : TEXCOORD0) : COLOR0 {
         c = lerp(c, pow(saturate(tm), 1.0 / 2.2), c_misc.y);
     }
     c *= c_tint.rgb;
+
+    // ---- creative grade (all neutral at 0)
+    // white balance
+    c *= float3(1.0 + 0.16 * c_wb.x - 0.04 * c_wb.y, 1.0 + 0.02 * c_wb.x - 0.12 * c_wb.y, 1.0 - 0.16 * c_wb.x - 0.04 * c_wb.y);
+    // lift lifts/crushes the blacks, gain scales the highlights
+    c = c + c_wb.z * 0.14 * (1.0 - c) * (1.0 - c);
+    c *= 1.0 + c_wb.w * 0.45;
+    // split toning: cool shadows, warm highlights
+    float ll = dot(c, float3(0.299, 0.587, 0.114));
+    float sw = 1.0 - smoothstep(0.0, 0.55, ll);
+    float hw = smoothstep(0.45, 1.0, ll);
+    c *= lerp(float3(1, 1, 1), float3(0.86, 0.98, 1.16), sw * c_tone.x);
+    c *= lerp(float3(1, 1, 1), float3(1.12, 1.03, 0.88), hw * c_tone.x);
+    // vibrance: raise saturation of dull colours more than of vivid ones
+    float mx = max(c.r, max(c.g, c.b)), mn = min(c.r, min(c.g, c.b));
+    float vib = c_tone.y * (1.0 - saturate(mx - mn));
+    c = lerp(ll.xxx, c, 1.0 + vib);
 
     // contrast around mid grey, then saturation
     c = (c - 0.5) * c_grade.w + 0.5;

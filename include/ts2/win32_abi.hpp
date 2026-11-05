@@ -129,6 +129,7 @@ __declspec(dllimport) LPVOID  WINAPI VirtualAlloc(LPVOID lpAddress, SIZE_T dwSiz
 __declspec(dllimport) BOOL    WINAPI VirtualFree(LPVOID lpAddress, SIZE_T dwSize, DWORD dwFreeType);
 __declspec(dllimport) DWORD   WINAPI GetCurrentProcessId(void);
 __declspec(dllimport) DWORD   WINAPI GetTickCount(void);
+__declspec(dllimport) WORD    WINAPI GetUserDefaultUILanguage(void);
 __declspec(dllimport) void    WINAPI SetLastError(DWORD dwErrCode);
 __declspec(dllimport) DWORD   WINAPI GetLastError(void);
 __declspec(dllimport) HANDLE  WINAPI CreateMutexA(LPVOID lpMutexAttributes, BOOL bInitialOwner, LPCSTR lpName);

@@ -13,6 +13,7 @@ float4 c_dp   : register(c2);  // m33, m43, 0, 0
 float4 c_ao   : register(c3);  // radius, intensity, power, aoEnabled
 float4 c_sun  : register(c4);  // sun direction towards the light (view space), shadowStrength
 float4 c_sh   : register(c5);  // shadowLength, shadowEnabled, frameSeed, thickness
+float4 c_ext  : register(c6);  // shadow softness (0..1), shadow length multiplier, 0, 0
 
 static const float PI = 3.14159265;
 
@@ -114,11 +115,12 @@ float4 PSMain(float2 uv : TEXCOORD0) : COLOR0 {
     // ---------------------------------------------------------------- sun contact shadow
     float sunVis = 1.0;
     if (c_sh.y > 0.5) {
-        const int RAY = 20;
+        const int RAY = 28;
+        float soft = c_ext.x;
         float3 L = normalize(c_sun.xyz);
         float facing = saturate(dot(N, L));            // surfaces turned away are already dark
         float3 origin = P + N * (0.02 + z * 0.0015);
-        float len = c_sh.x;
+        float len = c_sh.x * c_ext.y;
         float occ = 0.0;
         [loop] for (int r = 0; r < RAY; ++r) {
             float t = (r + noise) / RAY;
@@ -129,8 +131,12 @@ float4 PSMain(float2 uv : TEXCOORD0) : COLOR0 {
             float sz = SampleZ(suv);
             float diff = S.z - sz;                      // > 0: ray point is behind the visible surface
             float thick = c_sh.w + t * len * 0.35;
-            float hit = (diff > 0.03 + S.z * 0.002 && diff < thick) ? 1.0 : 0.0;
-            occ = max(occ, hit * (1.0 - t * 0.55));
+            float lo = 0.03 + S.z * 0.002;
+            // penumbra: the edge of the occluder fades over a width that grows with the distance to the receiver
+            float pen = 0.01 + soft * (0.04 + t * len * 0.30);
+            float hit = smoothstep(lo, lo + pen, diff) * (1.0 - smoothstep(thick, thick + pen * 2.0, diff));
+            // farther occluders give a lighter shadow (wider penumbra on the ground)
+            occ = max(occ, hit * (1.0 - t * (0.45 + 0.40 * soft)));
         }
         sunVis = 1.0 - occ;
         // lit side only: a surface facing away from the sun is not "shadowed" a second time

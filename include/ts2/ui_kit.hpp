@@ -84,5 +84,7 @@ void LayNext();
 bool LayBtn(int col, int cols, const char* label, bool active = false, int span = 1);
 // One settings row: [switch] name ---- slider ---- value [reset]. `val` may be null for plain on/off rows.
 bool FxRow(const char* name, bool* on, float* val, float lo, float hi, float def, int decimals = 2);
+// Same row without the on/off switch (a plain labelled slider with a "Padrão" button).
+bool ValRow(const char* name, float* val, float lo, float hi, float def, int decimals = 2);
 
 } // namespace ts2::ui::kit

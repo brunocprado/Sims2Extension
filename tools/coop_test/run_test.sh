@@ -12,6 +12,7 @@ CF=(--target=i686-pc-windows-msvc -ffreestanding -std=c++20 -O1 -fno-exceptions 
     -fno-threadsafe-statics -mno-sse2 -I "$ROOT/include")
 clang++ "${CF[@]}" -c "$ROOT/tools/coop_test/harness.cpp" -o harness.obj
 clang++ "${CF[@]}" -c "$ROOT/src/coop_net.cpp" -o coop_net.obj
+clang++ "${CF[@]}" -c "$ROOT/src/i18n.cpp" -o i18n.obj
 cat > k32x.def <<'EOF'
 LIBRARY KERNEL32.dll
 EXPORTS
@@ -21,7 +22,7 @@ EXPORTS
 EOF
 llvm-dlltool -m i386 -k -d k32x.def -l k32x.lib
 lld-link /SUBSYSTEM:CONSOLE /MACHINE:X86 /NODEFAULTLIB /ENTRY:HarnessMain /OUT:harness.exe \
-    harness.obj coop_net.obj k32x.lib ../kernel32.lib ../user32.lib ../ws2_32.lib ../msvcrt.lib
+    harness.obj coop_net.obj i18n.obj k32x.lib ../kernel32.lib ../user32.lib ../ws2_32.lib ../msvcrt.lib
 
 # ---- two processes, one lot each (the guest's save differs on purpose) ----
 T=/tmp/ts2coop_test

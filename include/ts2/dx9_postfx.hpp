@@ -11,7 +11,7 @@ namespace ts2::fx {
 //   * Swaps the game's depth buffer for a sampleable INTZ texture, so the scene depth is available.
 //   * After the 3D scene and before the HUD is drawn it runs a screen-space pipeline:
 //       SSAO (horizon based) -> bilateral blur -> contact shadows + sun shadow -> composite
-//       -> atmosphere (time-of-day fog + screen-space reflections) -> FXAA -> light shafts, bloom
+//       -> atmosphere (time-of-day fog + screen-space reflections) -> FXAA -> depth of field -> light shafts, bloom
 //       -> final grade (filmic tone mapping, time-of-day tint, vignette, saturation, contrast)
 //   * Settings are live: overlay tab "Graficos", console commands `fx.*`, and ts2fx.cfg (hot reloaded).
 // ============================================================================
@@ -69,6 +69,28 @@ struct Settings {
     float saturation       = 1.08f;
     float contrast         = 1.06f;
     float exposure         = 1.00f;
+
+    // Depth of field (gather blur from the depth buffer, or a tilt-shift band)
+    bool  dof              = false;
+    bool  dofAuto          = true;    // focus follows the object under the screen centre (eased on the GPU)
+    float dofFocus         = 18.0f;   // world units, used when dofAuto == false
+    float dofAperture      = 0.45f;   // 0..1 blur strength
+    float dofMaxRadius     = 12.0f;   // largest blur radius in pixels at 1080p (scaled with the resolution)
+    float dofDeadZone      = 0.10f;   // relative depth error that stays perfectly sharp
+    bool  dofTilt          = false;   // miniature look: blur by distance from a horizontal band instead of by depth
+    float dofTiltBand      = 0.20f;   // half height of the sharp band (fraction of the screen)
+
+    // Creative colour grade (0 = neutral)
+    float gradeTemp        = 0.0f;    // -1 cool .. +1 warm
+    float gradeTint        = 0.0f;    // -1 green .. +1 magenta
+    float gradeLift        = 0.0f;    // -1 crushed .. +1 lifted blacks
+    float gradeGain        = 0.0f;    // -1 dim .. +1 bright highlights
+    float gradeSplit       = 0.0f;    // cool shadows / warm highlights
+    float gradeVibrance    = 0.0f;    // boosts dull colours more than vivid ones
+
+    // Shadow quality
+    float shadowSoft       = 0.55f;   // penumbra width of the screen-space sun shadow (0 = hard)
+    bool  shadowAdaptive   = true;    // longer shadows when the sun is low
 
     // Diagnostics
     int   debugView        = 0;       // 0 = final, 1 = AO only, 2 = depth, 3 = shadow only

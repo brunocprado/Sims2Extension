@@ -71,7 +71,7 @@ def wine_env():
 
 
 def winpath(p, env):
-    out = subprocess.run(["winepath", "-w", p], env=env, capture_output=True, text=True)
+    out = subprocess.run(["winepath", "-w", p], env=env, capture_output=True, text=True, errors="replace")
     return out.stdout.strip() or ("Z:" + p.replace("/", "\\"))
 
 
@@ -117,7 +117,7 @@ def main():
         expanded = os.path.join(BUILD, f"{sym}.expanded.hlsl")
         open(expanded, "w", encoding="utf-8").write(expand_includes(path))
         r = run(["wine", wexe, winpath(expanded, env), winpath(binp, env), entry, prof], env=env,
-                capture_output=True, text=True)
+                capture_output=True, text=True, errors="replace")
         sys.stdout.write(r.stdout)
         sys.stdout.write(r.stderr)
         if r.returncode != 0 or not os.path.exists(binp):

@@ -7,6 +7,7 @@
 #include "ts2/dx9_postfx.hpp"
 
 #include "ts2/ui_kit.hpp"
+#include "ts2/i18n.hpp"
 #include "ts2/ui_tabs.hpp"
 namespace ts2::ui {
 
@@ -290,7 +291,7 @@ static void RenderTabBuild(d3d9::IDirect3DDevice9* dev, float x, float y, float 
     static const int kFloors[4] = {5, 8, 12, 16};
     for (int i = 0; i < 4; ++i) {
         char lbl[24];
-        _snprintf(lbl, sizeof(lbl), "%d andares", kFloors[i]);
+        _snprintf(lbl, sizeof(lbl), ts2::i18n::Tr("%d andares"), kFloors[i]);
         if (LayBtn(dev, i, 4, lbl, cfg.highestAllowedLevel == kFloors[i])) {
             cfg.highestAllowedLevel = kFloors[i];
             char cmd[48];
@@ -310,7 +311,7 @@ static void RenderTabBuild(d3d9::IDirect3DDevice9* dev, float x, float y, float 
 
     LaySection(dev, "BUSCAR NO CATALOGO");
     char box[96];
-    _snprintf(box, sizeof(box), "%s%s", cfg.catalogSearchFilter[0] || g_focusedInputId == 3 ? cfg.catalogSearchFilter : "clique e digite...",
+    _snprintf(box, sizeof(box), "%s%s", cfg.catalogSearchFilter[0] || g_focusedInputId == 3 ? cfg.catalogSearchFilter : ts2::i18n::Tr("clique e digite..."),
               (g_focusedInputId == 3) ? "_" : "");
     if (LayBtn(dev, 0, 4, box, g_focusedInputId == 3, 3)) g_focusedInputId = 3;
     if (LayBtn(dev, 3, 4, "Limpar")) cfg.catalogSearchFilter[0] = '\0';
@@ -357,7 +358,7 @@ static void RenderTabGame(d3d9::IDirect3DDevice9* dev, float x, float y, float w
     LayNext();
 
     char next[40];
-    _snprintf(next, sizeof(next), cfg.smartAutosaveEnabled ? "proximo em %u s" : "desligado", ts2::qol::GetSecondsUntilNextAutosave());
+    _snprintf(next, sizeof(next), ts2::i18n::Tr(cfg.smartAutosaveEnabled ? "proximo em %u s" : "desligado"), ts2::qol::GetSecondsUntilNextAutosave());
     LaySection(dev, "SALVAMENTO", next, kColDim);
     if (LayBtn(dev, 0, 4, "Autosave", cfg.smartAutosaveEnabled)) cfg.smartAutosaveEnabled = !cfg.smartAutosaveEnabled;
     if (LayBtn(dev, 1, 4, "A cada 5 min", cfg.autosaveIntervalMin == 5))   cfg.autosaveIntervalMin = 5;
@@ -378,9 +379,10 @@ static void RenderTabCoop(d3d9::IDirect3DDevice9* dev, float x, float y, float w
     LayBegin(x, y, w);
     char line[220];
 
+    using ts2::i18n::Tr;
     const char* role = (st.role == Role::Host)   ? "HOST" :
-                       (st.role == Role::Client) ? "CONVIDADO" : "SOLO";
-    _snprintf(line, sizeof(line), "%s - %s", role, st.peerConnected ? "parceiro conectado" : (st.role == Role::Disconnected ? "nao conectado" : "aguardando parceiro..."));
+                       (st.role == Role::Client) ? Tr("CONVIDADO") : "SOLO";
+    _snprintf(line, sizeof(line), "%s - %s", role, Tr(st.peerConnected ? "parceiro conectado" : (st.role == Role::Disconnected ? "nao conectado" : "aguardando parceiro...")));
     LaySection(dev, "CONEXAO", line, st.peerConnected ? kColGood : kColWarn);
     char ipBox[48];
     _snprintf(ipBox, sizeof(ipBox), "%s%s", g_coopIpInput, (g_focusedInputId == 1) ? "_" : "");
@@ -405,20 +407,20 @@ static void RenderTabCoop(d3d9::IDirect3DDevice9* dev, float x, float y, float w
     LayNext();
     if (LayBtn(dev, 0, 3, st.blockPeerAutonomy ? "IA do convidado: silenciada" : "IA do convidado: livre", st.blockPeerAutonomy)) SetBlockPeerAutonomy(!st.blockPeerAutonomy);
     LayNext();
-    _snprintf(line, sizeof(line), "Moveis: %u monit. | movidos %u/%u | criados %u | vendidos %u | conflitos %u%s",
+    _snprintf(line, sizeof(line), Tr("Moveis: %u monit. | movidos %u/%u | criados %u | vendidos %u | conflitos %u%s"),
               st.objTracked, st.objSent, st.objApplied, st.objCreated, st.objDeleted, st.objConflicts,
-              st.objSyncAvailable ? "" : " (abra lote)");
+              st.objSyncAvailable ? "" : Tr(" (abra lote)"));
     LayText(dev, line, kColDim, 1.22f);
-    _snprintf(line, sizeof(line), "Sims: meu slot %d (NID %d) | parceiro %d (NID %d) | poses %u/%u | motivos %u",
+    _snprintf(line, sizeof(line), Tr("Sims: meu slot %d (NID %d) | parceiro %d (NID %d) | poses %u/%u | motivos %u"),
               st.mySimIdx, static_cast<int>(st.mySimNeighborId),
               st.peerSimIdx, static_cast<int>(st.peerSimNeighborId),
               st.simsSent, st.simsApplied, st.motivesSynced);
     LayText(dev, line, kColDim, 1.22f);
-    _snprintf(line, sizeof(line), "Interacoes Pie Menu sincronizadas: %u (ultima: menu=%d alvo=#%u) | BHAV: %u",
+    _snprintf(line, sizeof(line), Tr("Interacoes Pie Menu sincronizadas: %u (ultima: menu=%d alvo=#%u) | BHAV: %u"),
               st.interactionsSynced, st.lastSyncedInteractionIdx,
               static_cast<unsigned>(st.lastSyncedTargetSlot), st.bhavEventsSynced);
     LayText(dev, line, kColDim, 1.22f);
-    _snprintf(line, sizeof(line), "Fundos local $%d / host $%d | Tick peer %u | CRC %08X | divergencias: %u",
+    _snprintf(line, sizeof(line), Tr("Fundos local $%d / host $%d | Tick peer %u | CRC %08X | divergencias: %u"),
               ts2::se::GetFamilyFunds(), st.hostFunds, st.lastPeerTick, st.lastLocalCrc, st.desyncCount);
     LayText(dev, line, kColDim, 1.22f);
 
@@ -447,12 +449,12 @@ static void RenderTabAdvanced(d3d9::IDirect3DDevice9* dev, float x, float y, flo
     LayNext();
 
     char t[64];
-    _snprintf(t, sizeof(t), "ATUAL: %u", cfg.maxTotalSims);
+    _snprintf(t, sizeof(t), ts2::i18n::Tr("ATUAL: %u"), cfg.maxTotalSims);
     LaySection(dev, "LIMITE DE SIMS NO LOTE", t, kColDim);
     static const uint32_t kLimits[4] = {8, 16, 32, 50};
     for (int i = 0; i < 4; ++i) {
         char lbl[24];
-        _snprintf(lbl, sizeof(lbl), i == 0 ? "%u (padrao)" : "%u Sims", kLimits[i]);
+        _snprintf(lbl, sizeof(lbl), ts2::i18n::Tr(i == 0 ? "%u (padrao)" : "%u Sims"), kLimits[i]);
         if (LayBtn(dev, i, 4, lbl, cfg.maxTotalSims == kLimits[i])) {
             cfg.maxTotalSims = kLimits[i];
             ts2::qol::ApplyLotAndBuildQoL(cfg.testingCheatsEnabled, cfg.rotate45DegreeEnabled, cfg.moveObjectsEnabled, kLimits[i]);
@@ -461,7 +463,7 @@ static void RenderTabAdvanced(d3d9::IDirect3DDevice9* dev, float x, float y, flo
     LayNext();
 
     const uint32_t curIter = ts2::qol::GetMaxTreeIterations();
-    _snprintf(t, sizeof(t), "ATUAL: %u", curIter);
+    _snprintf(t, sizeof(t), ts2::i18n::Tr("ATUAL: %u"), curIter);
     LaySection(dev, "LIMITE DO SIMANTICS (EVITA 'TRAVOU')", t, kColDim);
     static const uint32_t kIters[4] = {10000, 25000, 50000, 100000};
     static const char*    kIterLbl[4] = {"10.000", "25.000", "50.000", "100.000"};
@@ -615,6 +617,13 @@ static void RenderOverlay(d3d9::IDirect3DDevice9* dev) {
     // header: plumbob + title on the left, status pills on the right
     kit::Diamond(wx + 30.0f, wy + 29.0f, 7.5f, kit::Col(70, 220, 120));
     kit::Text(kit::F_TITLE, wx + 50.0f, wy + 29.0f - kit::FontHeight(kit::F_TITLE) * 0.5f, "The Sims 2 Suite", kit::Col(246, 250, 255));
+    {
+        // language switch (PT | EN), right after the title
+        const float lx = wx + 50.0f + kit::TextWidth(kit::F_TITLE, "The Sims 2 Suite") + 14.0f, ly = wy + 18.0f;
+        const bool en = ts2::i18n::Get() == ts2::i18n::Lang::EN;
+        if (kit::Button(lx, ly, 34.0f, 22.0f, "PT", !en, kit::F_SMALL) && en) ts2::i18n::Set(ts2::i18n::Lang::PT);
+        if (kit::Button(lx + 38.0f, ly, 34.0f, 22.0f, "EN", en, kit::F_SMALL) && !en) ts2::i18n::Set(ts2::i18n::Lang::EN);
+    }
     {
         char buf[48];
         float px = wx + ww - 18.0f, pw = 0.0f;

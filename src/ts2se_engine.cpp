@@ -568,13 +568,24 @@ void PushConsoleLog(const char* fmt, ...) {
     char* dst = g_logLines[g_logWriteIdx % kMaxLogLines];
     va_list args;
     va_start(args, fmt);
-    int n = _vsnprintf(dst, 142, fmt, args);
+    // the panel shows the line in the selected language; the log file always keeps Portuguese
+    int n = _vsnprintf(dst, 142, ts2::i18n::Tr(fmt), args);
     va_end(args);
     if (n < 0) n = 142;
     dst[n] = '\0';
     ++g_logWriteIdx;
     if (g_logTotal < kMaxLogLines) ++g_logTotal;
-    ts2::hook::Log("%s", dst);
+    if (ts2::i18n::Get() == ts2::i18n::Lang::PT) {
+        ts2::hook::Log("%s", dst);
+    } else {
+        char pt[150];
+        va_start(args, fmt);
+        int m = _vsnprintf(pt, 142, fmt, args);
+        va_end(args);
+        if (m < 0) m = 142;
+        pt[m] = '\0';
+        ts2::hook::Log("%s", pt);
+    }
 }
 
 size_t GetConsoleLogCount() {

@@ -30,6 +30,7 @@ static bool ApplyKV(const char* key, const char* val) {
         {"fxaa", &g_set.fxaa}, {"bloom", &g_set.bloom}, {"probe", &g_set.probe},
         {"fog", &g_set.fog}, {"shafts", &g_set.shafts}, {"ssr", &g_set.ssr},
         {"tonemap", &g_set.tonemap}, {"timegrade", &g_set.timeGrade},
+        {"dof", &g_set.dof}, {"dofauto", &g_set.dofAuto}, {"dofTilt", &g_set.dofTilt}, {"shadowadaptive", &g_set.shadowAdaptive},
     };
     const F floats[] = {
         {"aoradius", &g_set.aoRadius}, {"aointensity", &g_set.aoIntensity}, {"aopower", &g_set.aoPower},
@@ -41,6 +42,10 @@ static bool ApplyKV(const char* key, const char* val) {
         {"fogdensity", &g_set.fogDensity}, {"fogstart", &g_set.fogStart}, {"fogmax", &g_set.fogMax}, {"fogscatter", &g_set.fogScatter},
         {"shaftstrength", &g_set.shaftStrength}, {"shaftthreshold", &g_set.shaftThreshold},
         {"ssrstrength", &g_set.ssrStrength}, {"ssrf0", &g_set.ssrF0}, {"ssrdistance", &g_set.ssrDistance}, {"ssrthickness", &g_set.ssrThickness},
+        {"doffocus", &g_set.dofFocus}, {"dofaperture", &g_set.dofAperture}, {"dofmaxradius", &g_set.dofMaxRadius},
+        {"dofdeadzone", &g_set.dofDeadZone}, {"dofTiltband", &g_set.dofTiltBand},
+        {"gradetemp", &g_set.gradeTemp}, {"gradetint", &g_set.gradeTint}, {"gradelift", &g_set.gradeLift}, {"gradegain", &g_set.gradeGain},
+        {"gradesplit", &g_set.gradeSplit}, {"gradevibrance", &g_set.gradeVibrance}, {"shadowsoft", &g_set.shadowSoft},
         {"tonemapstrength", &g_set.tonemapStrength}, {"tonemapexposure", &g_set.tonemapExposure}, {"gradestrength", &g_set.gradeStrength},
     };
     for (const auto& b : bools) if (_stricmp(key, b.n) == 0) { *b.p = ParseBool(val); return true; }
@@ -185,7 +190,10 @@ struct Resources {
     UINT  w = 0, h = 0;
     DWORD bbFormat = 0;
     DWORD aoFormat = 0;
-    Tex   intz, scene, ao[2], tmp[2], bloom[2], shaft[2];
+    Tex   intz, scene, ao[2], tmp[2], bloom[2], shaft[2], focus[2];
+    void* psDof = nullptr;
+    void* psDofFocus = nullptr;
+    int   focusIdx = 0;
     void* psAtmos = nullptr;
     void* psShafts = nullptr;
     void* vs = nullptr;
@@ -253,6 +261,7 @@ static void ReleaseResources() {
     for (auto& t : g_r.tmp) FreeTex(t);
     for (auto& t : g_r.bloom) FreeTex(t);
     for (auto& t : g_r.shaft) FreeTex(t);
+    for (auto& t : g_r.focus) FreeTex(t);
     if (g_r.stateBlock) { d3d9::ComRelease(g_r.stateBlock); g_r.stateBlock = nullptr; }
     g_r.ready = false;
     g_status.depthOk = false;
@@ -310,6 +319,7 @@ static bool EnsureResources() {
     const UINT bw = (g_bbW + 3) / 4, bh = (g_bbH + 3) / 4;
     for (int i = 0; i < 2 && ok; ++i) ok = MakeTex(g_r.bloom[i], bw, bh, d3d9::USAGE_RENDERTARGET, d3d9::FMT_A8R8G8B8);
     for (int i = 0; i < 2 && ok; ++i) ok = MakeTex(g_r.shaft[i], bw, bh, d3d9::USAGE_RENDERTARGET, d3d9::FMT_A8R8G8B8);
+    for (int i = 0; i < 2 && ok; ++i) ok = MakeTex(g_r.focus[i], 1, 1, d3d9::USAGE_RENDERTARGET, g_r.aoFormat);
 
     if (ok) {
         g_r.vs          = MakeShader(d3d9::slot::CreateVertexShader, kShader_VS_Fullscreen);
@@ -322,8 +332,10 @@ static bool EnsureResources() {
         g_r.psFinal     = MakeShader(d3d9::slot::CreatePixelShader, kShader_PS_Final);
         g_r.psAtmos     = MakeShader(d3d9::slot::CreatePixelShader, kShader_PS_Atmos);
         g_r.psShafts    = MakeShader(d3d9::slot::CreatePixelShader, kShader_PS_Shafts);
+        g_r.psDof       = MakeShader(d3d9::slot::CreatePixelShader, kShader_PS_Dof);
+        g_r.psDofFocus  = MakeShader(d3d9::slot::CreatePixelShader, kShader_PS_DofFocus);
         ok = g_r.vs && g_r.psAO && g_r.psBlur && g_r.psComposite && g_r.psFxaa && g_r.psBright && g_r.psBloomBlur && g_r.psFinal &&
-             g_r.psAtmos && g_r.psShafts;
+             g_r.psAtmos && g_r.psShafts && g_r.psDof && g_r.psDofFocus;
         if (!ok) ts2::hook::Log("[FX] falha ao criar shaders SM3 (vs=%p ao=%p blur=%p comp=%p fxaa=%p bright=%p bb=%p fin=%p atmos=%p shafts=%p)",
                                 g_r.vs, g_r.psAO, g_r.psBlur, g_r.psComposite, g_r.psFxaa, g_r.psBright, g_r.psBloomBlur, g_r.psFinal,
                                 g_r.psAtmos, g_r.psShafts);
@@ -649,13 +661,21 @@ static void RunPostFx() {
         const float ao[4]   = {S.aoRadius, S.aoIntensity, S.aoPower, S.ao ? 1.0f : 0.0f};
         const float sun[4]  = {sunCam.x, sunCam.y, sunCam.z, S.shadowStrength * strength};
         const float sh[4]   = {S.shadowLength, S.contactShadows ? 1.0f : 0.0f, static_cast<float>(g_frame & 7), 0.45f};
-        float c[24];
+        // low sun -> longer shadows (clamped); the sun's world elevation is its Z component
+        float lenMul = 1.0f;
+        if (S.shadowAdaptive) {
+            float e = sunW.z < 0.28f ? 0.28f : sunW.z;
+            lenMul = 0.62f / e;
+            lenMul = lenMul < 0.8f ? 0.8f : (lenMul > 2.3f ? 2.3f : lenMul);
+        }
+        const float ext[4]  = {S.shadowSoft, lenMul, 0, 0};
+        float c[28];
         memcpy(c + 0, tex, 16); memcpy(c + 4, proj, 16); memcpy(c + 8, dp, 16);
-        memcpy(c + 12, ao, 16); memcpy(c + 16, sun, 16); memcpy(c + 20, sh, 16);
+        memcpy(c + 12, ao, 16); memcpy(c + 16, sun, 16); memcpy(c + 20, sh, 16); memcpy(c + 24, ext, 16);
 
         P_SetRT(g_r.ao[0].surf, W, H);
         P_Tex(0, g_r.intz.tex, false);
-        P_PS(g_r.psAO, c, 6);
+        P_PS(g_r.psAO, c, 7);
         P_Quad(W, H);
 
         void* cur = g_r.ao[0].tex;
@@ -728,6 +748,36 @@ static void RunPostFx() {
         cur = dst;
     }
 
+    // ---------------------------------------------------------------- depth of field
+    if (S.dof && S.dofAperture > 0.001f && S.debugView == 0) {
+        const float res = H / 1080.0f;
+        const float tex[4] = {1.0f / W, 1.0f / H, static_cast<float>(W), static_cast<float>(H)};
+        const float dp2[4] = {pj.m33, pj.m43, 0, 0};
+        const float maxR   = S.dofMaxRadius * res;
+        const float dof[4] = {S.dofFocus, S.dofAperture * 70.0f * res, maxR, S.dofAuto ? 1.0f : 0.0f};
+        const float dof2[4] = {0.06f, S.dofTilt ? 1.0f : 0.0f, S.dofTiltBand, S.dofDeadZone};
+        float c[16];
+        memcpy(c + 0, tex, 16); memcpy(c + 4, dp2, 16); memcpy(c + 8, dof, 16); memcpy(c + 12, dof2, 16);
+        if (S.dofAuto && !S.dofTilt) {
+            const int prev = g_r.focusIdx, next = 1 - g_r.focusIdx;
+            P_SetRT(g_r.focus[next].surf, 1, 1);
+            P_Tex(0, cur->tex, false);
+            P_Tex(1, g_r.intz.tex, false);
+            P_Tex(2, g_r.focus[prev].tex, false);
+            P_PS(g_r.psDofFocus, c, 4);
+            P_Quad(1, 1);
+            g_r.focusIdx = next;
+        }
+        Tex* dst = other();
+        P_SetRT(dst->surf, W, H);
+        P_Tex(0, cur->tex, false);
+        P_Tex(1, g_r.intz.tex, false);
+        P_Tex(2, g_r.focus[g_r.focusIdx].tex, false);
+        P_PS(g_r.psDof, c, 4);
+        P_Quad(W, H);
+        cur = dst;
+    }
+
     // ---------------------------------------------------------------- light shafts (1/4 res)
     const bool doShafts = S.shafts && S.shaftStrength > 0.001f && S.debugView == 0 && sunKnown && strength > 0.05f;
     if (doShafts) {
@@ -796,11 +846,15 @@ static void RunPostFx() {
                               doBloom ? S.bloomStrength : 0.0f, grade ? S.vignette : 0.0f, grade ? S.saturation : 1.0f, grade ? S.contrast : 1.0f,
                               grade ? S.exposure : 1.0f, doTm ? S.tonemapStrength : 0.0f, S.tonemapExposure, doShafts ? 1.0f : 0.0f,
                               tint[0], tint[1], tint[2], 0};
+        const float wb[8] = {grade ? S.gradeTemp : 0.0f, grade ? S.gradeTint : 0.0f, grade ? S.gradeLift : 0.0f, grade ? S.gradeGain : 0.0f,
+                             grade ? S.gradeSplit : 0.0f, grade ? S.gradeVibrance : 0.0f, 0, 0};
+        float cf[24];
+        memcpy(cf, cb, 64); memcpy(cf + 16, wb, 32);
         P_SetRT(rt0, W, H);
         P_Tex(0, cur->tex, false);
         P_Tex(1, doBloom ? g_r.bloom[0].tex : g_r.scene.tex, true);
         P_Tex(2, doShafts ? g_r.shaft[0].tex : g_r.scene.tex, true);
-        P_PS(g_r.psFinal, cb, 4);
+        P_PS(g_r.psFinal, cf, 6);
         P_Quad(W, H);
     }
 
@@ -1079,7 +1133,7 @@ void LoadConfigFile() {
 }
 
 void SaveConfigFile() {
-    static char buf[3072];
+    static char buf[6144];
     int n = 0;
     const size_t cap = sizeof(buf);
     const Settings& s = g_set;
@@ -1097,6 +1151,11 @@ void SaveConfigFile() {
     WB("timegrade", s.timeGrade); WF("gradestrength", s.gradeStrength);
     WB("fxaa", s.fxaa); WB("bloom", s.bloom); WF("bloomstrength", s.bloomStrength); WF("bloomthreshold", s.bloomThreshold);
     WF("vignette", s.vignette); WF("saturation", s.saturation); WF("contrast", s.contrast); WF("exposure", s.exposure);
+    WB("dof", s.dof); WB("dofauto", s.dofAuto); WF("doffocus", s.dofFocus); WF("dofaperture", s.dofAperture); WF("dofmaxradius", s.dofMaxRadius);
+    WF("dofdeadzone", s.dofDeadZone); WB("dofTilt", s.dofTilt); WF("dofTiltband", s.dofTiltBand);
+    WF("gradetemp", s.gradeTemp); WF("gradetint", s.gradeTint); WF("gradelift", s.gradeLift); WF("gradegain", s.gradeGain);
+    WF("gradesplit", s.gradeSplit); WF("gradevibrance", s.gradeVibrance);
+    WF("shadowsoft", s.shadowSoft); WB("shadowadaptive", s.shadowAdaptive);
 #undef WB
 #undef WF
     if (n <= 0 || static_cast<size_t>(n) >= cap) return;
@@ -1138,6 +1197,7 @@ void ApplyPreset(int id) {
             s.fogDensity = 0.0060f; s.fogMax = 0.60f; s.fogScatter = 0.70f; s.shaftStrength = 0.75f; s.ssrStrength = 0.95f;
             s.tonemapStrength = 0.85f; s.gradeStrength = 0.90f; s.bloomStrength = 0.35f; s.vignette = 0.26f;
             s.saturation = 1.12f; s.contrast = 1.10f;
+            s.dof = true; s.dofAperture = 0.35f; s.gradeSplit = 0.30f; s.gradeVibrance = 0.20f; s.shadowSoft = 0.70f;
             break;
         default:  // balanced = defaults
             break;
