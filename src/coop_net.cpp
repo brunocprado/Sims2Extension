@@ -8,7 +8,7 @@ namespace ts2::coop {
 
 namespace {
 
-constexpr uint32_t kProtoVersion = 4;
+constexpr uint32_t kProtoVersion = 5;
 constexpr uint32_t kMaxFrame     = 65536;
 constexpr uint32_t kTxCap        = 1u << 20;
 constexpr uint32_t kRxCap        = 1u << 18;
@@ -979,9 +979,6 @@ bool RealApplyInteraction(const SimInteractionEvent& ev) {
     uintptr_t actorObj = FindSimBySlotOrNeighborId(ev.actorSlot, ev.actorNeighborId, &resolvedActorSlot);
     if (!actorObj) return false;
 
-    int32_t mySlot = RealSelectedSim();
-    if (mySlot >= 0 && static_cast<uint32_t>(mySlot) == resolvedActorSlot) return false; // Never hijack player's own Sim
-
     uintptr_t targetObj = 0;
     if (ev.targetGuid == addr::kGUID_GoHereObject) {
         // Walk Here / Go Here: spawn temporary GoHere target at (targetTx, targetTy, targetLevel)
@@ -1283,7 +1280,10 @@ void ObjHandleEvent(const ObjEvent& e) {
             }
         }
         uint32_t slot = r.id;
-        if (!g_objBackend->create(&slot, r.newPose)) return;
+        if (!g_objBackend->create(&slot, r.newPose)) {
+            ts2::se::PushConsoleLog("[Co-op] FALHA ao criar objeto do parceiro (slot #%u, GUID=%08X, pos %d,%d).", r.id, r.newPose.guid, r.newPose.tx, r.newPose.ty);
+            return;
+        }
         ++g_stats.objCreated; ++g_stats.objApplied;
         NoteAgreed(slot, r.newPose);
         if (IsClient()) {
@@ -1429,8 +1429,6 @@ void ObjApplyInbox() {
         // sp.slot is the peer's slot; our copy of that Sim is found by NeighborID
         int32_t L = g_objBackend->resolveSim ? g_objBackend->resolveSim(sp.slot, sp.neighborId) : static_cast<int32_t>(sp.slot);
         if (L < 0) continue;
-        int32_t mine = g_objBackend->selectedSim ? g_objBackend->selectedSim() : -1;
-        if (mine >= 0 && mine == L) continue; // never overwrite the Sim this player controls
         if (g_objBackend->applySimState && g_objBackend->applySimState(static_cast<uint32_t>(L), sp.neighborId, sp.motives)) {
             ++g_stats.motivesSynced;
         }
@@ -1450,8 +1448,9 @@ void ObjApplyInbox() {
             ++g_stats.interactionsSynced;
             g_stats.lastSyncedInteractionIdx = ev.interactionIndex;
             g_stats.lastSyncedTargetSlot     = ev.targetSlot;
-            ts2::se::PushConsoleLog("[Co-op] Acao sincronizada no Sim #%u -> Alvo #%u (Menu=%d, Tree=%d)",
-                                    ev.actorSlot, ev.targetSlot, ev.interactionIndex, ev.actionTreeId);
+            ts2::se::PushConsoleLog("[Co-op] Acao sincronizada no Sim #%u (NID %d) -> Alvo #%u guid=%08X (Menu=%d, Tree=%d, prio=%d, flags=%X, params=%d,%d,%d,%d)",
+                                    ev.actorSlot, (int)ev.actorNeighborId, ev.targetSlot, ev.targetGuid, ev.interactionIndex, ev.actionTreeId,
+                                    ev.priority, ev.flags, ev.params[0], ev.params[1], ev.params[2], ev.params[3]);
         }
     }
 
@@ -1493,20 +1492,18 @@ void ObjApplyInbox() {
                 if (budgetWarn) { --budgetWarn; ts2::se::PushConsoleLog("[Co-op] AVISO: Sim do parceiro (NeighborID %d) nao existe aqui.", (int)nid); }
                 continue;
             }
-            int32_t mine = g_objBackend->selectedSim ? g_objBackend->selectedSim() : -1;
-            if (mine >= 0 && mine == L) {
-                static DWORD lastWarn = 0;
-                DWORD t = GetTickCount();
-                if (t - lastWarn > 5000) {
-                    lastWarn = t;
-                    ts2::se::PushConsoleLog("[Co-op] AVISO: o parceiro controla o MESMO Sim que voce. Selecione Sims diferentes.");
-                }
-                continue;
-            }
             // Walking Sims are driven by the replicated interactions; only snap them back when they drifted.
             int64_t dx = static_cast<int64_t>(cur.tx) - r.newPose.tx, dy = static_cast<int64_t>(cur.ty) - r.newPose.ty;
-            const int64_t kDrift = 2 * 65536;
-            if (cur.level == r.newPose.level && dx * dx + dy * dy <= kDrift * kDrift) continue;
+            // A routed/animated Sim (sitting, using an object) is positioned by its own animation; snapping it mid-action
+            // leaves it in the wrong pose. Only correct a drift that is large and persists for several updates.
+            const int64_t kDrift = 4 * 65536;
+            static uint8_t driftHits[kMaxObj];
+            uint32_t Lu = static_cast<uint32_t>(L);
+            if (Lu < kMaxObj) {
+                if (cur.level == r.newPose.level && dx * dx + dy * dy <= kDrift * kDrift) { driftHits[Lu] = 0; continue; }
+                if (++driftHits[Lu] < 4) continue;
+                driftHits[Lu] = 0;
+            }
             if (g_objBackend->apply(static_cast<uint32_t>(L), r.newPose)) {
                 ++g_stats.simsApplied;
                 static uint32_t budgetLog = 10;
@@ -1715,49 +1712,52 @@ void ObjScan() {
 // Each player streams the pose & motives of the Sim they control (their selected Sim) whenever it changes, plus a
 // keep-alive every second so the other side snaps its copy back if its own AI wandered off.
 void ObjScanSims() {
-    if (!g_objBackend || !g_objBackend->selectedSim) return;
+    if (!g_objBackend || !g_objBackend->isSim || !g_objBackend->selectedSim) return;
     if (!g_stats.peerConnected || !g_stats.simSyncEnabled || !g_objBaseline) return;
-    if (IsClient() && (!g_mapActive || g_recon.active)) return; // still mirroring the Host's lot
+    g_stats.mySimIdx = g_objBackend->selectedSim();
+    // Host-authoritative: the Host runs the AI of every Sim and streams their pose and motives; the Guest's copies
+    // are followers (its own commands still reach the Host as replicated interactions).
+    if (IsClient()) return;
     if (kTxCap - g_txUsed < 128 * 1024) return;
-    int32_t idx = g_objBackend->selectedSim();
-    g_stats.mySimIdx = idx;
-    if (idx < 0) return;
-    ObjPose cur;
-    if (!g_objBackend->read(static_cast<uint32_t>(idx), &cur)) {
-        static DWORD lastWarn = 0;
-        DWORD t = GetTickCount();
-        if (t - lastWarn > 5000) {
-            lastWarn = t;
-            ts2::se::PushConsoleLog("[Co-op] AVISO: nao consegui ler a pose do meu Sim (slot %d).", idx);
-        }
-        return;
-    }
     DWORD now = GetTickCount();
-    if (g_objBackend->readSimState && now - g_lastMotivesTx >= 1000) {
-        g_lastMotivesTx = now;
-        SimStatePayload sp = {};
-        sp.slot = static_cast<uint16_t>(idx);
-        sp.isControlled = 1;
-        if (g_objBackend->readSimState(static_cast<uint32_t>(idx), &sp.neighborId, sp.motives)) {
-            g_stats.mySimNeighborId = sp.neighborId;
-            QueueFrame(Msg::SimState, &sp, sizeof(sp));
+    const bool sendMotives = g_objBackend->readSimState && now - g_lastMotivesTx >= 1000;
+    if (sendMotives) g_lastMotivesTx = now;
+    uint32_t n = g_objBackend->count();
+    if (n > kMaxObj) n = kMaxObj;
+    static struct { uint16_t slot; ObjPose sent; DWORD tick; } st[16];
+    static uint32_t stCount = 0;
+    for (uint32_t id = 0; id < n; ++id) {
+        if (!g_objBackend->isSim(id)) continue;
+        ObjPose cur;
+        if (!g_objBackend->read(id, &cur)) continue;
+        if (sendMotives) {
+            SimStatePayload sp = {};
+            sp.slot = static_cast<uint16_t>(id);
+            sp.isControlled = 1;
+            if (g_objBackend->readSimState(id, &sp.neighborId, sp.motives)) QueueFrame(Msg::SimState, &sp, sizeof(sp));
         }
+        uint32_t k = 0;
+        while (k < stCount && st[k].slot != id) ++k;
+        if (k == stCount) {
+            if (stCount >= 16) continue;
+            st[k].slot = static_cast<uint16_t>(id); st[k].sent = ObjPose(); st[k].sent.tx = -1; st[k].tick = 0;
+            ++stCount;
+        }
+        if (PoseEq(cur, st[k].sent) && now - st[k].tick < 1000) continue;
+        st[k].sent = cur;
+        st[k].tick = now;
+        uint8_t buf[sizeof(ObjBatchHdr) + sizeof(ObjRec)];
+        ObjBatchHdr h = {1, 2};
+        ObjRec r;
+        r.id = static_cast<uint16_t>(id);
+        r.oldPose = cur;
+        r.oldPose.guid = static_cast<uint32_t>(static_cast<uint16_t>(g_objBackend->simNeighborId ? g_objBackend->simNeighborId(id) : 0));
+        r.newPose = cur;
+        memcpy(buf, &h, sizeof(h));
+        memcpy(buf + sizeof(h), &r, sizeof(r));
+        QueueFrame(Msg::ObjUpdate, buf, sizeof(buf));
+        ++g_stats.simsSent;
     }
-    if (g_simSentIdx == idx && PoseEq(cur, g_simSent) && now - g_simSentTick < 1000) return;
-    g_simSentIdx = idx;
-    g_simSent = cur;
-    g_simSentTick = now;
-    uint8_t buf[sizeof(ObjBatchHdr) + sizeof(ObjRec)];
-    ObjBatchHdr h = {1, 2};
-    ObjRec r;
-    r.id = static_cast<uint16_t>(idx);
-    r.oldPose = cur;
-    r.oldPose.guid = static_cast<uint32_t>(static_cast<uint16_t>(g_objBackend->simNeighborId ? g_objBackend->simNeighborId(static_cast<uint32_t>(idx)) : 0));
-    r.newPose = cur;
-    memcpy(buf, &h, sizeof(h));
-    memcpy(buf + sizeof(h), &r, sizeof(r));
-    QueueFrame(Msg::ObjUpdate, buf, sizeof(buf));
-    ++g_stats.simsSent;
 }
 
 // Diagnostic (real game only): lists the Sims of the lot, which one the game calls "selected" and
@@ -2085,12 +2085,12 @@ void __fastcall Hooked_cTSSimulator_OnIdle(void* pSimulatorRaw, void* /*edx*/) {
 // Hook: cITSPerson::EnqueueInteraction @ 0xA0512360 (vtable[122] +0x1E8, 5-byte prologue: 55 8B EC 6A FF)
 // Intercepts user-directed Pie Menu / Walk Here interactions on the locally controlled Sim and replicates them to the peer!
 uint8_t __fastcall Hooked_cTSPerson_EnqueueInteraction(void* pITSPerson, void* /*edx*/, void* pITSInteraction) {
-    // Ownership: every Sim is driven by exactly one side. The Guest drives only the Sim it controls; the Host drives all
-    // the others, except the one the Guest controls. The owner's decisions (user clicks AND autonomy) are replicated;
-    // the other side must not let its own AI pick actions for that Sim, or the two simulations drift apart.
+    // Host-authoritative Sims: only the Host's AI picks autonomous actions (for every Sim) and it replicates them. The
+    // Guest's AI is silenced. Commands the players give (pie menu, Walk Here) are applied locally and replicated to
+    // the other side, whichever Sim they target, so both players can order any Sim around.
     bool coop = !g_applyingRemoteInteraction && g_stats.peerConnected && g_stats.simSyncEnabled && pITSPerson && pITSInteraction &&
                 LocalLotReady() && !(IsClient() && (!g_mapActive || g_recon.active));
-    bool mine = false;
+    bool replicate = false;
     int16_t nid = 0;
     uint32_t flags = 0;
     int32_t prio = 0;
@@ -2099,18 +2099,27 @@ uint8_t __fastcall Hooked_cTSPerson_EnqueueInteraction(void* pITSPerson, void* /
         flags = *reinterpret_cast<const uint32_t*>(ib + addr::inter_off::kFlags);
         prio  = *reinterpret_cast<const int32_t*>(ib + addr::inter_off::kPriority);
         nid   = *reinterpret_cast<const int16_t*>(reinterpret_cast<uintptr_t>(pITSPerson) + addr::person_off::kNeighborID);
-        const bool selected = ts2::se::GetSelectedSimPtr() == reinterpret_cast<uintptr_t>(pITSPerson);
-        if (IsClient()) mine = selected;
-        else mine = selected || !(g_stats.peerSimNeighborId > 0 && nid == g_stats.peerSimNeighborId);
         const bool autonomous = (flags & 1u) != 0 && (flags & 2u) == 0;
-        if (!mine && autonomous && g_stats.blockPeerAutonomy) {
+        const bool user = !autonomous && (flags & 2u) == 0 && prio >= 0x32;
+        if (autonomous && IsClient() && g_stats.blockPeerAutonomy) {
             static uint32_t blocked = 0;
-            if (++blocked <= 3) ts2::se::PushConsoleLog("[Co-op] IA local bloqueada num Sim controlado pelo parceiro (NID %d); ele segue as acoes replicadas.", (int)nid);
+            if (++blocked <= 3) ts2::se::PushConsoleLog("[Co-op] IA local do convidado silenciada (NID %d): quem decide as acoes autonomas e o Host.", (int)nid);
             return 0;
         }
+        replicate = user || (autonomous && !IsClient());
     }
     uint8_t ok = g_detourEnqueueInteraction.Original<Fn_EnqueueInteraction>()(pITSPerson, pITSInteraction);
-    if (ok && coop && mine && nid > 0 && (flags & 2u) == 0) {
+    if (coop && nid > 0) {
+        static uint32_t seen = 0;
+        if (++seen <= 60) {
+            uintptr_t ib = reinterpret_cast<uintptr_t>(pITSInteraction);
+            ts2::se::PushConsoleLog("[Co-op] fila: NID %d recebeu interacao tree=%d idx=%d prio=%d flags=%X alvo=%d ok=%d %s", (int)nid,
+                (int)*reinterpret_cast<const int16_t*>(ib + addr::inter_off::kActionTreeID),
+                (int)*reinterpret_cast<const int32_t*>(ib + addr::inter_off::kInteractionIndex), (int)prio, flags,
+                (int)*reinterpret_cast<const int16_t*>(ib + addr::inter_off::kTargetObjectID), (int)ok, replicate ? "-> replica" : "(local)");
+        }
+    }
+    if (ok && coop && replicate && nid > 0) {
         uintptr_t ib = reinterpret_cast<uintptr_t>(pITSInteraction);
         int16_t actorObjId  = *reinterpret_cast<const int16_t*>(ib + addr::inter_off::kActorObjectID);
         int16_t targetObjId = *reinterpret_cast<const int16_t*>(ib + addr::inter_off::kTargetObjectID);
@@ -2283,7 +2292,7 @@ void SetObjectSyncEnabled(bool enabled) {
 
 void SetBlockPeerAutonomy(bool enabled) {
     g_stats.blockPeerAutonomy = enabled;
-    ts2::se::PushConsoleLog("[Co-op] IA do parceiro: %s.", enabled ? "bloqueada (segue as acoes replicadas)" : "livre");
+    ts2::se::PushConsoleLog("[Co-op] IA do convidado: %s.", enabled ? "silenciada (segue o Host)" : "livre");
 }
 
 void SetSimSyncEnabled(bool enabled) {

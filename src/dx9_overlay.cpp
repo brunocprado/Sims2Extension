@@ -403,7 +403,7 @@ static void RenderTabCoop(d3d9::IDirect3DDevice9* dev, float x, float y, float w
     if (LayBtn(dev, 1, 3, "Retomar (ambos)")) SendSpeedPauseCommand(ts2::se::GetSimulatorSpeed(), false);
     if (LayBtn(dev, 2, 3, st.simSyncEnabled ? "Sims & Acoes: ON" : "Sims & Acoes: OFF", st.simSyncEnabled)) SetSimSyncEnabled(!st.simSyncEnabled);
     LayNext();
-    if (LayBtn(dev, 0, 3, st.blockPeerAutonomy ? "IA do parceiro: bloqueada" : "IA do parceiro: livre", st.blockPeerAutonomy)) SetBlockPeerAutonomy(!st.blockPeerAutonomy);
+    if (LayBtn(dev, 0, 3, st.blockPeerAutonomy ? "IA do convidado: silenciada" : "IA do convidado: livre", st.blockPeerAutonomy)) SetBlockPeerAutonomy(!st.blockPeerAutonomy);
     LayNext();
     _snprintf(line, sizeof(line), "Moveis: %u monit. | movidos %u/%u | criados %u | vendidos %u | conflitos %u%s",
               st.objTracked, st.objSent, st.objApplied, st.objCreated, st.objDeleted, st.objConflicts,

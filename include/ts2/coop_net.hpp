@@ -125,10 +125,10 @@ struct ObjectBackend {
     int16_t  (*simNeighborId)(uint32_t slot)                                      = nullptr; // optional: NeighborID of the Sim at slot (0 = unknown)
 };
 
-// Sim sync (both directions): every player streams the pose, motives and interactions of the Sim they control;
-// the other side moves/drives its copy of that Sim to match. A side never overwrites the Sim it is controlling.
+// Sim sync (Host-authoritative): the Host streams pose/motives of every Sim and its autonomous actions; player
+// commands (from either side) are replicated to the other side as interactions.
 void SetSimSyncEnabled(bool enabled);
-// While on, the local AI never picks actions for Sims the partner drives; they only follow the replicated actions.
+// While on, the Guest's own AI never picks autonomous actions (the Host decides and replicates them).
 void SetBlockPeerAutonomy(bool enabled);
 void SetObjectBackendForTest(const ObjectBackend* backend);
 void SendSimInteraction(const SimInteractionEvent& ev);

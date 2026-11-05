@@ -64,8 +64,8 @@ g guest '^OBJ ABCD1234: 110,120,1,2$' && ok "host purchase reached guest" || bad
 ! g guest '^OBJ 00001004' && ok "host sale reached guest" || bad "host sale"
 g host  '^OBJ BEEF0001: 14,15,1,1$' && g guest '^OBJ BEEF0001: 14,15,1,1$' && ok "guest purchase reached host, later guest move followed (ack mapping)" || bad "guest purchase / ack"
 g guest '^SIM 101: 22,23,1,6' && ok "host Sim position/walk reached guest" || bad "host Sim -> guest"
-g host  '^SIM 202: 30,31,2,4' && ok "guest Sim walk reached host" || bad "guest Sim -> host"
-g guest '^SIM 101: .* motive=85$' && g host '^SIM 202: .* motive=10$' && ok "Sim motives matched by NeighborID in both directions" || bad "motives"
+! g host '^SIM 202: 30,31,2,4' && ok "host stays authoritative (a Guest-side Sim move is not pushed to the Host)" || bad "guest Sim leaked to host"
+g guest '^SIM 101: .* motive=85$' && g guest '^SIM 202: .* motive=20$' && ok "Host motives of every Sim reached the Guest (matched by NeighborID)" || bad "motives"
 g host 'lastInter=7:' && ok "guest Pie Menu interaction reached host" || bad "interaction sync"
 g guest 'desync=0' && ok "deterministic lot CRC (desync=0)" || bad "desync > 0"
 exit $fail
