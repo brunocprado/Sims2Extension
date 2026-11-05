@@ -10,6 +10,7 @@ set(TS2_SOURCES
     src/dx9_overlay.cpp
     src/dx9_postfx.cpp
     src/ui_kit.cpp
+    src/i18n.cpp
     src/ui_graphics_tab.cpp
     src/ts2se_engine.cpp
     src/coop_net.cpp

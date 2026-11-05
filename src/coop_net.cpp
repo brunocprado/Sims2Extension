@@ -3,6 +3,7 @@
 #include "ts2/hook_engine.hpp"
 #include "ts2/engine_qol.hpp"
 #include "ts2/ts2se_engine.hpp"
+#include "ts2/i18n.hpp"
 
 namespace ts2::coop {
 
@@ -164,7 +165,7 @@ void SetXferMessage(const char* fmt, ...) {
 void SetConnectMessage(const char* fmt, ...) {
     va_list ap;
     va_start(ap, fmt);
-    _vsnprintf(g_stats.connectMessage, sizeof(g_stats.connectMessage) - 1, fmt, ap);
+    _vsnprintf(g_stats.connectMessage, sizeof(g_stats.connectMessage) - 1, ts2::i18n::Tr(fmt), ap);
     va_end(ap);
     g_stats.connectMessage[sizeof(g_stats.connectMessage) - 1] = 0;
 }
@@ -1988,8 +1989,8 @@ void OnConnected(bool loopback) {
     int one = 1;
     setsockopt(g_conn, IPPROTO_TCP, TCP_NODELAY, reinterpret_cast<const char*>(&one), sizeof(one));
     SendHello();
-    SetConnectMessage("Conectado%s.", loopback ? " (mesmo PC)" : "");
-    ts2::se::PushConsoleLog("[Co-op] Parceiro conectado%s!", loopback ? " (mesmo PC)" : "");
+    SetConnectMessage("Conectado%s.", ts2::i18n::Tr(loopback ? " (mesmo PC)" : ""));
+    ts2::se::PushConsoleLog("[Co-op] Parceiro conectado%s!", ts2::i18n::Tr(loopback ? " (mesmo PC)" : ""));
 }
 
 void HostAccept() {
@@ -2286,18 +2287,18 @@ void SetObjectBackendForTest(const ObjectBackend* backend) {
 
 void SetObjectSyncEnabled(bool enabled) {
     g_stats.objSyncEnabled = enabled;
-    ts2::se::PushConsoleLog("[Co-op] Sincronia de moveis %s.", enabled ? "ligada" : "desligada");
+    ts2::se::PushConsoleLog("[Co-op] Sincronia de moveis %s.", ts2::i18n::Tr(enabled ? "ligada" : "desligada"));
     if (enabled) ObjResetLot(); // re-baseline so we do not send stale differences
 }
 
 void SetBlockPeerAutonomy(bool enabled) {
     g_stats.blockPeerAutonomy = enabled;
-    ts2::se::PushConsoleLog("[Co-op] IA do convidado: %s.", enabled ? "silenciada (segue o Host)" : "livre");
+    ts2::se::PushConsoleLog("[Co-op] IA do convidado: %s.", ts2::i18n::Tr(enabled ? "silenciada (segue o Host)" : "livre"));
 }
 
 void SetSimSyncEnabled(bool enabled) {
     g_stats.simSyncEnabled = enabled;
-    ts2::se::PushConsoleLog("[Co-op] Sincronia de Sims: %s.", enabled ? "ligada" : "desligada");
+    ts2::se::PushConsoleLog("[Co-op] Sincronia de Sims: %s.", ts2::i18n::Tr(enabled ? "ligada" : "desligada"));
     ObjResetLot();
 }
 

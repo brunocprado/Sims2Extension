@@ -1,8 +1,6 @@
 #include "ts2/i18n.hpp"
 #include "ts2/win32_abi.hpp"
 
-#include <string.h>
-#include <stdint.h>
 
 namespace ts2::i18n {
 

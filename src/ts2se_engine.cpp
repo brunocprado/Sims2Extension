@@ -3,6 +3,7 @@
 #include "ts2/coop_net.hpp"
 #include "ts2/engine_qol.hpp"
 #include "ts2/dx9_postfx.hpp"
+#include "ts2/i18n.hpp"
 #include <stdarg.h>
 
 namespace ts2::se {
@@ -1059,7 +1060,7 @@ bool IsMotiveDecayLocked() {
 
 size_t SetMotiveDecayLocked(bool locked) {
     size_t n = SetNativeMotiveDecayLocked(locked);
-    PushConsoleLog("[Motives] Decaimento de motivos %s em %u Sims.", locked ? "CONGELADO" : "ATIVADO", static_cast<unsigned>(n));
+    PushConsoleLog("[Motives] Decaimento de motivos %s em %u Sims.", ts2::i18n::Tr(locked ? "CONGELADO" : "ATIVADO"), static_cast<unsigned>(n));
     return n;
 }
 
@@ -1069,7 +1070,7 @@ bool IsAspirationLocked() {
 
 size_t SetAspirationLocked(bool locked) {
     size_t n = SetNativeAspirationLocked(locked);
-    PushConsoleLog("[Aspiration] Decaimento de aspiracao %s em %u Sims.", locked ? "CONGELADO" : "ATIVADO", static_cast<unsigned>(n));
+    PushConsoleLog("[Aspiration] Decaimento de aspiracao %s em %u Sims.", ts2::i18n::Tr(locked ? "CONGELADO" : "ATIVADO"), static_cast<unsigned>(n));
     return n;
 }
 

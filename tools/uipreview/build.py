@@ -10,7 +10,7 @@ os.makedirs(BUILD, exist_ok=True)
 DEFS = {
     "kernel32": "LIBRARY KERNEL32.dll\nEXPORTS\n" + "\n".join(f"    {n}" for n in [
         "LoadLibraryA@4", "GetModuleHandleA@4", "GetProcAddress@8", "CreateFileA@28", "ReadFile@20", "CloseHandle@4",
-        "Sleep@4", "OutputDebugStringA@4", "GetTickCount@0", "ExitProcess@4"]) + "\n",
+        "Sleep@4", "OutputDebugStringA@4", "GetTickCount@0", "ExitProcess@4", "WriteFile@20", "GetUserDefaultUILanguage@0"]) + "\n",
     "user32": "LIBRARY USER32.dll\nEXPORTS\n" + "\n".join(f"    {n}" for n in [
         "RegisterClassA@4", "CreateWindowExA@48", "ShowWindow@8", "PeekMessageA@20", "TranslateMessage@4",
         "DispatchMessageA@4", "DefWindowProcA@16", "AdjustWindowRect@12"]) + "\n",
@@ -18,7 +18,7 @@ DEFS = {
         "CreateCompatibleDC@4", "DeleteDC@4", "CreateDIBSection@24", "SelectObject@8", "DeleteObject@4", "CreateFontW@56",
         "SetTextColor@8", "SetBkMode@8", "TextOutW@20", "GetTextExtentPoint32W@16", "GetTextMetricsW@8", "GdiFlush@0"]) + "\n",
     "msvcrt": "LIBRARY msvcrt.dll\nEXPORTS\n" + "\n".join(f"    {n}" for n in [
-        "_snprintf", "memcpy", "memset", "strlen", "strncmp", "strtol", "sin", "cos", "sqrt"]) + "\n",
+        "_snprintf", "memcpy", "memset", "strlen", "strcmp", "strncmp", "strtol", "sin", "cos", "sqrt"]) + "\n",
 }
 
 
@@ -36,7 +36,7 @@ for name, text in DEFS.items():
     libs.append(l)
 
 objs = []
-for src in ["tools/uipreview/preview.cpp", "src/ui_kit.cpp", "src/ui_graphics_tab.cpp"]:
+for src in ["tools/uipreview/preview.cpp", "src/ui_kit.cpp", "src/i18n.cpp", "src/ui_graphics_tab.cpp"]:
     obj = os.path.join(BUILD, os.path.splitext(os.path.basename(src))[0] + ".obj")
     run(["clang++", "--target=i686-pc-windows-msvc", "-ffreestanding", "-std=c++20", "-O2", "-fno-exceptions", "-fno-rtti",
          "-fno-threadsafe-statics", "-mno-sse2", "-I", os.path.join(ROOT, "include"), "-c", os.path.join(ROOT, src), "-o", obj])
