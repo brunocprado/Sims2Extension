@@ -435,6 +435,18 @@ void BeginFrame(Dev* dev, const Input& in) {
 }
 
 void EndFrame() { Flush(); }
+
+void Image(void* tex, float x, float y, float w, float h, DWORD tint) {
+    if (!g_dev || !tex) return;
+    Flush();
+    const float x1 = x + w, y1 = y + h;
+    V q[6] = {
+        {x - 0.5f, y - 0.5f, 0.0f, 1.0f, tint, 0.0f, 0.0f}, {x1 - 0.5f, y - 0.5f, 0.0f, 1.0f, tint, 1.0f, 0.0f}, {x - 0.5f, y1 - 0.5f, 0.0f, 1.0f, tint, 0.0f, 1.0f},
+        {x1 - 0.5f, y - 0.5f, 0.0f, 1.0f, tint, 1.0f, 0.0f}, {x1 - 0.5f, y1 - 0.5f, 0.0f, 1.0f, tint, 1.0f, 1.0f}, {x - 0.5f, y1 - 0.5f, 0.0f, 1.0f, tint, 0.0f, 1.0f},
+    };
+    g_dev->SetTexture(0, tex);
+    g_dev->DrawPrimitiveUP(d3d9::D3DPT_TRIANGLELIST, 2, q, sizeof(V));
+}
 const Input& GetInput() { return g_in; }
 
 // ============================================================================

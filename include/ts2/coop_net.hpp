@@ -185,6 +185,27 @@ const ChatLine* GetChatLine(uint32_t absoluteIndex);
 // Host: pushes the full state right now. Guest: asks the Host to push it.
 void ForceResyncNow();
 
+// Build-mode catalog placement. Requests are queued and executed on the game thread (ObjectSyncTick).
+//   PlaceRequest: new object next to the selected Sim, offset (ox, oy) tiles, rotation 0..7
+//   PlaceNudge:   moves/rotates the last placed object (half-tile steps, rotation in 45-degree steps)
+void PlaceRequest(uint32_t guid, int ox, int oy, int rot);
+void PlaceNudge(int dxHalf, int dyHalf, int drot);
+void PlaceDeleteLast();
+const char* PlaceStatus();
+uint32_t PlacedCount();
+
+// Click-to-place (like the native catalog): PlaceModeBegin(guid) creates the object and makes it follow the cursor over
+// the lot; a left click on the lot confirms, right click / Esc cancels, Q / E rotate. The overlay feeds the cursor each
+// frame (PlaceModeCursor) and the window procedure reports clicks. All work happens on the game thread.
+void PlaceModeBegin(uint32_t guid);
+bool PlaceModeActive();
+uint32_t PlaceModeGuid();
+void PlaceModeCursor(int x, int y, bool overHud);   // client coordinates; overHud = the cursor is on one of our windows
+bool PlaceModeHasTarget();                          // the cursor currently points at a lot position
+void PlaceModeCommit(bool keepPlacing);             // confirm the object where it is (keepPlacing: start another copy)
+void PlaceModeCancel();
+void PlaceModeRotate(int steps);                    // 90-degree steps
+
 const CoopStats& GetStats();
 void SetStrictLockstep(bool enabled);
 

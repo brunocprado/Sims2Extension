@@ -52,6 +52,8 @@ void RoundRect(float x, float y, float w, float h, float r, DWORD top, DWORD bot
 void RoundOutline(float x, float y, float w, float h, float r, float thick, DWORD c);
 void Shadow(float x, float y, float w, float h, float r, float blur, DWORD c);
 void Diamond(float cx, float cy, float r, DWORD base);   // the Sims plumbob
+// Draws a whole texture (flushes the batch first; `tint` multiplies the texels).
+void Image(void* tex, float x, float y, float w, float h, DWORD tint = 0xFFFFFFFFu);
 
 // Text. (x, y) is the top-left of the line box.
 float FontHeight(Font f);

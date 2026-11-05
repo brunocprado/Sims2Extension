@@ -9,6 +9,8 @@
 #include "ts2/ui_kit.hpp"
 #include "ts2/i18n.hpp"
 #include "ts2/ui_tabs.hpp"
+#include "ts2/ui_catalog.hpp"
+#include "ts2/catalog.hpp"
 namespace ts2::ui {
 
 namespace {
@@ -54,6 +56,7 @@ static WNDPROC g_origWndProc     = nullptr;
 static DWORD   g_lastToggleTick  = 0;
 static DWORD   g_lastF5Tick      = 0;
 static DWORD   g_lastF9Tick      = 0;
+static DWORD   g_lastF7Tick      = 0;
 static DWORD   g_lastF11Tick     = 0;
 static DWORD   g_lastClickTick   = 0;
 static bool    g_prevLButtonDown = false;
@@ -243,7 +246,78 @@ static void DrawChat() {
     }
 }
 
+// ---- click-to-place (catalog) ----------------------------------------------------------------------------------------
+static bool g_swallowLUp = false;
+
+// The cursor sits on one of our own windows (so it must not move the object that is being placed).
+static bool PlaceOverHud(float x, float y) {
+    if (g_chatOpen) return false;
+    return g_visible && x >= kWinX && x <= kWinX + kWinW && y >= kWinY && y <= kWinY + kWinH;
+}
+
+// Returns true when the message was consumed by the placement mode.
+static bool PlaceModeMessage(UINT msg, WPARAM wParam, LPARAM lParam) {
+    if (!ts2::coop::PlaceModeActive()) return false;
+    const float mx = static_cast<float>(static_cast<int16_t>(lParam & 0xFFFF));
+    const float my = static_cast<float>(static_cast<int16_t>((lParam >> 16) & 0xFFFF));
+    switch (msg) {
+    case WM_LBUTTONDOWN:
+        ts2::coop::PlaceModeCursor(static_cast<int>(mx), static_cast<int>(my), PlaceOverHud(mx, my));
+        if (!PlaceOverHud(mx, my) && ts2::coop::PlaceModeHasTarget()) {
+            ts2::coop::PlaceModeCommit((GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0);
+            g_swallowLUp = true;
+            return true;
+        }
+        return false;
+    case WM_RBUTTONDOWN:
+        ts2::coop::PlaceModeCancel();
+        return true;
+    case WM_RBUTTONUP:
+        return true;
+    case WM_KEYDOWN:
+        if (g_chatOpen) return false;
+        if (wParam == VK_ESCAPE) { ts2::coop::PlaceModeCancel(); return true; }
+        if (wParam == 'Q' || wParam == 0xBC) { if (!(lParam & 0x40000000)) ts2::coop::PlaceModeRotate(-1); return true; }
+        if (wParam == 'E' || wParam == 0xBE) { if (!(lParam & 0x40000000)) ts2::coop::PlaceModeRotate(1); return true; }
+        return false;
+    default:
+        return false;
+    }
+}
+
+static void DrawPlaceBanner() {
+    if (!ts2::coop::PlaceModeActive()) return;
+    static uint32_t cachedGuid = 0;
+    static const char* cachedName = "";
+    const uint32_t guid = ts2::coop::PlaceModeGuid();
+    if (guid != cachedGuid) {
+        cachedGuid = guid;
+        cachedName = "";
+        if (ts2::catalog::Available()) {
+            for (uint32_t i = 0; i < ts2::catalog::Count(); ++i) {
+                if (ts2::catalog::At(i).guid == guid) { cachedName = ts2::catalog::ItemName(ts2::catalog::At(i)); break; }
+            }
+        }
+    }
+    char head[200];
+    kit::SetTranslate(false);
+    _snprintf(head, sizeof(head), "%s %s", ts2::i18n::Tr("Posicionando:"), cachedName);
+    const char* hint = ts2::i18n::Tr("Clique no lote para colocar  •  Shift: continuar colocando  •  Q / E gira  •  Botão direito ou Esc cancela");
+    const float w1 = kit::TextWidth(kit::F_BOLD, head), w2 = kit::TextWidth(kit::F_SMALL, hint);
+    const float bw = (w1 > w2 ? w1 : w2) + 48.0f, bh = 58.0f;
+    const float bx = (g_scrW - bw) * 0.5f, by = 14.0f;
+    kit::Shadow(bx, by + 2.0f, bw, bh, 14.0f, 14.0f, kit::Col(0, 0, 0, 90));
+    kit::RoundRect(bx, by, bw, bh, 14.0f, kit::Col(30, 38, 60, 238), kit::Col(14, 18, 30, 238));
+    kit::RoundOutline(bx, by, bw, bh, 14.0f, 1.0f, kit::Col(255, 255, 255, 40));
+    kit::TextCenter(kit::F_BOLD, bx + bw * 0.5f, by + 9.0f, head, kit::kText);
+    kit::TextCenter(kit::F_SMALL, bx + bw * 0.5f, by + 33.0f, hint, kit::kDim);
+    kit::SetTranslate(true);
+}
+
 static LRESULT CALLBACK HookedWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+    if (msg == WM_KEYDOWN && PlaceModeMessage(msg, wParam, lParam)) return 0;
+    if ((msg == WM_LBUTTONDOWN || msg == WM_RBUTTONDOWN || msg == WM_RBUTTONUP) && PlaceModeMessage(msg, wParam, lParam)) return 0;
+    if (msg == WM_LBUTTONUP && g_swallowLUp) { g_swallowLUp = false; return 0; }
     if (msg == WM_KEYDOWN || msg == WM_SYSKEYDOWN) {
         DWORD now = GetTickCount();
         if ((wParam == VK_F10 || wParam == VK_INSERT) && (now - g_lastToggleTick > 220)) {
@@ -266,6 +340,14 @@ static LRESULT CALLBACK HookedWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
             ts2::qol::ToggleBorderlessFullscreen(hWnd);
             return 0;
         }
+        if (wParam == VK_F7) {
+            if (!(lParam & 0x40000000) && now - g_lastF7Tick > 350) { g_lastF7Tick = now; ts2::coop::PlaceModeCancel(); ts2::ui::catalog_ui::Toggle(); }
+            return 0;
+        }
+        if (ts2::ui::catalog_ui::IsOpen() && !g_chatOpen) {
+            if (wParam == VK_ESCAPE) { ts2::ui::catalog_ui::OnEscape(); return 0; }
+            if (ts2::ui::catalog_ui::SearchFocused()) return 0;   // typing goes to the search box (WM_CHAR); keep the game from reacting
+        }
         if (wParam == VK_F8) {
             if (!(lParam & 0x40000000) && now - g_lastF8Tick > 350) { g_lastF8Tick = now; ChatToggle(); }
             return 0;
@@ -286,7 +368,17 @@ static LRESULT CALLBACK HookedWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
         return 0;
     }
 
-    if (g_visible) {
+    const bool catOpen = ts2::ui::catalog_ui::IsOpen();
+    if (catOpen && msg == WM_CHAR && !g_chatOpen && ts2::ui::catalog_ui::SearchFocused()) {
+        ts2::ui::catalog_ui::OnChar(static_cast<unsigned>(wParam));
+        return 0;
+    }
+    if (catOpen && msg == WM_MOUSEWHEEL) {
+        const int delta = static_cast<int16_t>((wParam >> 16) & 0xFFFF);
+        ts2::ui::catalog_ui::OnWheel(delta / 120);
+        return 0;
+    }
+    if (g_visible || catOpen) {
         if (msg == WM_MOUSEMOVE) {
             g_mouseX = static_cast<float>(static_cast<int16_t>(lParam & 0xFFFF));
             g_mouseY = static_cast<float>(static_cast<int16_t>((lParam >> 16) & 0xFFFF));
@@ -301,7 +393,8 @@ static LRESULT CALLBACK HookedWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
                 g_prevLButtonDown = true;
             }
             // Block clicks inside our overlay window from hitting the game
-            if (g_mouseX >= kWinX && g_mouseX <= kWinX + kWinW && g_mouseY >= kWinY && g_mouseY <= kWinY + kWinH) {
+            if (catOpen ? ts2::ui::catalog_ui::HitTest(g_mouseX, g_mouseY, g_scrW, g_scrH)
+                        : (g_mouseX >= kWinX && g_mouseX <= kWinX + kWinW && g_mouseY >= kWinY && g_mouseY <= kWinY + kWinH)) {
                 return 0;
             }
         } else if (msg == WM_LBUTTONUP) {
@@ -489,20 +582,17 @@ static void RenderTabBuild(d3d9::IDirect3DDevice9* dev, float x, float y, float 
     if (LayBtn(dev, 2, 3, "Zona apartamento"))  RunCmd("changeLotZoning apartmentbase");
     LayNext();
 
-    LaySection(dev, "BUSCAR NO CATALOGO");
-    char box[96];
-    _snprintf(box, sizeof(box), "%s%s", cfg.catalogSearchFilter[0] || g_focusedInputId == 3 ? cfg.catalogSearchFilter : ts2::i18n::Tr("clique e digite..."),
-              (g_focusedInputId == 3) ? "_" : "");
-    if (LayBtn(dev, 0, 4, box, g_focusedInputId == 3, 3)) g_focusedInputId = 3;
-    if (LayBtn(dev, 3, 4, "Limpar")) cfg.catalogSearchFilter[0] = '\0';
-    LayNext();
-    const ts2::qol::CatalogEntry* matches[5] = {};
-    const size_t n = ts2::qol::FilterCatalogEntries(cfg.catalogSearchFilter, matches, 5);
-    for (size_t i = 0; i < n; ++i) {
-        char row[160];
-        _snprintf(row, sizeof(row), "%s  \xE2\x80\xA2  %s  \xE2\x80\xA2  $%d", matches[i]->name, matches[i]->category, matches[i]->price);
-        kit::Text(kit::F_SMALL, g_lay.x + 4.0f, g_lay.y + i * 18.0f, row, kColText);
+    LaySection(dev, "CATÁLOGO DE OBJETOS");
+    {
+        char info[96];
+        const bool ok = ts2::catalog::Load();
+        if (ok) _snprintf(info, sizeof(info), ts2::i18n::Tr("%u objetos no catálogo (%u de mods)"), static_cast<unsigned>(ts2::catalog::Count()), static_cast<unsigned>(ts2::catalog::ModCount()));
+        else    _snprintf(info, sizeof(info), "%s", ts2::i18n::Tr("Catálogo não encontrado (rode tools/catalog/build_catalog.py)"));
+        kit::Text(kit::F_SMALL, g_lay.x + 4.0f, g_lay.y + 2.0f, info, ok ? kColDim : kColWarn);
+        g_lay.y += 22.0f;
     }
+    if (LayBtn(dev, 0, 2, "Abrir catálogo (F7)", ts2::ui::catalog_ui::IsOpen())) ts2::ui::catalog_ui::Open();
+    LayNext();
 }
 
 // ============================================================================
@@ -735,6 +825,11 @@ static void RenderOverlay(d3d9::IDirect3DDevice9* dev) {
 
     // Poll keyboard & mouse fallback (works on both Windows native & Proton/Wine/DXVK)
     PollOverlayInput(dev);
+    if (ts2::coop::PlaceModeActive() && g_gameHwnd) {
+        POINT pt = {};
+        if (GetCursorPos(&pt) && ScreenToClient(g_gameHwnd, &pt))
+            ts2::coop::PlaceModeCursor(pt.x, pt.y, PlaceOverHud(static_cast<float>(pt.x), static_cast<float>(pt.y)));
+    }
 
     // Poll network & QoL timers every frame even when overlay is minimized
     ts2::coop::PollNetwork();
@@ -772,6 +867,7 @@ static void RenderOverlay(d3d9::IDirect3DDevice9* dev) {
     const auto& coop = ts2::coop::GetStats();
 
     auto finish = [&]() {
+        DrawPlaceBanner();
         DrawChat();
         kit::EndFrame();
         if (stateBlock) {
@@ -780,6 +876,13 @@ static void RenderOverlay(d3d9::IDirect3DDevice9* dev) {
         }
         g_mouseClicked = false;
     };
+
+    // Build catalog replaces the main panel while it is open
+    if (ts2::ui::catalog_ui::IsOpen()) {
+        ts2::ui::catalog_ui::Draw(dev, g_scrW, g_scrH);
+        finish();
+        return;
+    }
 
     // Compact status badge when the panel is hidden
     if (!g_visible) {
@@ -845,7 +948,7 @@ static void RenderOverlay(d3d9::IDirect3DDevice9* dev) {
     // footer
     kit::Rect(wx + 20.0f, wy + wh - 32.0f, ww - 40.0f, 1.0f, kit::Col(255, 255, 255, 22));
     kit::Text(kit::F_SMALL, wx + 22.0f, wy + wh - 26.0f,
-              "F10 ocultar  •  F11 tela cheia  •  F5 salvar  •  F9 sincronizar  •  F8 chat", kit::kDim);
+              "F10 ocultar  •  F11 tela cheia  •  F5 salvar  •  F9 sincronizar  •  F8 chat  •  F7 catálogo", kit::kDim);
 
     finish();
 }

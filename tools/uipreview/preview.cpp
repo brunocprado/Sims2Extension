@@ -5,6 +5,8 @@
 #include "ts2/ui_tabs.hpp"
 #include "ts2/d3d9_ext.hpp"
 #include "ts2/dx9_postfx.hpp"
+#include "ts2/ui_catalog.hpp"
+#include "ts2/coop_net.hpp"
 
 extern "C" {
 struct TS2_WNDCLASSA {
@@ -33,8 +35,19 @@ void ApplyPreset(int id) { g_s = Settings(); if (id == 0) g_s.enabled = false; i
 void NotifyChanged() {}
 }
 
+namespace ts2::coop {
+static char g_status[96] = "Objeto 0A1B2C3D colocado ao lado do Sim selecionado.";
+void PlaceRequest(uint32_t, int, int, int) {}
+void PlaceNudge(int, int, int) {}
+void PlaceDeleteLast() {}
+const char* PlaceStatus() { return g_status; }
+uint32_t PlacedCount() { return 2; }
+}
+
 extern "C" int _fltused = 0;
 namespace kit = ts2::ui::kit;
+
+static bool kit_cat_open() { return ts2::ui::catalog_ui::IsOpen(); }
 
 static LRESULT CALLBACK WndProc(HWND h, UINT m, WPARAM w, LPARAM l) { return DefWindowProcA(h, m, w, l); }
 
@@ -113,6 +126,23 @@ extern "C" void WINAPI WinMainCRTStartup() {
         if (f != reinterpret_cast<HANDLE>(-1)) { DWORD got = 0; ReadFile(f, ctl, sizeof(ctl) - 1, &got, nullptr); ctl[got] = 0; CloseHandle(f); }
         if (ParseInt(ctl, "exit", 0)) break;
         const int tab = ParseInt(ctl, "tab", 3);
+        const int catUi = ParseInt(ctl, "cat", 0);
+        if (catUi && !kit_cat_open()) ts2::ui::catalog_ui::Open();
+        if (!catUi && ts2::ui::catalog_ui::IsOpen()) ts2::ui::catalog_ui::Close();
+        {
+            // type=<text>: feeds the search box when it changes
+            static char typed[64] = "";
+            char want[64] = "";
+            for (const char* p = ctl; *p; ++p) if ((p == ctl || p[-1] == ' ' || p[-1] == '\n') && strncmp(p, "type=", 5) == 0) { int n = 0; for (const char* q = p + 5; *q && *q != ' ' && *q != '\n' && n < 60; ++q) want[n++] = *q; want[n] = 0; break; }
+            if (strcmp(typed, want) != 0) {
+                for (int i = 0; i < 64 && typed[i]; ++i) ts2::ui::catalog_ui::OnChar('\b');
+                for (int i = 0; want[i]; ++i) ts2::ui::catalog_ui::OnChar(static_cast<unsigned char>(want[i]));
+                strncpy(typed, want, 63);
+            }
+            const int wheel = ParseInt(ctl, "wheel", 0);
+            static int lastWheel = 0;
+            if (wheel != lastWheel) { ts2::ui::catalog_ui::OnWheel(wheel - lastWheel); lastWheel = wheel; }
+        }
 
         reinterpret_cast<FnClear>(dev->vtable[43])(dev, 0, nullptr, 3 /*TARGET|ZBUFFER ignored*/ & 1, 0xFF4E6E3C, 1.0f, 0);
         reinterpret_cast<FnVoid>(dev->vtable[41])(dev);
@@ -126,6 +156,15 @@ extern "C" void WINAPI WinMainCRTStartup() {
         for (int i = 0; i < 14; ++i)
             kit::RoundRect(40.0f + i * 70.0f, 560.0f - (i % 5) * 40.0f, 90.0f, 90.0f, 6.0f, kit::Col(210 - i * 6, 190, 140 + i * 5, 255), kit::Col(150, 130, 100, 255));
 
+        if (ts2::ui::catalog_ui::IsOpen()) {
+            ts2::ui::catalog_ui::Draw(dev, static_cast<float>(W), static_cast<float>(H));
+            kit::EndFrame();
+            reinterpret_cast<FnVoid>(dev->vtable[42])(dev);
+            reinterpret_cast<FnPresent>(dev->vtable[17])(dev, nullptr, nullptr, nullptr, nullptr);
+            ++frames;
+            Sleep(30);
+            continue;
+        }
         const float wx = 16, wy = 16, ww = 680, wh = 620;
         kit::WindowFrame(wx, wy, ww, wh);
         kit::Diamond(wx + 30.0f, wy + 29.0f, 7.5f, kit::Col(70, 220, 120));

@@ -157,7 +157,7 @@ static void Run(bool host, const char* profile) {
     SetObjectBackendForTest(&kFake);
     g_mySim = host ? 0 : 0; // host controls NeighborID 101 (slot 0), guest controls NeighborID 202 (slot 0 on its side)
     SetSimSyncEnabled(true);
-    bool movedA = false, movedB = false, bought = false, sold = false, gBought = false, gMoved = false, sentInter = false, sentChat = false;
+    bool movedA = false, movedB = false, bought = false, sold = false, gBought = false, gMoved = false, sentInter = false, sentChat = false, placed = false, nudged = false;
 
     uint32_t t0 = GetTickCount();
     if (host) {
@@ -219,6 +219,9 @@ static void Run(bool host, const char* profile) {
         if (host && el > 8000 && el < 8100) g_objs[0] = ObjPose{20 * T, 21 * T, 1, 2, 0x1000};
         if (host && el > 9000 && el < 9100) g_objs[0] = ObjPose{22 * T, 23 * T, 1, 6, 0x1000};
         if (!host && el > 8500 && el < 8600) g_objs[0] = ObjPose{30 * T, 31 * T, 2, 4, 0x1001};
+        // build-mode catalog: host places an object next to its selected Sim (22,23): +2 tiles in X, rot 2; then nudges it
+        if (host && !placed && el > 10000) { placed = true; PlaceRequest(0xFACE0001u, 2, 0, 2); }
+        if (host && !nudged && el > 10800) { nudged = true; PlaceNudge(1, 0, 2); }
         if (el > 13000) break;
         Sleep(5);
     }

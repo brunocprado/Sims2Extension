@@ -99,6 +99,7 @@ constexpr int VK_ESCAPE = 0x1B;
 constexpr int VK_INSERT = 0x2D;
 constexpr int VK_F5     = 0x74;
 constexpr int VK_F8     = 0x77;
+constexpr int VK_F7     = 0x76;
 constexpr int VK_F9     = 0x78;
 constexpr int VK_F10    = 0x79;
 constexpr int VK_F11    = 0x7A;
@@ -170,6 +171,8 @@ __declspec(dllimport) HANDLE  WINAPI CreateFileA(LPCSTR lpFileName, DWORD dwDesi
 __declspec(dllimport) BOOL    WINAPI ReadFile(HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, DWORD* lpNumberOfBytesRead, LPVOID lpOverlapped);
 __declspec(dllimport) BOOL    WINAPI WriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, DWORD* lpNumberOfBytesWritten, LPVOID lpOverlapped);
 __declspec(dllimport) BOOL    WINAPI CloseHandle(HANDLE hObject);
+__declspec(dllimport) DWORD   WINAPI GetFileSize(HANDLE hFile, DWORD* lpFileSizeHigh);
+__declspec(dllimport) DWORD   WINAPI SetFilePointer(HANDLE hFile, LONG lDistanceToMove, LONG* lpDistanceToMoveHigh, DWORD dwMoveMethod);
 __declspec(dllimport) HANDLE  WINAPI FindFirstFileA(LPCSTR lpFileName, WIN32_FIND_DATAA* lpFindFileData);
 __declspec(dllimport) BOOL    WINAPI FindNextFileA(HANDLE hFindFile, WIN32_FIND_DATAA* lpFindFileData);
 __declspec(dllimport) BOOL    WINAPI FindClose(HANDLE hFindFile);

@@ -772,7 +772,12 @@ uint32_t RealCount() {
     return static_cast<uint32_t>((e - b) >> 2);
 }
 
+// Slot of the preview object that follows the cursor while placing (-1 = none). It is not part of the lot yet, so the
+// sync layer must not mirror it to the peer (it would create/destroy a copy on every mouse move).
+int32_t g_ghostSlot = -1;
+
 bool RealRead(uint32_t id, ObjPose* out) {
+    if (static_cast<int32_t>(id) == g_ghostSlot) return false;
     uintptr_t obj = ObjAt(id);
     if (!obj) return false;
     uintptr_t vt = *reinterpret_cast<const uintptr_t*>(obj);
@@ -2322,8 +2327,305 @@ void SendSimInteraction(const SimInteractionEvent& ev) {
     }
 }
 
+// ============================================================================
+// Build-mode catalog: placing objects by GUID (requests queued by the HUD, executed on the game thread)
+// ============================================================================
+namespace {
+
+struct PlaceReq { uint8_t kind; uint32_t guid; int32_t ox, oy; int32_t rot; };   // kind: 1 place, 2 nudge, 3 delete last
+constexpr int kPlaceQ = 16;
+PlaceReq g_placeQ[kPlaceQ];
+int      g_placeQN = 0;
+char     g_placeMsg[128] = "";
+struct Placed { uint32_t slot, guid; };
+constexpr int kPlacedMax = 64;
+Placed   g_placed[kPlacedMax];
+int      g_placedN = 0;
+
+void PlaceSay(const char* fmt, uint32_t a = 0) {
+    char tmp[128];
+    _snprintf(tmp, sizeof(tmp), ts2::i18n::Tr(fmt), a);
+    tmp[sizeof(tmp) - 1] = '\0';
+    memcpy(g_placeMsg, tmp, sizeof(g_placeMsg));
+    ts2::hook::Log("[Place] %s", tmp);
+}
+
+// Raw lot position of any object (Sims included, whatever the sync switches say).
+bool PlaceReadRaw(uint32_t slot, ObjPose* out) {
+    if (g_objBackend != &kRealBackend) return g_objBackend->read(slot, out);
+    uintptr_t obj = ObjAt(slot);
+    if (!obj) return false;
+    out->tx    = *reinterpret_cast<const int32_t*>(obj + addr::obj_off::kTileX);
+    out->ty    = *reinterpret_cast<const int32_t*>(obj + addr::obj_off::kTileY);
+    out->level = *reinterpret_cast<const int16_t*>(obj + addr::obj_off::kLevel);
+    out->rot   = *reinterpret_cast<const uint16_t*>(obj + addr::obj_off::kRotation) & 7u;
+    out->guid  = ReadObjGuid(obj);
+    return out->tx >= 0 && out->ty >= 0 && out->level >= 1;
+}
+
+bool PlacedAlive(const Placed& p, ObjPose* cur) {
+    return PlaceReadRaw(p.slot, cur) && cur->guid == p.guid;
+}
+
+void PlaceExecOne(const PlaceReq& r) {
+    if (g_stats.role == Role::Client) { PlaceSay("Somente o anfitrião pode colocar objetos."); return; }
+    if (!g_objBackend) return;
+    if (r.kind == 1) {
+        if (!g_objBackend->create) { PlaceSay("Colocar objetos indisponível aqui."); return; }
+        int32_t simSlot = g_objBackend->selectedSim ? g_objBackend->selectedSim() : -1;
+        ObjPose base = {};
+        if (simSlot < 0 || !PlaceReadRaw(static_cast<uint32_t>(simSlot), &base)) { PlaceSay("Selecione um Sim no lote para posicionar o objeto."); return; }
+        ObjPose want = {};
+        want.guid  = r.guid;
+        want.level = base.level;
+        want.tx    = static_cast<int32_t>((static_cast<uint32_t>(base.tx) & ~0xFFFFu) + 0x8000u) + r.ox * 0x10000;
+        want.ty    = static_cast<int32_t>((static_cast<uint32_t>(base.ty) & ~0xFFFFu) + 0x8000u) + r.oy * 0x10000;
+        want.rot   = static_cast<uint16_t>(r.rot & 7);
+        if (want.tx < 0x10000 || want.ty < 0x10000) { PlaceSay("Posição fora do lote."); return; }
+        uint32_t slot = 0;
+        if (!g_objBackend->create(&slot, want)) { PlaceSay("Não foi possível criar o objeto %08X.", r.guid); return; }
+        if (g_placedN == kPlacedMax) { memmove(&g_placed[0], &g_placed[1], sizeof(Placed) * (kPlacedMax - 1)); --g_placedN; }
+        g_placed[g_placedN++] = {slot, r.guid};
+        PlaceSay("Objeto %08X colocado ao lado do Sim selecionado.", r.guid);
+        return;
+    }
+    if (g_placedN == 0) { PlaceSay("Nenhum objeto colocado ainda."); return; }
+    Placed& last = g_placed[g_placedN - 1];
+    ObjPose cur = {};
+    if (!PlacedAlive(last, &cur)) { --g_placedN; PlaceSay("O último objeto colocado não existe mais."); return; }
+    if (r.kind == 3) {
+        if (g_objBackend->destroy && g_objBackend->destroy(last.slot, cur)) { --g_placedN; PlaceSay("Objeto removido."); }
+        else PlaceSay("Não foi possível remover o objeto.");
+        return;
+    }
+    ObjPose np = cur;
+    np.tx += r.ox * 0x8000;
+    np.ty += r.oy * 0x8000;
+    np.rot = static_cast<uint16_t>((cur.rot + r.rot) & 7);
+    if (np.tx < 0x10000 || np.ty < 0x10000) { PlaceSay("Posição fora do lote."); return; }
+    if (g_objBackend->apply(last.slot, np)) PlaceSay("Objeto movido.");
+    else PlaceSay("Não foi possível mover o objeto.");
+}
+
+void PlaceModeTick();
+
+void PlaceTick() {
+    PlaceModeTick();
+    if (g_placeQN == 0) return;
+    if (!LocalLotReady()) { g_placeQN = 0; PlaceSay("Abra um lote para colocar objetos."); return; }
+    PlaceReq q[kPlaceQ];
+    const int n = g_placeQN;
+    memcpy(q, g_placeQ, sizeof(PlaceReq) * n);
+    g_placeQN = 0;
+    for (int i = 0; i < n; ++i) PlaceExecOne(q[i]);
+}
+
+void PlacePush(const PlaceReq& r) {
+    if (g_placeQN < kPlaceQ) g_placeQ[g_placeQN++] = r;
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Click-to-place. The game's own build tools ask the lot view window "which ground position is under the cursor"
+// (vtable +0x60, found by static analysis of the tool classes). We capture that window through the tool handler and use
+// the same call, then move a real object to that tile every frame; a click leaves it there.
+// ---------------------------------------------------------------------------------------------------------------------
+ts2::hook::Detour g_detourToolMsg;
+void* g_toolHandler = nullptr;
+using Fn_ToolMsg = uint8_t (__thiscall*)(void*, void*);
+
+uint8_t __fastcall Hooked_ToolHandler_OnMessage(void* self, void* /*edx*/, void* msg) {
+    g_toolHandler = self;
+    return g_detourToolMsg.Original<Fn_ToolMsg>()(self, msg);
+}
+
+struct PlaceMode {
+    bool     active = false;
+    uint32_t guid = 0;
+    int      rot = 0;          // 0..7, 2 = 90 degrees
+    int32_t  slot = -1;        // the object that follows the cursor (-1 = not created yet)
+    int      cx = -1, cy = -1;
+    bool     cursorOk = false;
+    bool     hit = false;
+    int32_t  curTx = -1, curTy = -1;
+    int      curRot = -1;
+    int16_t  level = 1;
+    bool     commitReq = false, keep = false, cancelReq = false;
+    unsigned diagLeft = 24;    // number of picks still written to the log (first results tell if the call works)
+    DWORD    diagNext = 0;
+};
+PlaceMode g_pm;
+
+void* LotView() {
+    if (!g_toolHandler) return nullptr;
+    void* view = *reinterpret_cast<void* const*>(reinterpret_cast<uintptr_t>(g_toolHandler) + addr::kToolHandler_ViewOff);
+    if (reinterpret_cast<uintptr_t>(view) < 0x10000u) return nullptr;
+    uintptr_t vt = *reinterpret_cast<const uintptr_t*>(view);
+    if (vt < addr::Rebase(0xA0F00000u) || vt >= addr::Rebase(0xA1200000u)) return nullptr;
+    return view;
+}
+
+bool FiniteF(float f) { return f == f && f > -1.0e7f && f < 1.0e7f; }
+int FloorI(float f) { int i = static_cast<int>(f); return (static_cast<float>(i) > f) ? i - 1 : i; }
+
+// World units per 1.0 of tile (read from the game once; the fixed-point tile has 16 fractional bits).
+float WorldPerTile() {
+    static float u = 0.0f;
+    if (u == 0.0f) {
+        using FnTileToPos = void (__cdecl*)(float*, const int32_t*, int);
+        float out[3] = {};
+        const int32_t tile[2] = {0x10000, 0x10000};
+        reinterpret_cast<FnTileToPos>(addr::Rebase(addr::kFunc_TilePosToWorld))(out, tile, 1);
+        u = (FiniteF(out[0]) && out[0] > 0.0001f) ? out[0] : 1.0f;
+    }
+    return u;
+}
+
+// vtable +0x64 is the call every ground-based tool makes on mouse move (cTSUserToolBase::vfunc_31 forwards to it):
+//   char __thiscall(view, int x, int y, void* out /* float worldX, float worldY, int level */, int 1, int mods)
+// It ray-marches the floors of the lot and only reports positions that are valid tiles, so objects (including the one
+// being placed) never get in the way.
+bool PlacePick(int x, int y, int* outTx, int* outTy, int* outLevel) {
+    void* view = LotView();
+    if (!view) return false;
+    void** vt = *reinterpret_cast<void***>(view);
+    union { float f[4]; int32_t i[4]; } o = {};
+    using FnTilePick = uint8_t (__thiscall*)(void*, int, int, void*, int, int);
+    const uint8_t hit = reinterpret_cast<FnTilePick>(vt[addr::kLotView_vt_TilePick / 4])(view, x, y, &o, 1, 0);
+    if (g_pm.diagLeft) {
+        --g_pm.diagLeft;
+        ts2::hook::Log("[Place] pick(%d,%d): hit=%u world=(%.3f, %.3f) level=%d (Sim: %d)  worldPerTile=%.5f", x, y, static_cast<unsigned>(hit), o.f[0],
+                       o.f[1], o.i[2], static_cast<int>(g_pm.level), WorldPerTile());
+    }
+    if (!hit || !FiniteF(o.f[0]) || !FiniteF(o.f[1])) return false;
+    *outTx = FloorI(o.f[0]);
+    *outTy = FloorI(o.f[1]);
+    *outLevel = o.i[2];
+    return true;
+}
+
+void PlaceModeEnd(bool deleteGhost) {
+    if (deleteGhost && g_pm.slot >= 0 && g_objBackend && g_objBackend->destroy) {
+        ObjPose p = {};
+        p.guid = g_pm.guid;
+        g_objBackend->destroy(static_cast<uint32_t>(g_pm.slot), p);
+    }
+    g_pm.slot = -1;
+    g_ghostSlot = -1;
+    g_pm.active = false;
+    g_pm.hit = false;
+    g_pm.commitReq = g_pm.cancelReq = false;
+}
+
+void PlaceModeTick() {
+    if (!g_pm.active) return;
+    if (g_stats.role == Role::Client) { PlaceModeEnd(true); PlaceSay("Somente o anfitrião pode colocar objetos."); return; }
+    if (!g_objBackend || !g_objBackend->create || !LocalLotReady()) { PlaceModeEnd(true); PlaceSay("Abra um lote para colocar objetos."); return; }
+    if (g_pm.cancelReq) { PlaceModeEnd(true); PlaceSay("Posicionamento cancelado."); return; }
+
+    // no lot view yet (the tool handler has not run): fall back to dropping the object next to the selected Sim
+    if (!LotView()) {
+        const uint32_t guid = g_pm.guid;
+        const int rot = g_pm.rot;
+        PlaceModeEnd(true);
+        PlacePush({1, guid, 2, 0, rot});
+        PlaceSay("Visão do lote indisponível: objeto colocado ao lado do Sim.");
+        return;
+    }
+
+    // current floor = the one of the controlled Sim (the view call only gives the ground position)
+    {
+        const int32_t sim = g_objBackend->selectedSim ? g_objBackend->selectedSim() : -1;
+        ObjPose base = {};
+        if (sim >= 0 && PlaceReadRaw(static_cast<uint32_t>(sim), &base) && base.level >= 1 && base.level <= 16) g_pm.level = base.level;
+    }
+
+    bool have = false;
+    int32_t tx = 0, ty = 0;
+    if (g_pm.cursorOk) {
+        int ix = 0, iy = 0, lv = 0;
+        if (PlacePick(g_pm.cx, g_pm.cy, &ix, &iy, &lv)) {
+            if (ix >= 1 && iy >= 1 && ix < 400 && iy < 400) {
+                tx = (ix << 16) + 0x8000;
+                ty = (iy << 16) + 0x8000;
+                // The pick reports the game's TilePos level (0 = ground floor, see FUN_a07dd8e0 / FUN_a07e2ee0); objects use
+                // 1-based levels (SetLocation stores z + 1, TilePosToWorld emits level - 1).
+                if (lv >= 0 && lv <= 15) g_pm.level = static_cast<int16_t>(lv + 1);
+                have = true;
+            }
+        }
+    }
+    g_pm.hit = have;
+
+    if (have && (g_pm.slot < 0 || tx != g_pm.curTx || ty != g_pm.curTy || g_pm.rot != g_pm.curRot)) {
+        ObjPose want = {};
+        want.guid = g_pm.guid; want.tx = tx; want.ty = ty; want.level = g_pm.level; want.rot = static_cast<uint16_t>(g_pm.rot & 7);
+        if (g_pm.slot < 0) {
+            uint32_t slot = 0;
+            if (!g_objBackend->create(&slot, want)) { PlaceModeEnd(false); PlaceSay("Não foi possível criar o objeto %08X.", g_pm.guid); return; }
+            g_pm.slot = static_cast<int32_t>(slot);
+            g_ghostSlot = g_pm.slot;
+            ObjPose back = {};
+            if (g_objBackend == &kRealBackend) {
+                const uintptr_t obj = ObjAt(slot);
+                ts2::hook::Log("[Place] criado slot=%u guid=%08X inWorld=%u tile=(%d,%d) level=%d flags=%08X", slot, g_pm.guid,
+                               obj ? *reinterpret_cast<const uint8_t*>(obj + addr::obj_off::kInWorld) : 0xFFu,
+                               obj ? *reinterpret_cast<const int32_t*>(obj + addr::obj_off::kTileX) : 0,
+                               obj ? *reinterpret_cast<const int32_t*>(obj + addr::obj_off::kTileY) : 0,
+                               obj ? *reinterpret_cast<const int16_t*>(obj + addr::obj_off::kLevel) : 0,
+                               obj ? *reinterpret_cast<const uint32_t*>(obj + addr::obj_off::kFlags) : 0u);
+            }
+            (void)back;
+        } else {
+            g_objBackend->apply(static_cast<uint32_t>(g_pm.slot), want);
+        }
+        g_pm.curTx = tx; g_pm.curTy = ty; g_pm.curRot = g_pm.rot;
+    }
+
+    if (g_pm.commitReq) {
+        g_pm.commitReq = false;
+        if (g_pm.slot >= 0) {
+            if (g_placedN == kPlacedMax) { memmove(&g_placed[0], &g_placed[1], sizeof(Placed) * (kPlacedMax - 1)); --g_placedN; }
+            g_placed[g_placedN++] = {static_cast<uint32_t>(g_pm.slot), g_pm.guid};
+            PlaceSay("Objeto colocado.");
+            ts2::hook::Log("[Place] confirmado slot=%d guid=%08X tile=(%d,%d)", g_pm.slot, g_pm.guid, g_pm.curTx >> 16, g_pm.curTy >> 16);
+            g_pm.slot = -1;
+            g_ghostSlot = -1;
+            g_pm.curTx = g_pm.curTy = -1; g_pm.curRot = -1;
+            if (!g_pm.keep) PlaceModeEnd(false);
+        }
+    }
+}
+
+} // namespace
+
+void PlaceRequest(uint32_t guid, int ox, int oy, int rot) { PlacePush({1, guid, ox, oy, rot}); }
+void PlaceNudge(int dxHalf, int dyHalf, int drot)         { PlacePush({2, 0, dxHalf, dyHalf, drot}); }
+void PlaceDeleteLast()                                    { PlacePush({3, 0, 0, 0, 0}); }
+void PlaceModeBegin(uint32_t guid) {
+    if (g_pm.active) PlaceModeEnd(true);
+    g_pm.active = true;
+    g_pm.guid = guid;
+    g_pm.slot = -1;
+    g_ghostSlot = -1;
+    g_pm.hit = false;
+    g_pm.curTx = g_pm.curTy = -1; g_pm.curRot = -1;
+    g_pm.commitReq = g_pm.cancelReq = g_pm.keep = false;
+    g_pm.diagLeft = 24;
+    PlaceSay("Clique no lote para posicionar.");
+}
+bool PlaceModeActive()                                    { return g_pm.active; }
+uint32_t PlaceModeGuid()                                  { return g_pm.guid; }
+void PlaceModeCursor(int x, int y, bool overHud)          { g_pm.cx = x; g_pm.cy = y; g_pm.cursorOk = !overHud; }
+bool PlaceModeHasTarget()                                 { return g_pm.active && g_pm.hit && g_pm.slot >= 0; }
+void PlaceModeCommit(bool keepPlacing)                    { if (g_pm.active) { g_pm.commitReq = true; g_pm.keep = keepPlacing; } }
+void PlaceModeCancel()                                    { if (g_pm.active) g_pm.cancelReq = true; }
+void PlaceModeRotate(int steps)                           { g_pm.rot = (g_pm.rot + steps * 2) & 7; }
+const char* PlaceStatus()                                 { return g_placeMsg; }
+uint32_t PlacedCount()                                    { return static_cast<uint32_t>(g_placedN); }
+
 void ObjectSyncTick() {
     if (g_objBackend) TestAutoTick();
+    PlaceTick();
     if (!g_objBackend || g_stats.role == Role::Disconnected) return;
     // Never touch the object table while a lot is loading / unloading or in the neighborhood view
     if (!LocalLotReady()) return;
@@ -2394,13 +2696,20 @@ bool Initialize() {
         reinterpret_cast<void*>(&Hooked_cTSPerson_EnqueueInteraction),
         5
     );
-    ts2::se::PushConsoleLog("[Co-op v2] Pronto: TCP host-autoritativo (SimulateTick=%d, OnIdle=%d, EnqueueInter=%d)",
-                            okTick ? 1 : 0, okIdle ? 1 : 0, okInter ? 1 : 0);
+    const bool okTool = ts2::hook::InstallDetour(
+        g_detourToolMsg,
+        addr::Rebase(addr::kFunc_ToolHandler_OnMessage),
+        reinterpret_cast<void*>(&Hooked_ToolHandler_OnMessage),
+        5
+    );
+    ts2::se::PushConsoleLog("[Co-op v2] Pronto: TCP host-autoritativo (SimulateTick=%d, OnIdle=%d, EnqueueInter=%d, ToolHandler=%d)",
+                            okTick ? 1 : 0, okIdle ? 1 : 0, okInter ? 1 : 0, okTool ? 1 : 0);
     return okTick;
 }
 
 void Shutdown() {
     Disconnect();
+    ts2::hook::RemoveDetour(g_detourToolMsg);
     ts2::hook::RemoveDetour(g_detourEnqueueInteraction);
     ts2::hook::RemoveDetour(g_detourOnIdle);
     ts2::hook::RemoveDetour(g_detourSimulateTick);

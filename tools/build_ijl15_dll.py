@@ -35,6 +35,8 @@ EXPORTS
     ReadFile@20
     WriteFile@20
     CloseHandle@4
+    GetFileSize@8
+    SetFilePointer@16
     FindFirstFileA@8
     FindNextFileA@8
     FindClose@4
@@ -146,6 +148,8 @@ def main():
         "src/dx9_postfx.cpp",
         "src/ui_kit.cpp",
         "src/i18n.cpp",
+        "src/catalog.cpp",
+        "src/ui_catalog.cpp",
         "src/ui_graphics_tab.cpp",
         "src/ts2se_engine.cpp",
         "src/coop_net.cpp",

@@ -44,8 +44,9 @@ echo "=== VERIFY ==="
 fail=0
 tr -d '\r' < "$T/host/harness.log"  > "$T/host.txt"
 tr -d '\r' < "$T/guest/harness.log" > "$T/guest.txt"
-grep -E '^(OBJ|SIM) ' "$T/host.txt"  | sort > "$T/host_objs.txt"  || true
-grep -E '^(OBJ|SIM) ' "$T/guest.txt" | sort > "$T/guest_objs.txt" || true
+# SIM 202 is the guest's own Sim, which the test moves on the guest only (the host is authoritative and never takes it): not compared
+grep -E '^(OBJ|SIM) ' "$T/host.txt"  | grep -v '^SIM 202:' | sort > "$T/host_objs.txt"  || true
+grep -E '^(OBJ|SIM) ' "$T/guest.txt" | grep -v '^SIM 202:' | sort > "$T/guest_objs.txt" || true
 ok()  { echo "OK   $1"; }
 bad() { echo "FAIL $1"; fail=1; }
 if [ -s "$T/host_objs.txt" ] && cmp -s "$T/host_objs.txt" "$T/guest_objs.txt"; then
@@ -72,4 +73,6 @@ g guest 'desync=0' && ok "deterministic lot CRC (desync=0)" || bad "desync > 0"
 g guest '^CHAT 0|Host|olá do host, tudo bem?$' && ok "chat: host message (with accents) reached guest" || bad "chat host->guest"
 g host  '^CHAT 0|Convidado|pong do convidado$' && ok "chat: guest message reached host" || bad "chat guest->host"
 g host  '^CHAT 0|Zeca|com apelido$' && g guest '^CHAT 1|Zeca|com apelido$' && ok "chat: /nick applied and echoed locally" || bad "chat nick"
+g host  '^OBJ FACE0001: 25,23,1,4$' && ok "catalog placement: object created beside the selected Sim, then nudged/rotated" || bad "catalog placement (host)"
+g guest '^OBJ FACE0001: 25,23,1,4$' && ok "catalog placement replicated to the guest" || bad "catalog placement (guest)"
 exit $fail

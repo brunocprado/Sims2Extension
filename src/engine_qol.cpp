@@ -34,46 +34,6 @@ static HANDLE WINAPI HookedCreateMutexA(LPVOID lpMutexAttributes, BOOL bInitialO
     return h;
 }
 
-// Representative indexed catalog items for Fast Buy/Build Search Filter
-static const CatalogEntry kIndexedCatalog[] = {
-    {0x07A01B12, "NuMica AllinOne Kitchen Counter", "Surfaces / Counters", 800},
-    {0x4B82D301, "Sleep-All-Night Double Bed",      "Comfort / Beds",      1250},
-    {0x9C1104E2, "Luxuriant Leather Sofa",          "Comfort / Sofas",     950},
-    {0x3E74A088, "BrandName Econo-Fridge",          "Appliances / Kitchen",600},
-    {0x8D42E119, "Dialectric FreeStanding Stove",   "Appliances / Kitchen",900},
-    {0x1F55C230, "Ciao Time Espresso Machine",      "Appliances / Small",  450},
-    {0x6A09B441, "FlushForce 5000 Toilet",          "Plumbing / Toilets",  350},
-    {0x5E12980C, "HydroSwirl Shower-Tub Combo",     "Plumbing / Showers",  1100},
-    {0x2B9901A4, "Trottco 27-inch Color TV",        "Electronics / TVs",   500},
-    {0x7F31C8D2, "Moneywell Computer XL",           "Electronics / PCs",   1800},
-    {0xC08812FA, "SimAntics Pinball Machine",       "Entertainment / Rec", 1650},
-    {0xD419002B, "Grand Parlour Chess Table",       "Hobbies / Logic",     500},
-    {0xE8214490, "bacterial Bookshelf Oak",         "Hobbies / Knowledge", 400},
-    {0xA1058833, "2-Story Colonial Column",         "Build / Columns",     320},
-    {0xB740219E, "Le Magnifique Bay Window",        "Build / Windows",     420},
-    {0xF0923411, "Solid Mahogany Double Door",      "Build / Doors",       650}
-};
-
-static bool ContainsCaseInsensitive(const char* haystack, const char* needle) {
-    if (!needle || !*needle) return true;
-    if (!haystack) return false;
-    size_t nLen = strlen(needle);
-    for (const char* p = haystack; *p; ++p) {
-        if (_stricmp(p, needle) == 0) return true;
-        bool match = true;
-        for (size_t i = 0; i < nLen; ++i) {
-            char c1 = p[i];
-            char c2 = needle[i];
-            if (!c1) { match = false; break; }
-            if (c1 >= 'A' && c1 <= 'Z') c1 += 32;
-            if (c2 >= 'A' && c2 <= 'Z') c2 += 32;
-            if (c1 != c2) { match = false; break; }
-        }
-        if (match) return true;
-    }
-    return false;
-}
-
 } // namespace
 
 bool ApplyEarlyPatches() {
@@ -232,19 +192,6 @@ void TickFrame() {
 
 QoLConfig& GetConfig() {
     return g_config;
-}
-
-size_t FilterCatalogEntries(const char* query, const CatalogEntry** outMatches, size_t maxMatches) {
-    size_t count = 0;
-    for (size_t i = 0; i < sizeof(kIndexedCatalog) / sizeof(kIndexedCatalog[0]); ++i) {
-        if (ContainsCaseInsensitive(kIndexedCatalog[i].name, query) ||
-            ContainsCaseInsensitive(kIndexedCatalog[i].category, query)) {
-            if (count < maxMatches) {
-                outMatches[count++] = &kIndexedCatalog[i];
-            }
-        }
-    }
-    return count;
 }
 
 } // namespace ts2::qol

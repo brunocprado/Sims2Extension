@@ -157,7 +157,9 @@ constexpr uintptr_t kGlobal_MaxTreeIterations               = 0xA12E0000u - 0x00
 // ---- Object placement, Buy/Build creation/deletion & Sim sync (verified via REA in Sims2EP9.exe) ----
 // Object table = cEdithObjectModule (the object returned by TSGetGlobals()->vtable[0x68]; vtable 0xA0F73188).
 //   vtable slot 16 (+0x40): int16_t CreateObjectInstance(cITSObjectSelector* sel, int, int, int) `ret 0x10`
-//   vtable slot 18 (+0x48): void    DeleteObject(int16_t id) `ret 4`
+//   vtable slot 18 (+0x48): void    DeleteObject(int16_t id, bool) raw delete (marks 0x10000, frees the slot)
+//   vtable slot 19 (+0x4C): void    DeleteObject(int16_t id) checked wrapper used by the game's tools (see kObjTable_DeleteObjectSlot)
+//   vtable slot 29 (+0x74): cTSObject* GetObjectRaw(int id) (no flag filtering; the game uses it right after Create)
 //   vtable slot 30 (+0x78): cTSObject* GetObject(int id)  thiscall `ret 4`; ids are 1-based and objects flagged
 //   0x10000/0x20000 (deleted/ghost) are filtered out. Pointer vector: begin at +0x1A24, end at +0x1A28.
 //   vtable slot 39 (+0x9C): cITSPerson* GetSelectedPerson()
@@ -178,18 +180,30 @@ constexpr uintptr_t kObjTable_GetObjectSlot     = 30; // +0x78
 constexpr uintptr_t kObjTable_GetSelectedSlot   = 39; // +0x9C
 constexpr uintptr_t kObjTable_SelectPersonSlot  = 40; // +0xA0
 constexpr uintptr_t kFunc_TilePosToWorld        = 0xA07DCE80u; // void __cdecl(float out[3], const int32 tile[2], int level)
+// cTSUserToolHandler message dispatcher (thiscall, ecx = handler, 1 stack arg, `ret 4`, 5-byte prologue 51 51 57 8B F9).
+// handler+0x1C holds the lot view window (it is 0 while no lot is shown). Used to capture the handler pointer.
+constexpr uintptr_t kFunc_ToolHandler_OnMessage = 0xA076C00Eu;
+constexpr uintptr_t kToolHandler_ViewOff        = 0x1C;
+// Lot view window vtable (the interface every build tool uses as tool+4):
+//   +0x60: int __thiscall ScreenToGround(int x, int y, float out[3])      nonzero = hit, out = world position (1 unit = 1 tile)
+//   +0x88: int __thiscall PickTile(int x, int y, float out[3], void* out2) -1 = miss
+constexpr uintptr_t kLotView_vt_ScreenToGround  = 0x60;
+constexpr uintptr_t kLotView_vt_PickTile        = 0x88;   // picks the OBJECT under the cursor (not used)
+constexpr uintptr_t kLotView_vt_TilePick        = 0x64;   // ground tile under the cursor (see PlacePick)
 constexpr uintptr_t kFunc_GZGetAllocatorCOM     = 0xA01AE45Du; // cIGZCOM* __cdecl() -> vt[3 (+0x0C)] creates cTSInteraction
 constexpr uint32_t  kGUID_GoHereObject          = 0x000007C4u; // "Walk Here / Go Here" temporary target selector GUID
 
 namespace obj_off {
     constexpr uintptr_t kEditNest    = 0x084; // int16 Begin/End nesting counter
-    constexpr uintptr_t kInWorld     = 0x086; // uint8 (0 = out-of-world, !=0 = placed on lot)
+    constexpr uintptr_t kInWorld     = 0x086; // uint8 set by Init(). The real test is IsInWorld (vtable +0x2F0, a05431e0) = this byte AND
+                                                    // the position being inside the lot (so a fresh object with tile -1 is not "in world")
     constexpr uintptr_t kRotation    = 0x0A8; // uint16 (0..7). Setter takes B=(10-rot)&7 by pointer.
     constexpr uintptr_t kContainerID = 0x0AA; // int16 (1-based Object ID of container/holder, 0 = none)
     constexpr uintptr_t kObjectID    = 0x1CC; // int16 (1-based Object ID in cEdithObjectModule)
     constexpr uintptr_t kTileX       = 0x1D0; // int32 (16.16 fixed-point tile X; -65536 = out-of-world)
     constexpr uintptr_t kTileY       = 0x1D4; // int32 (16.16 fixed-point tile Y; -65536 = out-of-world)
-    constexpr uintptr_t kLevel       = 0x1D8; // int16 (floor level 1..16)
+    constexpr uintptr_t kLevel       = 0x1D8; // int16 (floor level 1..16, 1-based: SetLocation stores pos.z + 1 and TilePosToWorld emits level - 1;
+                                                    // game TilePos / the view's ground pick use the 0-based value)
     constexpr uintptr_t kFlags       = 0x230; // uint32 (0x10000 / 0x20000 = deleted/ghost)
     constexpr uintptr_t kContainerPtr= 0x23C; // cTSObject* parent/container
     constexpr uintptr_t kSelectorPtr = 0x240; // cITSObjectSelector* catalog definition

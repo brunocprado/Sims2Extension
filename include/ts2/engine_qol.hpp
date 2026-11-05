@@ -33,13 +33,6 @@ struct QoLConfig {
     char     catalogSearchFilter[64]     = "";
 };
 
-struct CatalogEntry {
-    uint32_t    guid;
-    const char* name;
-    const char* category;
-    int32_t     price;
-};
-
 // Applies early startup patches (Multi-Instance Mutex bypass + Background Simulation)
 bool ApplyEarlyPatches();
 
@@ -64,8 +57,6 @@ bool TriggerSmartSaveNow();   // only requests the save (safe from any thread / 
 void RunPendingSave();        // executes a requested save; call from the simulator's OnIdle hook
 uint32_t GetSecondsUntilNextAutosave();
 
-// Fast Buy/Build Catalog Filter query
 QoLConfig& GetConfig();
-size_t FilterCatalogEntries(const char* query, const CatalogEntry** outMatches, size_t maxMatches);
 
 } // namespace ts2::qol
