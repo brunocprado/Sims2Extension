@@ -32,7 +32,7 @@ void RenderGraphicsTab(float x, float y, float w) {
     changed |= FxRow("Reflexos (SSR)", &S.ssr,            &S.ssrStrength,     0.0f, 1.5f,   0.60f);
     changed |= FxRow("Tone mapping",   &S.tonemap,        &S.tonemapStrength, 0.0f, 1.0f,   0.60f);
     changed |= FxRow("Cor por hora",   &S.timeGrade,      &S.gradeStrength,   0.0f, 1.0f,   0.60f);
-    changed |= FxRow("Bloom",          &S.bloom,          &S.bloomStrength,   0.0f, 1.0f,   0.22f);
+    changed |= FxRow("Bloom",          &S.bloom,          &S.bloomStrength,   0.0f, 1.0f,   0.32f);
     changed |= FxRow("Anti-aliasing",  &S.fxaa,           nullptr,            0.0f, 0.0f,   0.0f);
 
     g_lay.y += 2.0f;

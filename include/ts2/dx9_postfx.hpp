@@ -63,7 +63,7 @@ struct Settings {
     // Image
     bool  fxaa             = true;
     bool  bloom            = true;
-    float bloomStrength    = 0.22f;
+    float bloomStrength    = 0.32f;
     float bloomThreshold   = 0.72f;
     float vignette         = 0.18f;
     float saturation       = 1.08f;
